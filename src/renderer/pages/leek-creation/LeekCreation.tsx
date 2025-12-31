@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { leekCreationStyles as styles } from './LeekCreation.styles';
 import { IEntityBuild } from '../../../services/leekwars-laboratory/builds/EntityBuild.types';
+import EntityBuild from '../../components/entity-build/EntityBuild';
 
 function LeekCreation() {
   const [entityBuild, setEntityBuild] = useState<IEntityBuild | null>(null);
@@ -50,6 +51,13 @@ function LeekCreation() {
 
         {error && <p style={styles.error}>{error}</p>}
       </div>
+
+      {entityBuild && (
+        <div style={styles.section}>
+          <h2>Build Preview</h2>
+          <EntityBuild entityBuild={entityBuild} />
+        </div>
+      )}
     </div>
   );
 }
