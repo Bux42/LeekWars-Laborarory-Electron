@@ -1,48 +1,37 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { leeksStyles as styles } from './Leeks.styles';
-import { ILeek, SortField, SortDirection } from './Leeks.types';
 import { theme } from '../../theme';
 import { getImage } from '../../utils/ImageLoader';
+import { useServerContext } from '../../../context/server/ServerContext';
+import { ILeek } from '../../../services/leekwars-laboratory/leek/Leek.types';
 
-// Mock data - replace with actual API call later
-const mockLeeks: ILeek[] = [
-  {
-    id: 1,
-    name: 'SuperLeek',
-    level: 100,
-    talent: 1520,
-    ai: 'aggressive_v2',
-    image: 'leekwars/image/leek/leek1_front_apple',
-  },
-  {
-    id: 2,
-    name: 'DefenderLeek',
-    level: 85,
-    talent: 1234,
-    ai: 'defensive',
-    image: 'leekwars/image/leek/leek1_front_apple',
-  },
-  {
-    id: 3,
-    name: 'SpeedyLeek',
-    level: 92,
-    talent: 1450,
-    ai: 'speed_rush',
-    image: 'leekwars/image/leek/leek1_front_apple',
-  },
-  {
-    id: 4,
-    name: 'TankLeek',
-    level: 78,
-    talent: 1189,
-    ai: 'tank_mode',
-    image: 'leekwars/image/leek/leek1_front_apple',
-  },
-];
+type SortField = 'name' | 'level' | 'talent' | 'ai';
+type SortDirection = 'asc' | 'desc';
 
 function Leeks() {
+  const { port, service } = useServerContext();
+  const [leeks, setLeeks] = useState<ILeek[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+
+  useEffect(() => {
+    const fetchLeeks = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await service.getLeeks({ port });
+        setLeeks(response.leeks);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch leeks');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeeks();
+  }, [port, service]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -54,23 +43,33 @@ function Leeks() {
   };
 
   const sortedLeeks = useMemo(() => {
-    return [...mockLeeks].sort((a, b) => {
-      const aValue = a[sortField];
-      const bValue = b[sortField];
-
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
+    return [...leeks].sort((a: ILeek, b: ILeek) => {
+      if (sortField === 'name') {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
         return sortDirection === 'asc'
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
+          ? nameA.localeCompare(nameB)
+          : nameB.localeCompare(nameA);
       }
-
-      if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+      if (sortField === 'level') {
+        return sortDirection === 'asc'
+          ? a.build.level - b.build.level
+          : b.build.level - a.build.level;
+      }
+      if (sortField === 'talent') {
+        return sortDirection === 'asc' ? a.elo - b.elo : b.elo - a.elo;
+      }
+      if (sortField === 'ai') {
+        const aiA = a.aiFilePath.toLowerCase();
+        const aiB = b.aiFilePath.toLowerCase();
+        return sortDirection === 'asc'
+          ? aiA.localeCompare(aiB)
+          : aiB.localeCompare(aiA);
       }
 
       return 0;
     });
-  }, [sortField, sortDirection]);
+  }, [sortField, sortDirection, leeks]);
 
   const getSortIndicator = (field: SortField) => {
     if (sortField !== field) return null;
@@ -85,6 +84,24 @@ function Leeks() {
         ? theme.colors.background.tertiary
         : theme.colors.background.elevated,
   });
+
+  if (loading) {
+    return (
+      <div style={styles.container}>
+        <h1>Leeks</h1>
+        <p>Loading leeks...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={styles.container}>
+        <h1>Leeks</h1>
+        <p style={{ color: theme.colors.accent.error }}>Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div style={styles.container}>
@@ -136,22 +153,22 @@ function Leeks() {
             >
               <td style={styles.td}>
                 <img
-                  src={getImage(leek.image)}
+                  src={getImage(leek.imageName)}
                   alt={leek.name}
                   style={styles.leekImage}
                 />
               </td>
               <td style={styles.td}>{leek.name}</td>
-              <td style={styles.td}>{leek.level}</td>
+              <td style={styles.td}>{leek.build.level}</td>
               <td style={styles.td}>
                 <img
                   src={getImage('leekwars/image/talent')}
                   alt="Talent"
                   style={styles.talentIcon}
                 />
-                {Number.prototype.toLocaleString.call(leek.talent)}
+                {Number.prototype.toLocaleString.call(leek.elo)}
               </td>
-              <td style={styles.td}>{leek.ai}</td>
+              <td style={styles.td}>{leek.aiFilePath}</td>
             </tr>
           ))}
         </tbody>

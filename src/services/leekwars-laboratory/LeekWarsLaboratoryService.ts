@@ -1,7 +1,9 @@
 import {
   ICheckServerStatusParams,
   IServerStatusResponse,
+  IGetLeeksParams,
 } from './LeekWarsLaboratoryService.types';
+import { IGetLeeksRequest } from './requests/GetLeeksRequest.types';
 
 class LeekWarsLaboratoryService {
   /**
@@ -35,6 +37,26 @@ class LeekWarsLaboratoryService {
         error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
+  }
+
+  /**
+   * Get all leeks from the server
+   */
+  async getLeeks({ port }: IGetLeeksParams): Promise<IGetLeeksRequest> {
+    const response = await fetch(`http://localhost:${port}/api/get-leeks`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch leeks: ${response.statusText}`);
+    }
+
+    const data: IGetLeeksRequest = await response.json();
+    return data;
   }
 }
 
