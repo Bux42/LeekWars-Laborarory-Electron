@@ -38,3 +38,18 @@ const UserProfile: React.FC = () => {
   return <div style={styles.container}>User Profile Content</div>;
 };
 ```
+
+React components should also have a types file if they have props. Here is an example of a types file for the UserProfile component:
+
+```typescript
+export interface IUserProfileProps {
+  userId: string;
+}
+```
+
+This types file should be named UserProfile.types.ts and imported in the UserProfile.tsx file like this:
+
+```typescript
+import React from 'react';
+import { IUserProfileProps } from './UserProfile.types';
+```
