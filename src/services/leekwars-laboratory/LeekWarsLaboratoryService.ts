@@ -18,6 +18,10 @@ class LeekWarsLaboratoryService {
       const response = await fetch(`http://localhost:${port}`, {
         signal: controller.signal,
         method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
       });
 
       clearTimeout(timeoutId);
