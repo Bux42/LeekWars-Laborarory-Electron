@@ -10,6 +10,7 @@ function LeftPanel() {
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/pools', label: 'Pools' },
+    { path: '/leeks', label: 'Leeks' },
   ];
 
   const getNavLinkStyle = (path: string) => ({
@@ -27,8 +28,16 @@ function LeftPanel() {
         {navItems.map((item) => (
           <div
             key={item.path}
+            role="button"
+            tabIndex={0}
             style={getNavLinkStyle(item.path)}
             onClick={() => navigate(item.path)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                navigate(item.path);
+              }
+            }}
             onMouseEnter={(e) => {
               if (location.pathname !== item.path) {
                 e.currentTarget.style.backgroundColor =
