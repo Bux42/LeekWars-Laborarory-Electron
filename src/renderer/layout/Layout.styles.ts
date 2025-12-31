@@ -1,3 +1,5 @@
+import { theme } from '../theme';
+
 export interface ILayoutStyles {
   container: React.CSSProperties;
   mainContent: React.CSSProperties;
@@ -10,6 +12,8 @@ export const layoutStyles: ILayoutStyles = {
     height: '100vh',
     width: '100vw',
     overflow: 'hidden',
+    backgroundColor: theme.colors.background.primary,
+    fontFamily: theme.fonts.primary,
   },
   mainContent: {
     display: 'flex',

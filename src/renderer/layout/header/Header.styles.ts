@@ -1,3 +1,5 @@
+import { theme } from '../../theme';
+
 export interface IHeaderStyles {
   container: React.CSSProperties;
 }
@@ -8,9 +10,9 @@ export const headerStyles: IHeaderStyles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '10px 20px',
-    backgroundColor: '#282c34',
-    color: '#fff',
+    backgroundColor: theme.colors.background.secondary,
+    color: theme.colors.text.primary,
     height: 60,
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    borderBottom: `1px solid ${theme.colors.border.primary}`,
   },
 };

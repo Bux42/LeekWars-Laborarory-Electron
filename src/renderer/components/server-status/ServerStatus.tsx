@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { serverStatusStyles as styles } from './ServerStatus.styles';
 import { useServerContext } from '../../../context/server/ServerContext';
+import Button from '../shared/button/Button';
+import Input from '../shared/input/Input';
+import { theme } from '../../theme';
 
 const STORAGE_KEY = 'leekwars-laboratory-port';
 
@@ -33,7 +36,9 @@ function ServerStatus() {
 
   const statusIndicatorStyle = {
     ...styles.statusIndicator,
-    backgroundColor: isServerRunning ? '#4caf50' : '#f44336',
+    backgroundColor: isServerRunning
+      ? theme.colors.accent.success
+      : theme.colors.accent.error,
   };
 
   return (
@@ -44,37 +49,31 @@ function ServerStatus() {
       </span>
       {isEditing ? (
         <>
-          <input
+          <Input
             type="number"
             value={portInput}
-            onChange={(e) => setPortInput(e.target.value)}
-            style={styles.input}
+            onChange={setPortInput}
             placeholder="Port"
           />
-          <button type="button" onClick={handleSavePort} style={styles.button}>
+          <Button onClick={handleSavePort} variant="primary">
             Save
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
             onClick={() => {
               setIsEditing(false);
               setPortInput(port.toString());
             }}
-            style={{ ...styles.button, backgroundColor: '#6c757d' }}
+            variant="secondary"
           >
             Cancel
-          </button>
+          </Button>
         </>
       ) : (
         <>
           <span style={styles.status}>Port: {port}</span>
-          <button
-            type="button"
-            onClick={() => setIsEditing(true)}
-            style={styles.button}
-          >
+          <Button onClick={() => setIsEditing(true)} variant="primary">
             Configure
-          </button>
+          </Button>
         </>
       )}
     </div>
