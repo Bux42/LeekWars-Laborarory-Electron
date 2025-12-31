@@ -1,11 +1,10 @@
 import { theme } from '../../theme';
 
-export interface ILeeksStyles {
+export interface ILeekCreationStyles {
   container: React.CSSProperties;
-  header: React.CSSProperties;
 }
 
-export const leeksStyles: ILeeksStyles = {
+export const leekCreationStyles: ILeekCreationStyles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -13,11 +12,5 @@ export const leeksStyles: ILeeksStyles = {
     height: '100%',
     padding: theme.spacing.lg,
     color: theme.colors.text.primary,
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: theme.spacing.md,
   },
 };
