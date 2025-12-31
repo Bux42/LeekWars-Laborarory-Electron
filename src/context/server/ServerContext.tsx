@@ -11,13 +11,30 @@ import {
 } from './ServerContext.types';
 import LeekWarsLaboratoryService from '../../services/leekwars-laboratory/LeekWarsLaboratoryService';
 
+const STORAGE_KEY = 'leekwars-laboratory-port';
+const DEFAULT_PORT = 8080;
+
+// Get initial port from localStorage or use default
+const getInitialPort = (): number => {
+  if (typeof window !== 'undefined') {
+    const savedPort = localStorage.getItem(STORAGE_KEY);
+    if (savedPort) {
+      const parsedPort = parseInt(savedPort, 10);
+      if (!Number.isNaN(parsedPort) && parsedPort > 0 && parsedPort <= 65535) {
+        return parsedPort;
+      }
+    }
+  }
+  return DEFAULT_PORT;
+};
+
 export const ServerContext = createContext<IServerContextValue | undefined>(
   undefined,
 );
 
 export function ServerProvider({ children }: IServerProviderProps) {
   const [isServerRunning, setIsServerRunning] = useState(false);
-  const [port, setPort] = useState(3000);
+  const [port, setPort] = useState(getInitialPort);
 
   const checkServerStatus = useCallback(async () => {
     const response = await LeekWarsLaboratoryService.checkServerStatus({

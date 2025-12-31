@@ -1,3 +1,1 @@
-export interface IServerStatusProps {
-  port?: number;
-}
+export interface IServerStatusProps {}
