@@ -1,23 +1,37 @@
 import {
   ICheckServerStatusParams,
   IServerStatusResponse,
-  IGetLeeksParams,
 } from './LeekWarsLaboratoryService.types';
 import { IGetLeeksRequest } from './requests/GetLeeksRequest.types';
 
 class LeekWarsLaboratoryService {
+  private port: number = 8080; // Default port
+
+  /**
+   * Set the port for the service
+   */
+  setPort(port: number): void {
+    this.port = port;
+  }
+
+  /**
+   * Get the current port
+   */
+  getPort(): number {
+    return this.port;
+  }
+
   /**
    * Check if the server is running on localhost at the specified port
    */
   async checkServerStatus({
-    port,
     timeout = 5000,
-  }: ICheckServerStatusParams): Promise<IServerStatusResponse> {
+  }: ICheckServerStatusParams = {}): Promise<IServerStatusResponse> {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-      const response = await fetch(`http://localhost:${port}`, {
+      const response = await fetch(`http://localhost:${this.port}`, {
         signal: controller.signal,
         method: 'GET',
         headers: {
@@ -42,14 +56,17 @@ class LeekWarsLaboratoryService {
   /**
    * Get all leeks from the server
    */
-  async getLeeks({ port }: IGetLeeksParams): Promise<IGetLeeksRequest> {
-    const response = await fetch(`http://localhost:${port}/api/get-leeks`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+  async getLeeks(): Promise<IGetLeeksRequest> {
+    const response = await fetch(
+      `http://localhost:${this.port}/api/get-leeks`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
       },
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch leeks: ${response.statusText}`);

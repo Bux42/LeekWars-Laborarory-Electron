@@ -21,7 +21,7 @@ function Leeks() {
       try {
         setLoading(true);
         setError(null);
-        const response = await service.getLeeks({ port });
+        const response = await service.getLeeks();
         setLeeks(response.leeks);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch leeks');

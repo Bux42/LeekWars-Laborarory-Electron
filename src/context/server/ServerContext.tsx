@@ -34,14 +34,23 @@ export const ServerContext = createContext<IServerContextValue | undefined>(
 
 export function ServerProvider({ children }: IServerProviderProps) {
   const [isServerRunning, setIsServerRunning] = useState(false);
-  const [port, setPort] = useState(getInitialPort);
+  const [port, setPortState] = useState(getInitialPort);
+
+  // Update service port when port changes
+  const setPort = useCallback((newPort: number) => {
+    setPortState(newPort);
+    LeekWarsLaboratoryService.setPort(newPort);
+  }, []);
+
+  // Initialize service with the port
+  useState(() => {
+    LeekWarsLaboratoryService.setPort(port);
+  });
 
   const checkServerStatus = useCallback(async () => {
-    const response = await LeekWarsLaboratoryService.checkServerStatus({
-      port,
-    });
+    const response = await LeekWarsLaboratoryService.checkServerStatus();
     setIsServerRunning(response.isRunning);
-  }, [port]);
+  }, []);
 
   const value: IServerContextValue = useMemo(
     () => ({
