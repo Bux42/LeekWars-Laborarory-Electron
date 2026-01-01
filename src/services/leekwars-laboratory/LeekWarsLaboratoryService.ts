@@ -16,6 +16,10 @@ import {
   IAddPool1v1Request,
   IAddPool1v1Response,
 } from './requests/AddPool1v1Request.types';
+import {
+  IUpdatePool1v1Request,
+  IUpdatePool1v1Response,
+} from './requests/UpdatePool1v1Request.types';
 
 class LeekWarsLaboratoryService {
   private port: number = 8080; // Default port
@@ -203,6 +207,32 @@ class LeekWarsLaboratoryService {
     }
 
     const data: IAddPool1v1Response = await response.json();
+    return data;
+  }
+
+  /**
+   * Update a 1v1 pool
+   */
+  async updatePool1v1(
+    params: IUpdatePool1v1Request,
+  ): Promise<IUpdatePool1v1Response> {
+    const response = await fetch(
+      `http://localhost:${this.port}/api/pool1v1/update`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(params.pool),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to update 1v1 pool: ${response.statusText}`);
+    }
+
+    const data: IUpdatePool1v1Response = await response.json();
     return data;
   }
 }

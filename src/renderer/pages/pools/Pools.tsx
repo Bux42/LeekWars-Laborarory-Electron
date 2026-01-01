@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { poolsStyles as styles } from './Pools.styles';
 import { useServerContext } from '../../../context/server/ServerContext';
 import { IPoolOneVersusOneResponse } from '../../../services/leekwars-laboratory/pools/PoolOneVersusOne.types';
+import { ILeek } from '../../../services/leekwars-laboratory/leek/Leek.types';
 import Pool1v1Card from '../../components/pool1v1-card/Pool1v1Card';
 import Button from '../../components/shared/button/Button';
 
 function Pools() {
   const { service } = useServerContext();
   const [pools1v1, setPools1v1] = useState<IPoolOneVersusOneResponse[]>([]);
+  const [allLeeks, setAllLeeks] = useState<ILeek[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,8 +17,12 @@ function Pools() {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await service.getPool1v1List();
-      setPools1v1(response.pools);
+      const [poolsResponse, leeksResponse] = await Promise.all([
+        service.getPool1v1List(),
+        service.getLeeks(),
+      ]);
+      setPools1v1(poolsResponse.pools);
+      setAllLeeks(leeksResponse.leeks);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch pools');
     } finally {
@@ -63,7 +69,14 @@ function Pools() {
         )}
         {!isLoading &&
           !error &&
-          pools1v1.map((pool) => <Pool1v1Card key={pool.id} pool={pool} />)}
+          pools1v1.map((pool) => (
+            <Pool1v1Card
+              key={pool.id}
+              pool={pool}
+              availableLeeks={allLeeks}
+              onPoolUpdate={fetchPools}
+            />
+          ))}
       </div>
     </div>
   );

@@ -9,8 +9,12 @@ export interface IPool1v1CardStyles {
   statusBadgeEnabled: React.CSSProperties;
   statusBadgeDisabled: React.CSSProperties;
   stats: React.CSSProperties;
+  leeksSection: React.CSSProperties;
+  leeksSectionTitle: React.CSSProperties;
   leeksGrid: React.CSSProperties;
+  leekCardWrapper: React.CSSProperties;
   leekCard: React.CSSProperties;
+  removeButton: React.CSSProperties;
   leekAvatar: React.CSSProperties;
   leekName: React.CSSProperties;
   leekElo: React.CSSProperties;
@@ -62,10 +66,23 @@ export const pool1v1CardStyles: IPool1v1CardStyles = {
     color: theme.colors.text.secondary,
     fontFamily: theme.fonts.primary,
   },
+  leeksSection: {
+    marginTop: theme.spacing.md,
+  },
+  leeksSectionTitle: {
+    fontSize: '14px',
+    fontWeight: 600,
+    color: theme.colors.text.primary,
+    fontFamily: theme.fonts.primary,
+    marginBottom: theme.spacing.sm,
+  },
   leeksGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
     gap: theme.spacing.md,
+  },
+  leekCardWrapper: {
+    position: 'relative',
   },
   leekCard: {
     backgroundColor: theme.colors.background.elevated,
@@ -78,6 +95,25 @@ export const pool1v1CardStyles: IPool1v1CardStyles = {
     border: `1px solid ${theme.colors.border.primary}`,
     transition: 'transform 0.2s ease, border-color 0.2s ease',
     cursor: 'pointer',
+  },
+  removeButton: {
+    position: 'absolute',
+    top: '-8px',
+    right: '-8px',
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    backgroundColor: theme.colors.accent.error,
+    border: `2px solid ${theme.colors.background.secondary}`,
+    color: theme.colors.text.primary,
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    lineHeight: 1,
+    transition: 'transform 0.2s ease',
   },
   leekAvatar: {
     width: 80,
