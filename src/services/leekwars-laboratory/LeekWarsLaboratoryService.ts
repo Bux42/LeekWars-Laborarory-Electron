@@ -11,6 +11,7 @@ import {
   IAddLeekRequest,
   IAddLeekResponse,
 } from './requests/AddLeekRequest.types';
+import { IGetPool1v1ListResponse } from './requests/GetPool1v1ListRequest.types';
 
 class LeekWarsLaboratoryService {
   private port: number = 8080; // Default port
@@ -151,6 +152,29 @@ class LeekWarsLaboratoryService {
     }
 
     const data: IAddLeekResponse = await response.json();
+    return data;
+  }
+
+  /**
+   * Get all 1v1 pools from the server
+   */
+  async getPool1v1List(): Promise<IGetPool1v1ListResponse> {
+    const response = await fetch(
+      `http://localhost:${this.port}/api/pool1v1/list`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch 1v1 pools: ${response.statusText}`);
+    }
+
+    const data: IGetPool1v1ListResponse = await response.json();
     return data;
   }
 }
