@@ -36,6 +36,10 @@ function LeekCreation() {
       const json = JSON.parse(text) as IEntityBuild;
       setEntityBuild(json);
       setError(null);
+
+      // Set leek name from file name (without extension)
+      const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
+      setLeekName(fileNameWithoutExtension);
     } catch {
       setError('Failed to parse JSON file');
       setEntityBuild(null);
