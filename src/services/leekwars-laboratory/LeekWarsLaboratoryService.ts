@@ -7,6 +7,10 @@ import {
   IFileListRequest,
   IFileListResponse,
 } from './requests/FileListRequest.types';
+import {
+  IAddLeekRequest,
+  IAddLeekResponse,
+} from './requests/AddLeekRequest.types';
 
 class LeekWarsLaboratoryService {
   private port: number = 8080; // Default port
@@ -126,6 +130,27 @@ class LeekWarsLaboratoryService {
     }
 
     const data: IFileListResponse = await response.json();
+    return data;
+  }
+
+  /**
+   * Add a new leek
+   */
+  async addLeek(params: IAddLeekRequest): Promise<IAddLeekResponse> {
+    const response = await fetch(`http://localhost:${this.port}/api/add-leek`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(params.leek),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to add leek: ${response.statusText}`);
+    }
+
+    const data: IAddLeekResponse = await response.json();
     return data;
   }
 }

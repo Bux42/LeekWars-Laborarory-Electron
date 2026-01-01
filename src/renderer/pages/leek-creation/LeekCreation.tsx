@@ -4,10 +4,14 @@ import { IEntityBuild } from '../../../services/leekwars-laboratory/builds/Entit
 import EntityBuild from '../../components/entity-build/EntityBuild';
 import LeekAvatarPicker from '../../components/leek-avatar-picker/LeekAvatarPicker';
 import Input from '../../components/shared/input/Input';
+import Button from '../../components/shared/button/Button';
 import FileBrowser from '../../components/file-browser/FileBrowser';
 import { IFileListItem } from '../../../services/leekwars-laboratory/requests/FileListRequest.types';
+import { ILeek } from '../../../services/leekwars-laboratory/leek/Leek.types';
+import { useServerContext } from '../../../context/server/ServerContext';
 
 function LeekCreation() {
+  const { service } = useServerContext();
   const [entityBuild, setEntityBuild] = useState<IEntityBuild | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedAvatar, setSelectedAvatar] =
@@ -16,6 +20,8 @@ function LeekCreation() {
   const [selectedAiFile, setSelectedAiFile] = useState<IFileListItem | null>(
     null,
   );
+  const [creating, setCreating] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleFileImport = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -31,6 +37,41 @@ function LeekCreation() {
     } catch {
       setError('Failed to parse JSON file');
       setEntityBuild(null);
+    }
+  };
+
+  const handleCreate = async () => {
+    if (!entityBuild || !leekName || !selectedAiFile) {
+      setError('Please complete all steps before creating');
+      return;
+    }
+
+    try {
+      setCreating(true);
+      setError(null);
+      setSuccess(null);
+
+      const newLeek: ILeek = {
+        id: '',
+        name: leekName,
+        build: entityBuild,
+        elo: 1000,
+        aiFilePath: selectedAiFile.path,
+        imageName: selectedAvatar,
+      };
+
+      const response = await service.addLeek({ leek: newLeek });
+      setSuccess(`Leek "${response.leek.name}" created successfully!`);
+
+      // Reset form
+      setEntityBuild(null);
+      setLeekName('');
+      setSelectedAvatar('leek1_front_green');
+      setSelectedAiFile(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create leek');
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -97,6 +138,19 @@ function LeekCreation() {
               <p style={{ marginTop: '8px', color: '#4ec9b0' }}>
                 Selected: {selectedAiFile.name}
               </p>
+            )}
+          </div>
+
+          <div style={styles.section}>
+            <Button
+              onClick={handleCreate}
+              variant="primary"
+              disabled={creating || !leekName || !selectedAiFile}
+            >
+              {creating ? 'Creating...' : 'Create Leek'}
+            </Button>
+            {success && (
+              <p style={{ marginTop: '8px', color: '#4ec9b0' }}>{success}</p>
             )}
           </div>
         </>
