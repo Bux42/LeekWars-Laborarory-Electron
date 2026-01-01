@@ -12,6 +12,10 @@ import {
   IAddLeekResponse,
 } from './requests/AddLeekRequest.types';
 import { IGetPool1v1ListResponse } from './requests/GetPool1v1ListRequest.types';
+import {
+  IAddPool1v1Request,
+  IAddPool1v1Response,
+} from './requests/AddPool1v1Request.types';
 
 class LeekWarsLaboratoryService {
   private port: number = 8080; // Default port
@@ -175,6 +179,30 @@ class LeekWarsLaboratoryService {
     }
 
     const data: IGetPool1v1ListResponse = await response.json();
+    return data;
+  }
+
+  /**
+   * Add a new 1v1 pool
+   */
+  async addPool1v1(params: IAddPool1v1Request): Promise<IAddPool1v1Response> {
+    const response = await fetch(
+      `http://localhost:${this.port}/api/pool1v1/add`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(params.pool),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to add 1v1 pool: ${response.statusText}`);
+    }
+
+    const data: IAddPool1v1Response = await response.json();
     return data;
   }
 }

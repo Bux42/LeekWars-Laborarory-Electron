@@ -3,6 +3,7 @@ import { theme } from '../../theme';
 export interface IPoolsStyles {
   container: React.CSSProperties;
   section: React.CSSProperties;
+  sectionHeader: React.CSSProperties;
   sectionTitle: React.CSSProperties;
   loadingText: React.CSSProperties;
   errorText: React.CSSProperties;
@@ -20,6 +21,12 @@ export const poolsStyles: IPoolsStyles = {
   },
   section: {
     marginBottom: theme.spacing.xl,
+  },
+  sectionHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: theme.spacing.md,
   },
   sectionTitle: {
     fontSize: '24px',

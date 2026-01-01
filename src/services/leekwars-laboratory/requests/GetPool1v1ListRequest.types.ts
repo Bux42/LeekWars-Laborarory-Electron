@@ -1,5 +1,5 @@
-import { IPoolOneVersusOne } from '../pools/PoolOneVersusOne.types';
+import { IPoolOneVersusOneResponse } from '../pools/PoolOneVersusOne.types';
 
 export interface IGetPool1v1ListResponse {
-  pools: IPoolOneVersusOne[];
+  pools: IPoolOneVersusOneResponse[];
 }

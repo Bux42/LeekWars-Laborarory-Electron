@@ -1,5 +1,5 @@
-import { IPoolOneVersusOne } from '../../../services/leekwars-laboratory/pools/PoolOneVersusOne.types';
+import { IPoolOneVersusOneResponse } from '../../../services/leekwars-laboratory/pools/PoolOneVersusOne.types';
 
 export interface IPool1v1CardProps {
-  pool: IPoolOneVersusOne;
+  pool: IPoolOneVersusOneResponse;
 }
