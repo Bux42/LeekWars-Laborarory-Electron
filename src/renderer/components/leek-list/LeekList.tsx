@@ -104,7 +104,7 @@ function LeekList({ leeks }: ILeekListProps) {
           >
             <td style={styles.td}>
               <img
-                src={getImage(leek.imageName)}
+                src={getImage(`leekwars/image/leek/${leek.imageName}`)}
                 alt={leek.name}
                 style={styles.leekImage}
               />
