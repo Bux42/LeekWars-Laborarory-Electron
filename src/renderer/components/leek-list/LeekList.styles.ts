@@ -11,6 +11,7 @@ export interface ILeekListStyles {
   leekImage: React.CSSProperties;
   talentIcon: React.CSSProperties;
   sortIndicator: React.CSSProperties;
+  actionsCell: React.CSSProperties;
 }
 
 export const leekListStyles: ILeekListStyles = {
@@ -63,5 +64,11 @@ export const leekListStyles: ILeekListStyles = {
   sortIndicator: {
     marginLeft: theme.spacing.xs,
     fontSize: 12,
+  },
+  actionsCell: {
+    padding: theme.spacing.md,
+    color: theme.colors.text.primary,
+    width: '60px',
+    textAlign: 'center',
   },
 };

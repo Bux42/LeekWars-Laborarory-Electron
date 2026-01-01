@@ -4,10 +4,48 @@ import { ILeekListProps, SortField, SortDirection } from './LeekList.types';
 import { ILeek } from '../../../services/leekwars-laboratory/leek/Leek.types';
 import { theme } from '../../theme';
 import { getImage } from '../../utils/ImageLoader';
+import Dropdown from '../shared/dropdown/Dropdown';
+import { IDropdownItem } from '../shared/dropdown/Dropdown.types';
 
 function LeekList({ leeks }: ILeekListProps) {
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleEdit = (leek: ILeek) => {
+    // TODO: Implement edit functionality
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleDuplicate = (leek: ILeek) => {
+    // TODO: Implement duplicate functionality
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleDelete = (leek: ILeek) => {
+    // TODO: Implement delete functionality
+  };
+
+  const toggleDropdown = (leekId: string) => {
+    setOpenDropdown(openDropdown === leekId ? null : leekId);
+  };
+
+  const getDropdownItems = (leek: ILeek): IDropdownItem[] => [
+    {
+      label: 'Edit',
+      onClick: () => handleEdit(leek),
+    },
+    {
+      label: 'Duplicate',
+      onClick: () => handleDuplicate(leek),
+    },
+    {
+      label: 'Delete',
+      onClick: () => handleDelete(leek),
+      variant: 'danger',
+    },
+  ];
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -86,6 +124,7 @@ function LeekList({ leeks }: ILeekListProps) {
             AI
             <span style={styles.sortIndicator}>{getSortIndicator('ai')}</span>
           </th>
+          <th style={styles.th}>Actions</th>
         </tr>
       </thead>
       <tbody style={styles.tbody}>
@@ -120,6 +159,13 @@ function LeekList({ leeks }: ILeekListProps) {
               {Number.prototype.toLocaleString.call(leek.elo)}
             </td>
             <td style={styles.td}>{leek.aiFilePath}</td>
+            <td style={styles.actionsCell}>
+              <Dropdown
+                items={getDropdownItems(leek)}
+                isOpen={openDropdown === leek.id}
+                onToggle={() => toggleDropdown(leek.id)}
+              />
+            </td>
           </tr>
         ))}
       </tbody>
