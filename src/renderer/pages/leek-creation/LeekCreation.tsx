@@ -4,6 +4,8 @@ import { IEntityBuild } from '../../../services/leekwars-laboratory/builds/Entit
 import EntityBuild from '../../components/entity-build/EntityBuild';
 import LeekAvatarPicker from '../../components/leek-avatar-picker/LeekAvatarPicker';
 import Input from '../../components/shared/input/Input';
+import FileBrowser from '../../components/file-browser/FileBrowser';
+import { IFileListItem } from '../../../services/leekwars-laboratory/requests/FileListRequest.types';
 
 function LeekCreation() {
   const [entityBuild, setEntityBuild] = useState<IEntityBuild | null>(null);
@@ -11,6 +13,9 @@ function LeekCreation() {
   const [selectedAvatar, setSelectedAvatar] =
     useState<string>('leek1_front_green');
   const [leekName, setLeekName] = useState<string>('');
+  const [selectedAiFile, setSelectedAiFile] = useState<IFileListItem | null>(
+    null,
+  );
 
   const handleFileImport = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -76,6 +81,19 @@ function LeekCreation() {
                 />
               </div>
             </div>
+          </div>
+
+          <div style={styles.section}>
+            <h2>Step 3: Select AI File</h2>
+            <FileBrowser
+              onFileSelect={setSelectedAiFile}
+              selectedFile={selectedAiFile}
+            />
+            {selectedAiFile && (
+              <p style={{ marginTop: '8px', color: '#4ec9b0' }}>
+                Selected: {selectedAiFile.name}
+              </p>
+            )}
           </div>
 
           <div style={styles.section}>

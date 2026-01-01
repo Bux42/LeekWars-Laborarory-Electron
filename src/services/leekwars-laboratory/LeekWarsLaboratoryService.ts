@@ -3,6 +3,10 @@ import {
   IServerStatusResponse,
 } from './LeekWarsLaboratoryService.types';
 import { IGetLeeksRequest } from './requests/GetLeeksRequest.types';
+import {
+  IFileListRequest,
+  IFileListResponse,
+} from './requests/FileListRequest.types';
 
 class LeekWarsLaboratoryService {
   private port: number = 8080; // Default port
@@ -73,6 +77,32 @@ class LeekWarsLaboratoryService {
     }
 
     const data: IGetLeeksRequest = await response.json();
+    return data;
+  }
+
+  /**
+   * Get list of files in a directory
+   */
+  async getFileList(params: IFileListRequest = {}): Promise<IFileListResponse> {
+    const { directory_path = '.' } = params;
+
+    const response = await fetch(
+      `http://localhost:${this.port}/api/file/list`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ directory_path }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch file list: ${response.statusText}`);
+    }
+
+    const data: IFileListResponse = await response.json();
     return data;
   }
 }
