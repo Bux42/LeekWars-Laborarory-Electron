@@ -105,6 +105,29 @@ class LeekWarsLaboratoryService {
     const data: IFileListResponse = await response.json();
     return data;
   }
+
+  /**
+   * Reset file directory to root
+   */
+  async resetFileDirectory(): Promise<IFileListResponse> {
+    const response = await fetch(
+      `http://localhost:${this.port}/api/file/reset`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to reset file directory: ${response.statusText}`);
+    }
+
+    const data: IFileListResponse = await response.json();
+    return data;
+  }
 }
 
 export default new LeekWarsLaboratoryService();

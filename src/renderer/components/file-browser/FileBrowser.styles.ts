@@ -2,6 +2,8 @@ import { theme } from '../../theme';
 
 export interface IFileBrowserStyles {
   container: React.CSSProperties;
+  header: React.CSSProperties;
+  homeButton: React.CSSProperties;
   loading: React.CSSProperties;
   error: React.CSSProperties;
   fileList: React.CSSProperties;
@@ -20,6 +22,26 @@ export const fileBrowserStyles: IFileBrowserStyles = {
     backgroundColor: theme.colors.background.secondary,
     borderRadius: theme.borderRadius.md,
     minHeight: '300px',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingBottom: theme.spacing.sm,
+    borderBottom: `1px solid ${theme.colors.border.primary}`,
+  },
+  homeButton: {
+    padding: theme.spacing.sm,
+    backgroundColor: theme.colors.background.tertiary,
+    border: `1px solid ${theme.colors.border.primary}`,
+    borderRadius: theme.borderRadius.sm,
+    color: theme.colors.text.primary,
+    cursor: 'pointer',
+    fontSize: '1.2rem',
+    transition: 'all 0.2s',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   loading: {
     color: theme.colors.text.secondary,

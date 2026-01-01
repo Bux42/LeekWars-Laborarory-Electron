@@ -3,6 +3,7 @@ import { fileBrowserStyles as styles } from './FileBrowser.styles';
 import { IFileBrowserProps } from './FileBrowser.types';
 import { IFileListItem } from '../../../services/leekwars-laboratory/requests/FileListRequest.types';
 import { useServerContext } from '../../../context/server/ServerContext';
+import { theme } from '../../theme';
 
 function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
   const { service } = useServerContext();
@@ -37,6 +38,21 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
     // TODO: Add directory navigation later
   };
 
+  const handleHomeClick = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await service.resetFileDirectory();
+      setFiles(response.files);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Failed to reset directory',
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div style={styles.container}>
@@ -55,6 +71,23 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
 
   return (
     <div style={styles.container}>
+      <div style={styles.header}>
+        <h3>File Browser</h3>
+        <button
+          type="button"
+          style={styles.homeButton}
+          onClick={handleHomeClick}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#4e4e4e';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = theme.colors.border.primary;
+          }}
+          aria-label="Go to home directory"
+        >
+          🏠
+        </button>
+      </div>
       <div style={styles.fileList}>
         {files.map((file) => {
           const isSelected = selectedFile?.path === file.path;
