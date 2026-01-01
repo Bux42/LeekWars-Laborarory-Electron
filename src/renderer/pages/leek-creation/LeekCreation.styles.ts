@@ -6,6 +6,8 @@ export interface ILeekCreationStyles {
   fileInput: React.CSSProperties;
   error: React.CSSProperties;
   buildInfo: React.CSSProperties;
+  avatarNameRow: React.CSSProperties;
+  nameInputContainer: React.CSSProperties;
 }
 
 export const leekCreationStyles: ILeekCreationStyles = {
@@ -42,5 +44,14 @@ export const leekCreationStyles: ILeekCreationStyles = {
     backgroundColor: theme.colors.background.tertiary,
     borderRadius: theme.borderRadius.sm,
     color: theme.colors.accent.success,
+  },
+  avatarNameRow: {
+    display: 'flex',
+    gap: theme.spacing.md,
+    alignItems: 'flex-start',
+    padding: theme.spacing.sm,
+  },
+  nameInputContainer: {
+    flex: 1,
   },
 };

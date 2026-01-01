@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { leekCreationStyles as styles } from './LeekCreation.styles';
 import { IEntityBuild } from '../../../services/leekwars-laboratory/builds/EntityBuild.types';
 import EntityBuild from '../../components/entity-build/EntityBuild';
+import LeekAvatarPicker from '../../components/leek-avatar-picker/LeekAvatarPicker';
+import Input from '../../components/shared/input/Input';
 
 function LeekCreation() {
   const [entityBuild, setEntityBuild] = useState<IEntityBuild | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [selectedAvatar, setSelectedAvatar] =
+    useState<string>('leek1_front_green');
+  const [leekName, setLeekName] = useState<string>('');
 
   const handleFileImport = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -53,10 +58,31 @@ function LeekCreation() {
       </div>
 
       {entityBuild && (
-        <div style={styles.section}>
-          <h2>Build Preview</h2>
-          <EntityBuild entityBuild={entityBuild} />
-        </div>
+        <>
+          <div style={styles.section}>
+            <h2>Step 2: Choose Avatar and Name</h2>
+            <div style={styles.avatarNameRow}>
+              <LeekAvatarPicker
+                level={entityBuild.level}
+                selectedAvatar={selectedAvatar}
+                onChange={setSelectedAvatar}
+              />
+              <div style={styles.nameInputContainer}>
+                <Input
+                  type="text"
+                  placeholder="Enter leek name"
+                  value={leekName}
+                  onChange={setLeekName}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div style={styles.section}>
+            <h2>Build Preview</h2>
+            <EntityBuild entityBuild={entityBuild} />
+          </div>
+        </>
       )}
     </div>
   );
