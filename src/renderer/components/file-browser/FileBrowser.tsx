@@ -10,7 +10,7 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
   const [files, setFiles] = useState<IFileListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentPath] = useState<string>('.');
+  const [currentPath, setCurrentPath] = useState<string>('.');
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -32,10 +32,11 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
   }, [currentPath, service]);
 
   const handleFileClick = (file: IFileListItem) => {
-    if (!file.directory) {
+    if (file.directory) {
+      setCurrentPath(file.path);
+    } else {
       onFileSelect(file);
     }
-    // TODO: Add directory navigation later
   };
 
   const handleHomeClick = async () => {
@@ -43,10 +44,29 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
       setLoading(true);
       setError(null);
       const response = await service.resetFileDirectory();
+      setCurrentPath('.');
       setFiles(response.files);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Failed to reset directory',
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpClick = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await service.getFileList({
+        directory_path: '..',
+      });
+      setFiles(response.files);
+      setCurrentPath('..');
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Failed to go up directory',
       );
     } finally {
       setLoading(false);
@@ -73,20 +93,36 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
     <div style={styles.container}>
       <div style={styles.header}>
         <h3>File Browser</h3>
-        <button
-          type="button"
-          style={styles.homeButton}
-          onClick={handleHomeClick}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = '#4e4e4e';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = theme.colors.border.primary;
-          }}
-          aria-label="Go to home directory"
-        >
-          🏠
-        </button>
+        <div style={styles.headerButtons}>
+          <button
+            type="button"
+            style={styles.backButton}
+            onClick={handleUpClick}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#4e4e4e';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = theme.colors.border.primary;
+            }}
+            aria-label="Go up one directory"
+          >
+            ⬆️
+          </button>
+          <button
+            type="button"
+            style={styles.homeButton}
+            onClick={handleHomeClick}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#4e4e4e';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = theme.colors.border.primary;
+            }}
+            aria-label="Go to home directory"
+          >
+            🏠
+          </button>
+        </div>
       </div>
       <div style={styles.fileList}>
         {files.map((file) => {

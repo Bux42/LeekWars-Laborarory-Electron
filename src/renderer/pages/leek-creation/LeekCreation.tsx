@@ -65,6 +65,10 @@ function LeekCreation() {
       {entityBuild && (
         <>
           <div style={styles.section}>
+            <h2>Build Preview</h2>
+            <EntityBuild entityBuild={entityBuild} />
+          </div>
+          <div style={styles.section}>
             <h2>Step 2: Choose Avatar and Name</h2>
             <div style={styles.avatarNameRow}>
               <LeekAvatarPicker
@@ -94,11 +98,6 @@ function LeekCreation() {
                 Selected: {selectedAiFile.name}
               </p>
             )}
-          </div>
-
-          <div style={styles.section}>
-            <h2>Build Preview</h2>
-            <EntityBuild entityBuild={entityBuild} />
           </div>
         </>
       )}
