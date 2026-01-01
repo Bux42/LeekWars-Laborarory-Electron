@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { leekCreationStyles as styles } from './LeekCreation.styles';
 import { IEntityBuild } from '../../../services/leekwars-laboratory/builds/EntityBuild.types';
 import EntityBuild from '../../components/entity-build/EntityBuild';
@@ -11,6 +12,7 @@ import { ILeek } from '../../../services/leekwars-laboratory/leek/Leek.types';
 import { useServerContext } from '../../../context/server/ServerContext';
 
 function LeekCreation() {
+  const navigate = useNavigate();
   const { service } = useServerContext();
   const [entityBuild, setEntityBuild] = useState<IEntityBuild | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -63,11 +65,10 @@ function LeekCreation() {
       const response = await service.addLeek({ leek: newLeek });
       setSuccess(`Leek "${response.leek.name}" created successfully!`);
 
-      // Reset form
-      setEntityBuild(null);
-      setLeekName('');
-      setSelectedAvatar('leek1_front_green');
-      setSelectedAiFile(null);
+      // Redirect to leeks page after a short delay
+      setTimeout(() => {
+        navigate('/leeks');
+      }, 500);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create leek');
     } finally {
