@@ -126,7 +126,7 @@ function Pool1v1Card({
           </span>
         </div>
         <div style={styles.stats}>
-          Total Fights:{' '}
+          Total Executed Fights:{' '}
           {Number.prototype.toLocaleString.call(pool.total_executed_fights)}{' '}
           {' / '} {Number.prototype.toLocaleString.call(totalFights)}
         </div>
