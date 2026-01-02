@@ -7,6 +7,8 @@ import { useServerContext } from '../../../context/server/ServerContext';
 import LeekPicker from '../leek-picker/LeekPicker';
 import Toggle from '../shared/toggle/Toggle';
 import Input from '../shared/input/Input';
+import HoverTooltip from '../shared/hover-tooltip/HoverTooltip';
+import LeekDetail from '../leek-detail/LeekDetail';
 
 function Pool1v1Card({
   pool,
@@ -177,23 +179,25 @@ function Pool1v1Card({
               >
                 ×
               </button>
-              <div style={styles.leekCard}>
-                <img
-                  src={getImage(`leekwars/image/leek/${leek.imageName}`)}
-                  alt={leek.name}
-                  style={styles.leekAvatar}
-                />
-                <div style={styles.leekName}>{leek.name}</div>
-                <div style={styles.leekEloContainer}>
+              <HoverTooltip tooltip={<LeekDetail leek={leek} />}>
+                <div style={styles.leekCard}>
                   <img
-                    height={20}
-                    width={20}
-                    src={getImage(`leekwars/image/talent`)}
-                    alt={`ELO: ${leek.elo}`}
-                  />{' '}
-                  <div style={styles.leekEloText}>{leek.elo}</div>
+                    src={getImage(`leekwars/image/leek/${leek.imageName}`)}
+                    alt={leek.name}
+                    style={styles.leekAvatar}
+                  />
+                  <div style={styles.leekName}>{leek.name}</div>
+                  <div style={styles.leekEloContainer}>
+                    <img
+                      height={20}
+                      width={20}
+                      src={getImage(`leekwars/image/talent`)}
+                      alt={`ELO: ${leek.elo}`}
+                    />{' '}
+                    <div style={styles.leekEloText}>{leek.elo}</div>
+                  </div>
                 </div>
-              </div>
+              </HoverTooltip>
             </div>
           ))}
           <div

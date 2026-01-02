@@ -6,6 +6,8 @@ import { theme } from '../../theme';
 import { getImage } from '../../utils/ImageLoader';
 import Dropdown from '../shared/dropdown/Dropdown';
 import { IDropdownItem } from '../shared/dropdown/Dropdown.types';
+import HoverTooltip from '../shared/hover-tooltip/HoverTooltip';
+import LeekDetail from '../leek-detail/LeekDetail';
 
 function LeekList({ leeks }: ILeekListProps) {
   const [sortField, setSortField] = useState<SortField>('name');
@@ -142,11 +144,13 @@ function LeekList({ leeks }: ILeekListProps) {
             }}
           >
             <td style={styles.td}>
-              <img
-                src={getImage(`leekwars/image/leek/${leek.imageName}`)}
-                alt={leek.name}
-                style={styles.leekImage}
-              />
+              <HoverTooltip tooltip={<LeekDetail leek={leek} />}>
+                <img
+                  src={getImage(`leekwars/image/leek/${leek.imageName}`)}
+                  alt={leek.name}
+                  style={styles.leekImage}
+                />
+              </HoverTooltip>
             </td>
             <td style={styles.td}>{leek.name}</td>
             <td style={styles.td}>{leek.build.level}</td>

@@ -2,32 +2,14 @@ import React from 'react';
 import { entityBuildStyles as styles } from './EntityBuild.styles';
 import { IEntityBuildProps } from './EntityBuild.types';
 import { getImage } from '../../utils/ImageLoader';
-import { getBaseStats } from '../../utils/LeekWars';
 import { WEAPONS_IDS_TO_NAMES } from '../../constants/leekwars/Weapons';
 import { CHIPS_IDS_TO_NAMES } from '../../constants/leekwars/Chips';
 import { COMPONENTS_IDS_TO_NAMES } from '../../constants/leekwars/Components';
+import { getTotalStats } from '../../utils/EntityBuildHelpers';
 
 function EntityBuild({ entityBuild }: IEntityBuildProps) {
-  const { level, investedStats, bonusStats } = entityBuild;
-
-  const baseStats = getBaseStats(level);
-
-  const totalStats = {
-    life: investedStats.life + bonusStats.life + baseStats.life,
-    strength: investedStats.strength + bonusStats.strength + baseStats.strength,
-    wisdom: investedStats.wisdom + bonusStats.wisdom + baseStats.wisdom,
-    agility: investedStats.agility + bonusStats.agility + baseStats.agility,
-    resistance:
-      investedStats.resistance + bonusStats.resistance + baseStats.resistance,
-    science: investedStats.science + bonusStats.science + baseStats.science,
-    magic: investedStats.magic + bonusStats.magic + baseStats.magic,
-    frequency:
-      investedStats.frequency + bonusStats.frequency + baseStats.frequency,
-    cores: investedStats.cores + bonusStats.cores + baseStats.cores,
-    ram: investedStats.ram + bonusStats.ram + baseStats.ram,
-    tp: investedStats.tp + bonusStats.tp + baseStats.tp,
-    mp: investedStats.mp + bonusStats.mp + baseStats.mp,
-  };
+  const { level } = entityBuild;
+  const totalStats = getTotalStats(entityBuild);
 
   const renderStat = (label: string, value: number, icon: string) => (
     <div style={styles.statRow}>
@@ -41,34 +23,46 @@ function EntityBuild({ entityBuild }: IEntityBuildProps) {
     </div>
   );
 
-  const renderStats = (title: string, stats: typeof investedStats) => (
+  const renderStats = (title: string) => (
     <div style={styles.section}>
       <h3 style={styles.sectionTitle}>{title}</h3>
       <div style={styles.statsGrid}>
-        {renderStat('Life', stats.life, 'leekwars/image/charac/life')}
+        {renderStat('Life', totalStats.life, 'leekwars/image/charac/life')}
         {renderStat(
           'Strength',
-          stats.strength,
+          totalStats.strength,
           'leekwars/image/charac/strength',
         )}
-        {renderStat('Wisdom', stats.wisdom, 'leekwars/image/charac/wisdom')}
-        {renderStat('Agility', stats.agility, 'leekwars/image/charac/agility')}
+        {renderStat(
+          'Wisdom',
+          totalStats.wisdom,
+          'leekwars/image/charac/wisdom',
+        )}
+        {renderStat(
+          'Agility',
+          totalStats.agility,
+          'leekwars/image/charac/agility',
+        )}
         {renderStat(
           'Resistance',
-          stats.resistance,
+          totalStats.resistance,
           'leekwars/image/charac/resistance',
         )}
-        {renderStat('Science', stats.science, 'leekwars/image/charac/science')}
-        {renderStat('Magic', stats.magic, 'leekwars/image/charac/magic')}
+        {renderStat(
+          'Science',
+          totalStats.science,
+          'leekwars/image/charac/science',
+        )}
+        {renderStat('Magic', totalStats.magic, 'leekwars/image/charac/magic')}
         {renderStat(
           'Frequency',
-          stats.frequency,
+          totalStats.frequency,
           'leekwars/image/charac/frequency',
         )}
-        {renderStat('Cores', stats.cores, 'leekwars/image/charac/cores')}
-        {renderStat('RAM', stats.ram, 'leekwars/image/charac/ram')}
-        {renderStat('TP', stats.tp, 'leekwars/image/charac/tp')}
-        {renderStat('MP', stats.mp, 'leekwars/image/charac/mp')}
+        {renderStat('Cores', totalStats.cores, 'leekwars/image/charac/cores')}
+        {renderStat('RAM', totalStats.ram, 'leekwars/image/charac/ram')}
+        {renderStat('TP', totalStats.tp, 'leekwars/image/charac/tp')}
+        {renderStat('MP', totalStats.mp, 'leekwars/image/charac/mp')}
       </div>
     </div>
   );
@@ -81,7 +75,7 @@ function EntityBuild({ entityBuild }: IEntityBuildProps) {
         </div>
       </div>
 
-      {renderStats('Stats', totalStats)}
+      {renderStats('Stats')}
 
       <div style={styles.itemsSection}>
         <h3 style={styles.sectionTitle}>Weapons</h3>
