@@ -3,8 +3,10 @@ import { ILeek } from '../leek/Leek.types';
 export interface IPoolOneVersusOneBase {
   name: string;
   id: string;
-  total_fights: number;
+  total_executed_fights: number;
   enabled: boolean;
+  fight_count_limit_enabled: boolean;
+  fight_count_limit: number;
 }
 
 export interface IPoolOneVersusOneRequest extends IPoolOneVersusOneBase {

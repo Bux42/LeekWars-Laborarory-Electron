@@ -21,8 +21,10 @@ function Pool1v1Card({
           id: pool.id,
           name: pool.name,
           enabled: pool.enabled,
-          total_fights: pool.total_fights,
+          total_executed_fights: pool.total_executed_fights,
           leek_ids: [...pool.leeks.map((l) => l.id), leekId],
+          fight_count_limit_enabled: pool.fight_count_limit_enabled,
+          fight_count_limit: pool.fight_count_limit,
         },
       });
       onPoolUpdate();
@@ -40,8 +42,10 @@ function Pool1v1Card({
           id: pool.id,
           name: pool.name,
           enabled: pool.enabled,
-          total_fights: pool.total_fights,
+          total_executed_fights: pool.total_executed_fights,
           leek_ids: pool.leeks.filter((l) => l.id !== leekId).map((l) => l.id),
+          fight_count_limit_enabled: pool.fight_count_limit_enabled,
+          fight_count_limit: pool.fight_count_limit,
         },
       });
       onPoolUpdate();
@@ -69,7 +73,7 @@ function Pool1v1Card({
         </div>
         <div style={styles.stats}>
           Total Fights:{' '}
-          {Number.prototype.toLocaleString.call(pool.total_fights)}
+          {Number.prototype.toLocaleString.call(pool.total_executed_fights)}
         </div>
       </div>
       <div style={styles.leeksSection}>
