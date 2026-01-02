@@ -20,6 +20,12 @@ import {
   IUpdatePool1v1Request,
   IUpdatePool1v1Response,
 } from './requests/UpdatePool1v1Request.types';
+import {
+  IDisableFightLimitRequest,
+  IDisableFightLimitResponse,
+  IEnableFightLimitRequest,
+  IEnableFightLimitResponse,
+} from './requests/FightLimitRequest.types';
 
 class LeekWarsLaboratoryService {
   private port: number = 8080; // Default port
@@ -233,6 +239,61 @@ class LeekWarsLaboratoryService {
     }
 
     const data: IUpdatePool1v1Response = await response.json();
+    return data;
+  }
+
+  /**
+   * Disable fight count limit for a 1v1 pool
+   */
+  async disableFightLimit(
+    params: IDisableFightLimitRequest,
+  ): Promise<IDisableFightLimitResponse> {
+    const response = await fetch(
+      `http://localhost:${this.port}/api/pool1v1/disable-fight-limit`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ pool_id: params.pool_id }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to disable fight limit: ${response.statusText}`);
+    }
+
+    const data: IDisableFightLimitResponse = await response.json();
+    return data;
+  }
+
+  /**
+   * Enable fight count limit for a 1v1 pool
+   */
+  async enableFightLimit(
+    params: IEnableFightLimitRequest,
+  ): Promise<IEnableFightLimitResponse> {
+    const response = await fetch(
+      `http://localhost:${this.port}/api/pool1v1/enable-fight-limit`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          pool_id: params.pool_id,
+          number: params.number,
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to enable fight limit: ${response.statusText}`);
+    }
+
+    const data: IEnableFightLimitResponse = await response.json();
     return data;
   }
 }
