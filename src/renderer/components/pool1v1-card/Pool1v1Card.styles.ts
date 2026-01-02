@@ -21,7 +21,8 @@ export interface IPool1v1CardStyles {
   removeButton: React.CSSProperties;
   leekAvatar: React.CSSProperties;
   leekName: React.CSSProperties;
-  leekElo: React.CSSProperties;
+  leekEloContainer: React.CSSProperties;
+  leekEloText: React.CSSProperties;
 }
 
 export const pool1v1CardStyles: IPool1v1CardStyles = {
@@ -151,9 +152,18 @@ export const pool1v1CardStyles: IPool1v1CardStyles = {
     textAlign: 'center',
     wordBreak: 'break-word',
   },
-  leekElo: {
+  leekEloContainer: {
     fontSize: '12px',
     color: theme.colors.text.secondary,
+    fontFamily: theme.fonts.primary,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+  },
+  leekEloText: {
+    fontSize: '14px',
+    fontWeight: 'bold',
+    color: theme.colors.text.primary,
     fontFamily: theme.fonts.primary,
   },
   totalFightsText: {

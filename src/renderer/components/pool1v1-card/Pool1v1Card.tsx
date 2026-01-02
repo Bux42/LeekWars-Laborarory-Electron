@@ -184,7 +184,15 @@ function Pool1v1Card({
                   style={styles.leekAvatar}
                 />
                 <div style={styles.leekName}>{leek.name}</div>
-                <div style={styles.leekElo}>ELO: {leek.elo}</div>
+                <div style={styles.leekEloContainer}>
+                  <img
+                    height={20}
+                    width={20}
+                    src={getImage(`leekwars/image/talent`)}
+                    alt={`ELO: ${leek.elo}`}
+                  />{' '}
+                  <div style={styles.leekEloText}>{leek.elo}</div>
+                </div>
               </div>
             </div>
           ))}
