@@ -106,7 +106,7 @@ function Pool1v1Card({
     }
   };
 
-  const totalScenarios = (pool.leeks.length * (pool.leeks.length - 1)) / 2;
+  const totalScenarios = pool.leeks.length * (pool.leeks.length - 1);
   const totalFights = totalScenarios * (parseInt(fightLimit, 10) || 0);
 
   return (
