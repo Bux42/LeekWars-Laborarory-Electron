@@ -106,6 +106,9 @@ function Pool1v1Card({
     }
   };
 
+  const totalScenarios = (pool.leeks.length * (pool.leeks.length - 1)) / 2;
+  const totalFights = totalScenarios * (parseInt(fightLimit, 10) || 0);
+
   return (
     <div style={styles.card}>
       <div style={styles.header}>
@@ -124,7 +127,8 @@ function Pool1v1Card({
         </div>
         <div style={styles.stats}>
           Total Fights:{' '}
-          {Number.prototype.toLocaleString.call(pool.total_executed_fights)}
+          {Number.prototype.toLocaleString.call(pool.total_executed_fights)}{' '}
+          {' / '} {Number.prototype.toLocaleString.call(totalFights)}
         </div>
       </div>
       <div style={styles.fightLimitSection}>
@@ -134,16 +138,22 @@ function Pool1v1Card({
           label="Enable Fight Limit"
         />
         {pool.fight_count_limit_enabled && (
-          <div style={styles.fightLimitRow}>
-            <span style={styles.fightLimitLabel}>Fight Limit:</span>
-            <div style={{ width: '100px' }}>
-              <Input
-                type="number"
-                value={fightLimit}
-                onChange={handleFightLimitChange}
-              />
+          <>
+            <div style={styles.fightLimitRow}>
+              <span style={styles.fightLimitLabel}>Fight Limit:</span>
+              <div style={{ width: '100px' }}>
+                <Input
+                  type="number"
+                  value={fightLimit}
+                  onChange={handleFightLimitChange}
+                />
+              </div>
             </div>
-          </div>
+            <div style={styles.totalFightsText}>
+              {totalScenarios} Scenarios × {fightLimit} Fights = {totalFights}{' '}
+              Total fights
+            </div>
+          </>
         )}
       </div>
       <div style={styles.leeksSection}>

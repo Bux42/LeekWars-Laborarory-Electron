@@ -12,6 +12,7 @@ export interface IPool1v1CardStyles {
   fightLimitSection: React.CSSProperties;
   fightLimitRow: React.CSSProperties;
   fightLimitLabel: React.CSSProperties;
+  totalFightsText: React.CSSProperties;
   leeksSection: React.CSSProperties;
   leeksSectionTitle: React.CSSProperties;
   leeksGrid: React.CSSProperties;
@@ -154,5 +155,12 @@ export const pool1v1CardStyles: IPool1v1CardStyles = {
     fontSize: '12px',
     color: theme.colors.text.secondary,
     fontFamily: theme.fonts.primary,
+  },
+  totalFightsText: {
+    fontSize: '13px',
+    color: theme.colors.text.secondary,
+    fontFamily: theme.fonts.primary,
+    marginTop: theme.spacing.sm,
+    fontStyle: 'italic',
   },
 };
