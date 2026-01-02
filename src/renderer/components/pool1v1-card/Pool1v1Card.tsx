@@ -165,22 +165,30 @@ function Pool1v1Card({
         <div style={styles.leeksGrid}>
           {pool.leeks.map((leek) => (
             <div key={leek.id} style={styles.leekCardWrapper}>
-              <button
-                type="button"
-                style={styles.removeButton}
-                onClick={() => handleRemoveLeek(leek.id)}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
-                aria-label={`Remove ${leek.name}`}
-              >
-                ×
-              </button>
               <HoverTooltip tooltip={<LeekDetail leek={leek} />}>
                 <div style={styles.leekCard}>
+                  <button
+                    type="button"
+                    style={styles.removeButton}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveLeek(leek.id);
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        theme.colors.accent.error;
+                      e.currentTarget.style.color = theme.colors.text.primary;
+                      e.currentTarget.style.opacity = '1';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                      e.currentTarget.style.color = theme.colors.text.secondary;
+                      e.currentTarget.style.opacity = '0.6';
+                    }}
+                    aria-label={`Remove ${leek.name}`}
+                  >
+                    ×
+                  </button>
                   <img
                     src={getImage(`leekwars/image/leek/${leek.imageName}`)}
                     alt={leek.name}
