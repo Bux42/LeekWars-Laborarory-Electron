@@ -45,6 +45,9 @@ function Pools() {
           name: poolName.trim(),
           leek_ids: [],
           enabled: false,
+          fight_count_limit_enabled: true,
+          fight_count_limit: 10,
+          total_executed_fights: 0,
         },
       });
       // Refresh the pools list
