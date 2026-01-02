@@ -1,7 +1,7 @@
 import { IPoolOneVersusOneResponse } from '../pools/PoolOneVersusOne.types';
 
 export interface IDisableFightLimitRequest {
-  pool_id: string;
+  id: string;
 }
 
 export interface IDisableFightLimitResponse {
@@ -9,8 +9,8 @@ export interface IDisableFightLimitResponse {
 }
 
 export interface IEnableFightLimitRequest {
-  pool_id: string;
-  number: number;
+  id: string;
+  limit: number;
 }
 
 export interface IEnableFightLimitResponse {

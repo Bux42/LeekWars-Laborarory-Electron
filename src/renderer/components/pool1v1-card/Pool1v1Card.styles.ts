@@ -9,6 +9,9 @@ export interface IPool1v1CardStyles {
   statusBadgeEnabled: React.CSSProperties;
   statusBadgeDisabled: React.CSSProperties;
   stats: React.CSSProperties;
+  fightLimitSection: React.CSSProperties;
+  fightLimitRow: React.CSSProperties;
+  fightLimitLabel: React.CSSProperties;
   leeksSection: React.CSSProperties;
   leeksSectionTitle: React.CSSProperties;
   leeksGrid: React.CSSProperties;
@@ -64,6 +67,24 @@ export const pool1v1CardStyles: IPool1v1CardStyles = {
   stats: {
     fontSize: '14px',
     color: theme.colors.text.secondary,
+    fontFamily: theme.fonts.primary,
+  },
+  fightLimitSection: {
+    marginTop: theme.spacing.md,
+    padding: theme.spacing.md,
+    backgroundColor: theme.colors.background.elevated,
+    borderRadius: theme.borderRadius.sm,
+    border: `1px solid ${theme.colors.border.primary}`,
+  },
+  fightLimitRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing.md,
+    marginTop: theme.spacing.sm,
+  },
+  fightLimitLabel: {
+    fontSize: '14px',
+    color: theme.colors.text.primary,
     fontFamily: theme.fonts.primary,
   },
   leeksSection: {

@@ -256,7 +256,7 @@ class LeekWarsLaboratoryService {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
-        body: JSON.stringify({ pool_id: params.pool_id }),
+        body: JSON.stringify({ id: params.id }),
       },
     );
 
@@ -283,8 +283,8 @@ class LeekWarsLaboratoryService {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          pool_id: params.pool_id,
-          number: params.number,
+          id: params.id,
+          limit: params.limit,
         }),
       },
     );

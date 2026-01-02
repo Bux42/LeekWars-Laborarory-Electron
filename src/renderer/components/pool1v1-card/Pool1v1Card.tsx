@@ -5,6 +5,8 @@ import { getImage } from '../../utils/ImageLoader';
 import { theme } from '../../theme';
 import { useServerContext } from '../../../context/server/ServerContext';
 import LeekPicker from '../leek-picker/LeekPicker';
+import Toggle from '../shared/toggle/Toggle';
+import Input from '../shared/input/Input';
 
 function Pool1v1Card({
   pool,
@@ -13,6 +15,9 @@ function Pool1v1Card({
 }: IPool1v1CardProps) {
   const { service } = useServerContext();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [fightLimit, setFightLimit] = useState(
+    pool.fight_count_limit.toString(),
+  );
 
   const handleAddLeek = async (leekId: string) => {
     try {
@@ -55,6 +60,52 @@ function Pool1v1Card({
     }
   };
 
+  const handleToggleFightLimit = async (enabled: boolean) => {
+    try {
+      if (enabled) {
+        const limit = parseInt(fightLimit, 10);
+        if (Number.isNaN(limit) || limit < 1) {
+          // eslint-disable-next-line no-alert
+          alert('Fight limit must be at least 1');
+          return;
+        }
+        await service.enableFightLimit({
+          id: pool.id,
+          limit,
+        });
+      } else {
+        await service.disableFightLimit({
+          id: pool.id,
+        });
+      }
+      onPoolUpdate();
+    } catch (err) {
+      // eslint-disable-next-line no-alert
+      alert(
+        err instanceof Error ? err.message : 'Failed to update fight limit',
+      );
+    }
+  };
+
+  const handleFightLimitChange = async (value: string) => {
+    setFightLimit(value);
+    const limit = parseInt(value, 10);
+    if (!Number.isNaN(limit) && limit >= 1) {
+      try {
+        await service.enableFightLimit({
+          id: pool.id,
+          limit,
+        });
+        onPoolUpdate();
+      } catch (err) {
+        // eslint-disable-next-line no-alert
+        alert(
+          err instanceof Error ? err.message : 'Failed to update fight limit',
+        );
+      }
+    }
+  };
+
   return (
     <div style={styles.card}>
       <div style={styles.header}>
@@ -75,6 +126,25 @@ function Pool1v1Card({
           Total Fights:{' '}
           {Number.prototype.toLocaleString.call(pool.total_executed_fights)}
         </div>
+      </div>
+      <div style={styles.fightLimitSection}>
+        <Toggle
+          checked={pool.fight_count_limit_enabled}
+          onChange={handleToggleFightLimit}
+          label="Enable Fight Limit"
+        />
+        {pool.fight_count_limit_enabled && (
+          <div style={styles.fightLimitRow}>
+            <span style={styles.fightLimitLabel}>Fight Limit:</span>
+            <div style={{ width: '100px' }}>
+              <Input
+                type="number"
+                value={fightLimit}
+                onChange={handleFightLimitChange}
+              />
+            </div>
+          </div>
+        )}
       </div>
       <div style={styles.leeksSection}>
         <div style={styles.leeksSectionTitle}>
