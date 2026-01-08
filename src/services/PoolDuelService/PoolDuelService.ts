@@ -4,6 +4,10 @@ import {
   IUpdatePoolDuelRequest,
   IUpdatePoolDuelResponse,
 } from './requests/UpdatePoolDuel.types';
+import {
+  IRemoveLeekFromPoolRequest,
+  IRemoveLeekFromPoolResponse,
+} from './requests/RemoveLeekFromPool.types';
 
 class PoolDuelService extends BaseService {
   /**
@@ -22,6 +26,18 @@ class PoolDuelService extends BaseService {
     return this.put<IUpdatePoolDuelResponse>(
       '/api/pools/duel/update',
       params.pool,
+    );
+  }
+
+  /**
+   * Remove a leek from a pool duel
+   */
+  public async removeLeekFromPool(
+    params: IRemoveLeekFromPoolRequest,
+  ): Promise<IRemoveLeekFromPoolResponse> {
+    return this.deleteWithBody<IRemoveLeekFromPoolResponse>(
+      '/api/pools/duel/remove-leek',
+      params,
     );
   }
 }

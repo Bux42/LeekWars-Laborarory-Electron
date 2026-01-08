@@ -4,6 +4,7 @@ import { useLeeks } from '../../../../hooks/leeks/useLeeks';
 import LeekList from '../../../components/leek-list/LeekList';
 import { ILeek } from '../../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { IDropdownItem } from '../../../components/shared/dropdown/Dropdown.types';
+import { useRemoveLeekFromPool } from '../../../../hooks/pools/useRemoveLeekFromPool';
 
 interface IPoolDuelCardProps {
   pool: IPoolDuel;
@@ -11,18 +12,33 @@ interface IPoolDuelCardProps {
 
 const PoolDuelCard: React.FC<IPoolDuelCardProps> = ({ pool }) => {
   const { data: allLeeks = [], isLoading, error } = useLeeks();
+  const removeLeekMutation = useRemoveLeekFromPool();
 
   const poolLeeks = useMemo(() => {
     return allLeeks.filter((leek) => pool.leekIds.includes(leek.id));
   }, [allLeeks, pool.leekIds]);
 
+  const handleRemoveLeek = async (leek: ILeek) => {
+    if (
+      window.confirm(
+        `Are you sure you want to remove leek "${leek.name}" from this pool?`,
+      )
+    ) {
+      try {
+        await removeLeekMutation.mutateAsync({
+          poolId: pool.id,
+          leekId: leek.id,
+        });
+      } catch (err) {
+        console.error('Failed to remove leek from pool:', err);
+      }
+    }
+  };
+
   const getDropdownItems = (leek: ILeek): IDropdownItem[] => [
     {
-      label: 'Delete',
-      onClick: () => {
-        console.log('Delete leek from pool:', leek.name);
-        // TODO: Implement logic to remove leek from pool
-      },
+      label: 'Remove from pool',
+      onClick: () => handleRemoveLeek(leek),
       variant: 'danger',
     },
   ];
