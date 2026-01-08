@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { leekListStyles as styles } from './LeekList.styles';
 import { ILeekListProps, SortField, SortDirection } from './LeekList.types';
-import { ILeek } from '../../../services/leekwars-laboratory/leek/Leek.types';
+import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { theme } from '../../theme';
 import { getImage } from '../../utils/ImageLoader';
 import Dropdown from '../shared/dropdown/Dropdown';

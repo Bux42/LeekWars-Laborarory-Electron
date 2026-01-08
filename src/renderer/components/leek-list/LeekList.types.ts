@@ -1,4 +1,4 @@
-import { ILeek } from '../../../services/leekwars-laboratory/leek/Leek.types';
+import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
 
 export interface ILeekListProps {
   leeks: ILeek[];

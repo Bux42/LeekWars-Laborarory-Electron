@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { leeksStyles as styles } from './Leeks.styles';
 import { theme } from '../../theme';
 import { useServerContext } from '../../../context/server/ServerContext';
-import { ILeek } from '../../../services/leekwars-laboratory/leek/Leek.types';
+import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
 import LeekList from '../../components/leek-list/LeekList';
 import Button from '../../components/shared/button/Button';
 

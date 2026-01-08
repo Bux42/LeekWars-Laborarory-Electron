@@ -1,5 +1,5 @@
-import { IEntityBuild } from '../../services/leekwars-laboratory/builds/EntityBuild.types';
-import { IEntityStats } from '../../services/leekwars-laboratory/entity/stats/EntityStats.types';
+import { IEntityBuild } from '../../services/leekwars-laboratory/types/builds/EntityBuild.types';
+import { IEntityStats } from '../../services/leekwars-laboratory/types/entity/stats/EntityStats.types';
 import { getBaseStats } from './LeekWars';
 
 export function getTotalStats(entityBuild: IEntityBuild): IEntityStats {

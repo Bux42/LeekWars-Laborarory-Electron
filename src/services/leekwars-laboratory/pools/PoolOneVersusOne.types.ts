@@ -1,4 +1,4 @@
-import { ILeek } from '../leek/Leek.types';
+import { ILeek } from '../types/leek/Leek.types';
 
 export interface IPoolOneVersusOneBase {
   name: string;

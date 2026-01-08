@@ -1,4 +1,4 @@
-import { IEntityStats } from '../../services/leekwars-laboratory/entity/stats/EntityStats.types';
+import { IEntityStats } from '../../services/leekwars-laboratory/types/entity/stats/EntityStats.types';
 
 export function getBaseStats(level: number): IEntityStats {
   return {
