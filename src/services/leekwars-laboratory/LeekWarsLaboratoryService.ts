@@ -81,7 +81,7 @@ class LeekWarsLaboratoryService {
    */
   async getLeeks(): Promise<IGetLeeksRequest> {
     const response = await fetch(
-      `http://localhost:${this.port}/api/get-leeks`,
+      `http://localhost:${this.port}/api/leeks/get-all`,
       {
         method: 'GET',
         headers: {
@@ -174,7 +174,7 @@ class LeekWarsLaboratoryService {
    */
   async getPool1v1List(): Promise<IGetPool1v1ListResponse> {
     const response = await fetch(
-      `http://localhost:${this.port}/api/pool1v1/list`,
+      `http://localhost:${this.port}/api/pools/duel/get-all`,
       {
         method: 'GET',
         headers: {
