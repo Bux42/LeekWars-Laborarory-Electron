@@ -11,6 +11,7 @@ import {
 } from './ServerContext.types';
 import LeekWarsLaboratoryService from '../../services/leekwars-laboratory/LeekWarsLaboratoryService';
 import LeekService from '../../services/LeekService/LeekService';
+import FileService from '../../services/FileService/FileService';
 import { BaseService } from '../../services/BaseService';
 
 const STORAGE_KEY = 'leekwars-laboratory-port';
@@ -64,6 +65,7 @@ export function ServerProvider({ children }: IServerProviderProps) {
       checkServerStatus,
       service: LeekWarsLaboratoryService,
       leekService: LeekService,
+      fileService: FileService,
     }),
     [isServerRunning, port, setPort, checkServerStatus],
   );
