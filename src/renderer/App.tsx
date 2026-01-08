@@ -23,6 +23,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/pools" element={<Pools />} />
+            <Route path="/pools/duel" element={<Pools />} />
             <Route path="/leeks" element={<Leeks />} />
             <Route path="/new-leek" element={<LeekCreation />} />
           </Routes>

@@ -5,6 +5,7 @@ export interface ILeftPanelStyles {
   nav: React.CSSProperties;
   navItem: React.CSSProperties;
   navLink: React.CSSProperties;
+  subNavLink: React.CSSProperties;
 }
 
 export const leftPanelStyles: ILeftPanelStyles = {
@@ -35,6 +36,18 @@ export const leftPanelStyles: ILeftPanelStyles = {
     color: theme.colors.text.primary,
     textDecoration: 'none',
     transition: 'background-color 0.2s ease',
+    cursor: 'pointer',
+  },
+  subNavLink: {
+    display: 'block',
+    padding: theme.spacing.sm,
+    paddingLeft: theme.spacing.xl,
+    borderRadius: theme.borderRadius.md,
+    backgroundColor: 'transparent',
+    color: theme.colors.text.secondary,
+    fontSize: '0.9rem',
+    textDecoration: 'none',
+    transition: 'background-color 0.2s ease, color 0.2s ease',
     cursor: 'pointer',
   },
 };
