@@ -10,6 +10,8 @@ import {
   IServerProviderProps,
 } from './ServerContext.types';
 import LeekWarsLaboratoryService from '../../services/leekwars-laboratory/LeekWarsLaboratoryService';
+import LeekService from '../../services/LeekService/LeekService';
+import { BaseService } from '../../services/BaseService';
 
 const STORAGE_KEY = 'leekwars-laboratory-port';
 const DEFAULT_PORT = 8080;
@@ -39,11 +41,13 @@ export function ServerProvider({ children }: IServerProviderProps) {
   // Update service port when port changes
   const setPort = useCallback((newPort: number) => {
     setPortState(newPort);
-    LeekWarsLaboratoryService.setPort(newPort);
+    BaseService.setPort(newPort);
+    LeekWarsLaboratoryService.setPort(newPort); // Still needed for the old service
   }, []);
 
   // Initialize service with the port
   useState(() => {
+    BaseService.setPort(port);
     LeekWarsLaboratoryService.setPort(port);
   });
 
@@ -59,6 +63,7 @@ export function ServerProvider({ children }: IServerProviderProps) {
       setPort,
       checkServerStatus,
       service: LeekWarsLaboratoryService,
+      leekService: LeekService,
     }),
     [isServerRunning, port, setPort, checkServerStatus],
   );
