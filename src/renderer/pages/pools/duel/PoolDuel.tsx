@@ -4,6 +4,7 @@ import { usePoolDuels } from '../../../../hooks/pools/usePoolDuels';
 import { useUpdatePoolDuel } from '../../../../hooks/pools/useUpdatePoolDuel';
 import { IPoolDuel } from '../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
 import BasePoolWrapper from '../../../components/pool/BasePoolWrapper';
+import PoolDuelCard from './PoolDuelCard';
 
 function PoolDuel() {
   const { data: pools = [], isLoading, error } = usePoolDuels();
@@ -51,7 +52,9 @@ function PoolDuel() {
             onSetDeterministic={(value) =>
               handleUpdatePool(pool, { deterministic: value })
             }
-          />
+          >
+            <PoolDuelCard pool={pool} />
+          </BasePoolWrapper>
         ))}
       </div>
     </div>

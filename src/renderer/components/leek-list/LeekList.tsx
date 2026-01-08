@@ -8,56 +8,18 @@ import Dropdown from '../shared/dropdown/Dropdown';
 import { IDropdownItem } from '../shared/dropdown/Dropdown.types';
 import HoverTooltip from '../shared/hover-tooltip/HoverTooltip';
 import LeekDetail from '../leek-detail/LeekDetail';
-import { useDeleteLeek } from '../../../hooks/leeks/useDeleteLeek';
-
-function LeekList({ leeks, showElo = false }: ILeekListProps) {
+function LeekList({
+  leeks,
+  showElo = false,
+  getDropdownItems,
+}: ILeekListProps) {
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  const deleteLeekMutation = useDeleteLeek();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleEdit = (leek: ILeek) => {
-    // TODO: Implement edit functionality
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleDuplicate = (leek: ILeek) => {
-    // TODO: Implement duplicate functionality
-  };
-
-  const handleDelete = async (leek: ILeek) => {
-    if (
-      window.confirm(`Are you sure you want to delete leek "${leek.name}"?`)
-    ) {
-      try {
-        await deleteLeekMutation.mutateAsync(leek.id);
-      } catch (err) {
-        console.error('Failed to delete leek:', err);
-      }
-    }
-  };
-
   const toggleDropdown = (leekId: string) => {
     setOpenDropdown(openDropdown === leekId ? null : leekId);
   };
-
-  const getDropdownItems = (leek: ILeek): IDropdownItem[] => [
-    {
-      label: 'Edit',
-      onClick: () => handleEdit(leek),
-    },
-    {
-      label: 'Duplicate',
-      onClick: () => handleDuplicate(leek),
-    },
-    {
-      label: 'Delete',
-      onClick: () => handleDelete(leek),
-      variant: 'danger',
-    },
-  ];
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -141,7 +103,7 @@ function LeekList({ leeks, showElo = false }: ILeekListProps) {
             AI
             <span style={styles.sortIndicator}>{getSortIndicator('ai')}</span>
           </th>
-          <th style={styles.th}>Actions</th>
+          {getDropdownItems && <th style={styles.th}>Actions</th>}
         </tr>
       </thead>
       <tbody style={styles.tbody}>
@@ -180,13 +142,15 @@ function LeekList({ leeks, showElo = false }: ILeekListProps) {
               </td>
             )}
             <td style={styles.td}>{leek.aiFilePath}</td>
-            <td style={styles.actionsCell}>
-              <Dropdown
-                items={getDropdownItems(leek)}
-                isOpen={openDropdown === leek.id}
-                onToggle={() => toggleDropdown(leek.id)}
-              />
-            </td>
+            {getDropdownItems && (
+              <td style={styles.actionsCell}>
+                <Dropdown
+                  items={getDropdownItems(leek)}
+                  isOpen={openDropdown === leek.id}
+                  onToggle={() => toggleDropdown(leek.id)}
+                />
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
