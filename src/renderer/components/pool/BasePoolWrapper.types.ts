@@ -10,4 +10,5 @@ export interface IBasePoolWrapperProps {
   onSetStartSeed: (value: number) => void;
   onSetFightLimitEnabled: (value: boolean) => void;
   onSetFightLimit: (value: number) => void;
+  onStart: () => void;
 }

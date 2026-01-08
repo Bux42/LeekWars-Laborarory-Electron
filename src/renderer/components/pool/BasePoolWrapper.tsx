@@ -3,6 +3,7 @@ import { basePoolWrapperStyles as styles } from './BasePoolWrapper.styles';
 import { IBasePoolWrapperProps } from './BasePoolWrapper.types';
 import Toggle from '../shared/toggle/Toggle';
 import Input from '../shared/input/Input';
+import Button from '../shared/button/Button';
 
 const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
   pool,
@@ -13,6 +14,7 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
   onSetStartSeed,
   onSetFightLimitEnabled,
   onSetFightLimit,
+  onStart,
 }) => {
   return (
     <div style={styles.container}>
@@ -24,7 +26,9 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
             onChange={(checked) => onSetEnabled(checked)}
           />
         </div>
-        <div style={styles.value}>ID: {pool.id}</div>
+        <Button onClick={onStart} variant="primary">
+          Start
+        </Button>
       </div>
 
       <div style={styles.infoGrid}>

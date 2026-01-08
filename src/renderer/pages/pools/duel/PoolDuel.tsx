@@ -61,6 +61,7 @@ function PoolDuel() {
             onSetFightLimit={(value) =>
               handleUpdatePool(pool, { fightLimit: value })
             }
+            onStart={() => console.log('start', pool.id)}
           >
             <PoolDuelCard pool={pool} />
           </BasePoolWrapper>
