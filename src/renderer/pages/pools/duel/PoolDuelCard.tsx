@@ -6,6 +6,8 @@ import { ILeek } from '../../../../services/leekwars-laboratory/types/leek/Leek.
 import { IDropdownItem } from '../../../components/shared/dropdown/Dropdown.types';
 import { useRemoveLeekFromPool } from '../../../../hooks/pools/useRemoveLeekFromPool';
 
+import { poolDuelCardStyles as styles } from './PoolDuelCard.styles';
+
 interface IPoolDuelCardProps {
   pool: IPoolDuel;
 }
@@ -44,33 +46,32 @@ const PoolDuelCard: React.FC<IPoolDuelCardProps> = ({ pool }) => {
   ];
 
   if (isLoading) {
-    return (
-      <p style={{ color: '#9d9d9d', fontStyle: 'italic' }}>
-        Loading pool leeks...
-      </p>
-    );
+    return <p style={styles.loadingText}>Loading pool leeks...</p>;
   }
 
   if (error) {
     return (
-      <p style={{ color: '#f44336' }}>
+      <p style={styles.errorText}>
         Error loading leeks:{' '}
         {error instanceof Error ? error.message : 'Unknown error'}
       </p>
     );
   }
 
+  const totalScenarios = pool.leekIds.length * (pool.leekIds.length - 1);
+  const totalFights = totalScenarios * (pool.fightLimit || 1);
+
   return (
-    <div>
-      <h3 style={{ fontSize: '1rem', marginBottom: '12px', color: '#cccccc' }}>
-        Leeks in Pool ({poolLeeks.length})
-      </h3>
+    <div style={styles.container}>
+      <div style={styles.statsContainer}>
+        Total estimated fights: {totalFights} ({totalScenarios} duel
+        combinations x {pool.fightLimit || 1} fights)
+      </div>
+      <h3 style={styles.title}>Leeks in Pool ({poolLeeks.length})</h3>
       {poolLeeks.length > 0 ? (
         <LeekList leeks={poolLeeks} getDropdownItems={getDropdownItems} />
       ) : (
-        <p style={{ color: '#9d9d9d', fontStyle: 'italic' }}>
-          No leeks in this pool.
-        </p>
+        <p style={styles.emptyText}>No leeks in this pool.</p>
       )}
     </div>
   );
