@@ -149,4 +149,19 @@ export abstract class BaseService {
   ): Promise<T> {
     return this.request<T>(path, { ...options, method: 'DELETE' });
   }
+
+  /**
+   * Perform a DELETE request with a body
+   */
+  protected async deleteWithBody<T>(
+    path: string,
+    body?: any,
+    options: RequestInit = {},
+  ): Promise<T> {
+    return this.request<T>(path, {
+      ...options,
+      method: 'DELETE',
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  }
 }

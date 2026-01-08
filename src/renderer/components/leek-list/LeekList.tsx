@@ -8,11 +8,14 @@ import Dropdown from '../shared/dropdown/Dropdown';
 import { IDropdownItem } from '../shared/dropdown/Dropdown.types';
 import HoverTooltip from '../shared/hover-tooltip/HoverTooltip';
 import LeekDetail from '../leek-detail/LeekDetail';
+import { useDeleteLeek } from '../../../hooks/leeks/useDeleteLeek';
 
 function LeekList({ leeks }: ILeekListProps) {
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  const deleteLeekMutation = useDeleteLeek();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleEdit = (leek: ILeek) => {
@@ -24,9 +27,16 @@ function LeekList({ leeks }: ILeekListProps) {
     // TODO: Implement duplicate functionality
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleDelete = (leek: ILeek) => {
-    // TODO: Implement delete functionality
+  const handleDelete = async (leek: ILeek) => {
+    if (
+      window.confirm(`Are you sure you want to delete leek "${leek.name}"?`)
+    ) {
+      try {
+        await deleteLeekMutation.mutateAsync(leek.id);
+      } catch (err) {
+        console.error('Failed to delete leek:', err);
+      }
+    }
   };
 
   const toggleDropdown = (leekId: string) => {
