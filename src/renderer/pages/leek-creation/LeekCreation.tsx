@@ -7,13 +7,12 @@ import LeekAvatarPicker from '../../components/leek-avatar-picker/LeekAvatarPick
 import Input from '../../components/shared/input/Input';
 import Button from '../../components/shared/button/Button';
 import FileBrowser from '../../components/file-browser/FileBrowser';
-import { IFileListItem } from '../../../services/leekwars-laboratory/requests/FileListRequest.types';
+import { IFileListItem } from '../../../services/FileService/requests/FileList.types';
 import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
-import { useServerContext } from '../../../context/server/ServerContext';
+import { useAddLeek } from '../../../hooks/leeks/useAddLeek';
 
 function LeekCreation() {
   const navigate = useNavigate();
-  const { service } = useServerContext();
   const [entityBuild, setEntityBuild] = useState<IEntityBuild | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedAvatar, setSelectedAvatar] =
@@ -22,8 +21,9 @@ function LeekCreation() {
   const [selectedAiFile, setSelectedAiFile] = useState<IFileListItem | null>(
     null,
   );
-  const [creating, setCreating] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const addLeekMutation = useAddLeek();
 
   const handleFileImport = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -52,33 +52,30 @@ function LeekCreation() {
       return;
     }
 
+    const newLeek: ILeek = {
+      id: '',
+      name: leekName,
+      build: entityBuild,
+      elo: 1000,
+      aiFilePath: selectedAiFile.path,
+      imageName: selectedAvatar,
+    };
+
     try {
-      setCreating(true);
       setError(null);
       setSuccess(null);
 
-      const newLeek: ILeek = {
-        id: '',
-        name: leekName,
-        build: entityBuild,
-        elo: 1000,
-        aiFilePath: selectedAiFile.path,
-        imageName: selectedAvatar,
-      };
-
-      const response = await service.addLeek({ leek: newLeek });
+      const response = await addLeekMutation.mutateAsync({ leek: newLeek });
       setSuccess(`Leek "${response.leek.name}" created successfully!`);
 
       // Redirect to leeks page after a short delay
-      setTimeout(() => {
-        navigate('/leeks');
-      }, 500);
+      navigate('/leeks');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create leek');
-    } finally {
-      setCreating(false);
     }
   };
+
+  const creating = addLeekMutation.isPending;
 
   return (
     <div style={styles.container}>
