@@ -21,7 +21,6 @@ export const leekListStyles: ILeekListStyles = {
     marginTop: theme.spacing.lg,
     backgroundColor: theme.colors.background.secondary,
     borderRadius: theme.borderRadius.md,
-    overflow: 'hidden',
   },
   thead: {
     backgroundColor: theme.colors.background.elevated,
