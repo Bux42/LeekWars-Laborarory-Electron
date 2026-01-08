@@ -2,6 +2,7 @@ import LeekWarsLaboratoryService from '../../services/leekwars-laboratory/LeekWa
 import LeekService from '../../services/LeekService/LeekService';
 import FileService from '../../services/FileService/FileService';
 import PoolDuelService from '../../services/PoolDuelService/PoolDuelService';
+import PoolRunDuelService from '../../services/PoolRunDuelService/PoolRunDuelService';
 
 export interface IServerContextValue {
   isServerRunning: boolean;
@@ -12,6 +13,7 @@ export interface IServerContextValue {
   leekService: typeof LeekService;
   fileService: typeof FileService;
   poolDuelService: typeof PoolDuelService;
+  poolRunDuelService: typeof PoolRunDuelService;
 }
 
 export interface IServerProviderProps {
