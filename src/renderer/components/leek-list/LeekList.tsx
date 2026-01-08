@@ -10,7 +10,7 @@ import HoverTooltip from '../shared/hover-tooltip/HoverTooltip';
 import LeekDetail from '../leek-detail/LeekDetail';
 import { useDeleteLeek } from '../../../hooks/leeks/useDeleteLeek';
 
-function LeekList({ leeks }: ILeekListProps) {
+function LeekList({ leeks, showElo = false }: ILeekListProps) {
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -126,12 +126,17 @@ function LeekList({ leeks }: ILeekListProps) {
               {getSortIndicator('level')}
             </span>
           </th>
-          <th style={getThStyle('talent')} onClick={() => handleSort('talent')}>
-            Talent
-            <span style={styles.sortIndicator}>
-              {getSortIndicator('talent')}
-            </span>
-          </th>
+          {showElo && (
+            <th
+              style={getThStyle('talent')}
+              onClick={() => handleSort('talent')}
+            >
+              Talent
+              <span style={styles.sortIndicator}>
+                {getSortIndicator('talent')}
+              </span>
+            </th>
+          )}
           <th style={getThStyle('ai')} onClick={() => handleSort('ai')}>
             AI
             <span style={styles.sortIndicator}>{getSortIndicator('ai')}</span>
@@ -164,14 +169,16 @@ function LeekList({ leeks }: ILeekListProps) {
             </td>
             <td style={styles.td}>{leek.name}</td>
             <td style={styles.td}>{leek.build.level}</td>
-            <td style={styles.td}>
-              <img
-                src={getImage('leekwars/image/talent')}
-                alt="Talent"
-                style={styles.talentIcon}
-              />
-              {Number.prototype.toLocaleString.call(leek.elo)}
-            </td>
+            {showElo && (
+              <td style={styles.td}>
+                <img
+                  src={getImage('leekwars/image/talent')}
+                  alt="Talent"
+                  style={styles.talentIcon}
+                />
+                {Number.prototype.toLocaleString.call(leek.elo)}
+              </td>
+            )}
             <td style={styles.td}>{leek.aiFilePath}</td>
             <td style={styles.actionsCell}>
               <Dropdown
