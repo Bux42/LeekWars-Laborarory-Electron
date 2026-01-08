@@ -7,6 +7,18 @@ import Button from '../../components/shared/button/Button';
 function Pools() {
   const { data: pools = [], isLoading, error } = usePoolDuels();
 
+  const handleSetEnabled = (value: boolean) => {
+    console.log(value);
+  };
+
+  const handleSetResetElo = (value: boolean) => {
+    console.log(value);
+  };
+
+  const handleSetDeterministic = (value: boolean) => {
+    console.log(value);
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.section}>
@@ -27,7 +39,13 @@ function Pools() {
         )}
 
         {pools.map((pool) => (
-          <BasePoolWrapper key={pool.id} pool={pool} />
+          <BasePoolWrapper
+            key={pool.id}
+            pool={pool}
+            onSetEnabled={handleSetEnabled}
+            onSetResetElo={handleSetResetElo}
+            onSetDeterministic={handleSetDeterministic}
+          />
         ))}
       </div>
     </div>

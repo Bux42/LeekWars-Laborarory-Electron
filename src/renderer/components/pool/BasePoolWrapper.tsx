@@ -6,15 +6,19 @@ import Toggle from '../shared/toggle/Toggle';
 const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
   pool,
   children,
+  onSetDeterministic,
+  onSetResetElo,
+  onSetEnabled,
 }) => {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <div style={styles.titleContainer}>
           <h2 style={styles.title}>{pool.name}</h2>
-          <span style={styles.statusBadge(pool.enabled)}>
-            {pool.enabled ? 'Enabled' : 'Disabled'}
-          </span>
+          <Toggle
+            checked={pool.enabled}
+            onChange={(checked) => onSetEnabled(checked)}
+          />
         </div>
         <div style={styles.value}>ID: {pool.id}</div>
       </div>
@@ -24,7 +28,7 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
           <span style={styles.label}>Deterministic</span>
           <Toggle
             checked={pool.deterministic}
-            onChange={(e) => console.log(e)}
+            onChange={(checked) => onSetDeterministic(checked)}
           />
         </div>
         {pool.deterministic && (
@@ -35,7 +39,10 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
         )}
         <div style={styles.infoItem}>
           <span style={styles.label}>Reset Elo</span>
-          <Toggle checked={pool.resetElo} onChange={(e) => console.log(e)} />
+          <Toggle
+            checked={pool.resetElo}
+            onChange={(checked) => onSetResetElo(checked)}
+          />
         </div>
         <div style={styles.infoItem}>
           <span style={styles.label}>Fight Limit</span>

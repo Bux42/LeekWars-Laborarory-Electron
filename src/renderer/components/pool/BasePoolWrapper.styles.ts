@@ -29,18 +29,6 @@ export const basePoolWrapperStyles = {
     color: theme.colors.text.primary,
     margin: 0,
   },
-  statusBadge: (enabled: boolean) => ({
-    padding: '2px 8px',
-    borderRadius: theme.borderRadius.sm,
-    fontSize: '0.75rem',
-    fontWeight: 'bold',
-    textTransform: 'uppercase' as const,
-    backgroundColor: enabled
-      ? `${theme.colors.accent.success}22`
-      : `${theme.colors.accent.error}22`,
-    color: enabled ? theme.colors.accent.success : theme.colors.accent.error,
-    border: `1px solid ${enabled ? theme.colors.accent.success : theme.colors.accent.error}`,
-  }),
   infoGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
