@@ -5,10 +5,12 @@ import { useUpdatePoolDuel } from '../../../../hooks/pools/useUpdatePoolDuel';
 import { IPoolDuel } from '../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
 import BasePoolWrapper from '../../../components/pool/BasePoolWrapper';
 import PoolDuelCard from './PoolDuelCard';
+import { useStartPoolDuel } from '../../../../hooks/pools/useStartPoolDuel';
 
 function PoolDuel() {
   const { data: pools = [], isLoading, error } = usePoolDuels();
   const updateMutation = useUpdatePoolDuel();
+  const startMutation = useStartPoolDuel();
 
   const handleUpdatePool = async (
     pool: IPoolDuel,
@@ -20,6 +22,14 @@ function PoolDuel() {
       });
     } catch (err) {
       console.error('Failed to update pool:', err);
+    }
+  };
+
+  const handleStartPool = async (poolId: string) => {
+    try {
+      await startMutation.mutateAsync({ id: poolId });
+    } catch (err) {
+      console.error('Failed to start pool duel:', err);
     }
   };
 
@@ -61,7 +71,7 @@ function PoolDuel() {
             onSetFightLimit={(value) =>
               handleUpdatePool(pool, { fightLimit: value })
             }
-            onStart={() => console.log('start', pool.id)}
+            onStart={() => handleStartPool(pool.id)}
           >
             <PoolDuelCard pool={pool} />
           </BasePoolWrapper>

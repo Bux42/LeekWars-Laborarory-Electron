@@ -8,6 +8,10 @@ import {
   IRemoveLeekFromPoolRequest,
   IRemoveLeekFromPoolResponse,
 } from './requests/RemoveLeekFromPool.types';
+import {
+  IStartPoolDuelRequest,
+  IStartPoolDuelResponse,
+} from './requests/StartPoolDuel.types';
 
 class PoolDuelService extends BaseService {
   /**
@@ -39,6 +43,15 @@ class PoolDuelService extends BaseService {
       '/api/pools/duel/remove-leek',
       params,
     );
+  }
+
+  /**
+   * Start a pool duel run
+   */
+  public async startPoolDuel(
+    params: IStartPoolDuelRequest,
+  ): Promise<IStartPoolDuelResponse> {
+    return this.post<IStartPoolDuelResponse>('/api/pools/duel/start', params);
   }
 }
 
