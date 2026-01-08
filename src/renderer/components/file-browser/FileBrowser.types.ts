@@ -1,4 +1,4 @@
-import { IFileListItem } from '../../../services/leekwars-laboratory/requests/FileListRequest.types';
+import { IFileListItem } from '../../../services/FileService/requests/FileList.types';
 
 export interface IFileBrowserProps {
   onFileSelect: (file: IFileListItem) => void;

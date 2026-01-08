@@ -1,35 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { fileBrowserStyles as styles } from './FileBrowser.styles';
 import { IFileBrowserProps } from './FileBrowser.types';
-import { IFileListItem } from '../../../services/leekwars-laboratory/requests/FileListRequest.types';
-import { useServerContext } from '../../../context/server/ServerContext';
+import { IFileListItem } from '../../../services/FileService/requests/FileList.types';
+import { useFileList } from '../../../hooks/files/useFileList';
+import { useResetFiles } from '../../../hooks/files/useResetFiles';
 import { theme } from '../../theme';
 
 function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
-  const { service } = useServerContext();
-  const [files, setFiles] = useState<IFileListItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [currentPath, setCurrentPath] = useState<string>('.');
 
-  useEffect(() => {
-    const fetchFiles = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await service.getFileList({
-          directory_path: currentPath,
-        });
-        setFiles(response.files);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch files');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const {
+    data: files = [],
+    isLoading: loading,
+    error,
+    refetch,
+  } = useFileList(currentPath);
 
-    fetchFiles();
-  }, [currentPath, service]);
+  const resetMutation = useResetFiles();
 
   const handleFileClick = (file: IFileListItem) => {
     if (file.directory) {
@@ -41,35 +28,20 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
 
   const handleHomeClick = async () => {
     try {
-      setLoading(true);
-      setError(null);
-      const response = await service.resetFileDirectory();
+      await resetMutation.mutateAsync();
       setCurrentPath('.');
-      setFiles(response.files);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to reset directory',
-      );
-    } finally {
-      setLoading(false);
+      console.error('Failed to reset directory:', err);
     }
   };
 
-  const handleUpClick = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await service.getFileList({
-        directory_path: '..',
-      });
-      setFiles(response.files);
-      setCurrentPath('..');
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to go up directory',
-      );
-    } finally {
-      setLoading(false);
+  const handleUpClick = () => {
+    setCurrentPath('..');
+    // If currentPath was already '..', the State update might not trigger a re-fetch if not handled.
+    // However, in our useFileList, the key depends on currentPath.
+    // If the server-side is stateful, we might need to force a refetch or use a mutation.
+    if (currentPath === '..') {
+      refetch();
     }
   };
 
@@ -84,7 +56,10 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
   if (error) {
     return (
       <div style={styles.container}>
-        <p style={styles.error}>Error: {error}</p>
+        <p style={styles.error}>
+          Error:{' '}
+          {error instanceof Error ? error.message : 'Failed to fetch files'}
+        </p>
       </div>
     );
   }
@@ -104,6 +79,7 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = theme.colors.border.primary;
             }}
+            disabled={loading}
             aria-label="Go up one directory"
           >
             ⬆️
@@ -118,6 +94,7 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = theme.colors.border.primary;
             }}
+            disabled={resetMutation.isPending}
             aria-label="Go to home directory"
           >
             🏠
