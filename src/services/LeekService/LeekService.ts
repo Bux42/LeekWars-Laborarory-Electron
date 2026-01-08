@@ -5,6 +5,7 @@ import {
   IDeleteLeekRequest,
   IDeleteLeekResponse,
 } from './requests/DeleteLeek.types';
+import { IGetLeekByIdResponse } from './requests/GetLeekById.types';
 
 class LeekService extends BaseService {
   /**
@@ -12,6 +13,13 @@ class LeekService extends BaseService {
    */
   public async getLeeks(): Promise<IGetLeeksResponse> {
     return this.get<IGetLeeksResponse>('/api/leeks/get-all');
+  }
+
+  /**
+   * Get a leek by its ID
+   */
+  public async getLeekById(id: string): Promise<IGetLeekByIdResponse> {
+    return this.get<IGetLeekByIdResponse>(`/api/leeks/get-by-id?id=${id}`);
   }
 
   /**
