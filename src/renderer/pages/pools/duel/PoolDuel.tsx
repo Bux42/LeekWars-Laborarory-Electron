@@ -52,6 +52,15 @@ function PoolDuel() {
             onSetDeterministic={(value) =>
               handleUpdatePool(pool, { deterministic: value })
             }
+            onSetStartSeed={(value) =>
+              handleUpdatePool(pool, { startSeed: value })
+            }
+            onSetFightLimitEnabled={(value) =>
+              handleUpdatePool(pool, { fightLimitEnabled: value })
+            }
+            onSetFightLimit={(value) =>
+              handleUpdatePool(pool, { fightLimit: value })
+            }
           >
             <PoolDuelCard pool={pool} />
           </BasePoolWrapper>

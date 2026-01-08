@@ -2,6 +2,7 @@ import React from 'react';
 import { basePoolWrapperStyles as styles } from './BasePoolWrapper.styles';
 import { IBasePoolWrapperProps } from './BasePoolWrapper.types';
 import Toggle from '../shared/toggle/Toggle';
+import Input from '../shared/input/Input';
 
 const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
   pool,
@@ -9,6 +10,9 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
   onSetDeterministic,
   onSetResetElo,
   onSetEnabled,
+  onSetStartSeed,
+  onSetFightLimitEnabled,
+  onSetFightLimit,
 }) => {
   return (
     <div style={styles.container}>
@@ -34,7 +38,11 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
         {pool.deterministic && (
           <div style={styles.infoItem}>
             <span style={styles.label}>Start Seed</span>
-            <span style={styles.value}>{pool.startSeed}</span>
+            <Input
+              value={pool.startSeed.toString()}
+              type="number"
+              onChange={(value) => onSetStartSeed(parseInt(value, 10) || 0)}
+            />
           </div>
         )}
         <div style={styles.infoItem}>
@@ -46,10 +54,22 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
         </div>
         <div style={styles.infoItem}>
           <span style={styles.label}>Fight Limit</span>
-          <span style={styles.value}>
-            {pool.fightLimitEnabled ? `${pool.fightLimit} fights` : 'Disabled'}
-          </span>
+          <Toggle
+            disabled // TODO: implement in API
+            checked={pool.fightLimitEnabled}
+            onChange={(checked) => onSetFightLimitEnabled(checked)}
+          />
         </div>
+        {pool.fightLimitEnabled && (
+          <div style={styles.infoItem}>
+            <span style={styles.label}>Fight Limit</span>
+            <Input
+              value={pool.fightLimit.toString()}
+              type="number"
+              onChange={(value) => onSetFightLimit(parseInt(value, 10) || 1)}
+            />
+          </div>
+        )}
       </div>
 
       {children && <div style={styles.childrenContainer}>{children}</div>}

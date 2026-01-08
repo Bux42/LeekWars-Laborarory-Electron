@@ -7,4 +7,7 @@ export interface IBasePoolWrapperProps {
   onSetDeterministic: (value: boolean) => void;
   onSetResetElo: (value: boolean) => void;
   onSetEnabled: (value: boolean) => void;
+  onSetStartSeed: (value: number) => void;
+  onSetFightLimitEnabled: (value: boolean) => void;
+  onSetFightLimit: (value: number) => void;
 }
