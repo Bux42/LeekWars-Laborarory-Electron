@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { poolsStyles as styles } from '../Pools.styles';
 import { usePoolDuels } from '../../../../hooks/pools/usePoolDuels';
 import { useUpdatePoolDuel } from '../../../../hooks/pools/useUpdatePoolDuel';
@@ -6,8 +7,11 @@ import { IPoolDuel } from '../../../../services/leekwars-laboratory/types/pool/c
 import BasePoolWrapper from '../../../components/pool/BasePoolWrapper';
 import PoolDuelCard from './PoolDuelCard';
 import { useStartPoolDuel } from '../../../../hooks/pools/useStartPoolDuel';
+import Spinner from '../../../components/shared/spinner/Spinner';
+import { theme } from '../../../theme';
 
 function PoolDuel() {
+  const navigate = useNavigate();
   const { data: pools = [], isLoading, error } = usePoolDuels();
   const updateMutation = useUpdatePoolDuel();
   const startMutation = useStartPoolDuel();
@@ -73,6 +77,38 @@ function PoolDuel() {
             }
             onStart={() => handleStartPool(pool.id)}
           >
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                marginBottom: '10px',
+              }}
+            >
+              <button
+                onClick={() => navigate(`/pools/duels/${pool.id}`)}
+                style={{
+                  background: 'none',
+                  border: `1px solid ${theme.colors.border.primary}`,
+                  color: theme.colors.text.secondary,
+                  padding: '4px 8px',
+                  borderRadius: theme.borderRadius.sm,
+                  cursor: 'pointer',
+                  fontSize: '0.8rem',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor =
+                    theme.colors.accent.primary;
+                  e.currentTarget.style.color = theme.colors.text.primary;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor =
+                    theme.colors.border.primary;
+                  e.currentTarget.style.color = theme.colors.text.secondary;
+                }}
+              >
+                View Details
+              </button>
+            </div>
             <PoolDuelCard pool={pool} />
           </BasePoolWrapper>
         ))}

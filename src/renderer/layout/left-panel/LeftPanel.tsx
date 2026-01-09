@@ -18,7 +18,7 @@ function LeftPanel() {
     {
       path: '/pools',
       label: 'Pools',
-      children: [{ path: '/pools/duel', label: 'Duel' }],
+      children: [{ path: '/pools/duels', label: 'Duels' }],
     },
     { path: '/leeks', label: 'Leeks' },
   ];
@@ -33,8 +33,8 @@ function LeftPanel() {
       location.pathname === path
         ? theme.colors.text.primary
         : isSubItem
-        ? theme.colors.text.secondary
-        : theme.colors.text.primary,
+          ? theme.colors.text.secondary
+          : theme.colors.text.primary,
   });
 
   const renderNavItem = (item: NavItem, isSubItem = false) => {
@@ -77,7 +77,9 @@ function LeftPanel() {
   return (
     <aside style={styles.container}>
       <h3>Navigation</h3>
-      <nav style={styles.nav}>{navItems.map((item) => renderNavItem(item))}</nav>
+      <nav style={styles.nav}>
+        {navItems.map((item) => renderNavItem(item))}
+      </nav>
     </aside>
   );
 }
