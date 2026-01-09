@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import { IPoolDuel } from '../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
-import { useLeeks } from '../../../../hooks/leeks/useLeeks';
-import LeekList from '../../../components/leek-list/LeekList';
-import { ILeek } from '../../../../services/leekwars-laboratory/types/leek/Leek.types';
-import { IDropdownItem } from '../../../components/shared/dropdown/Dropdown.types';
-import { useRemoveLeekFromPool } from '../../../../hooks/pools/useRemoveLeekFromPool';
 
 import { poolDuelCardStyles as styles } from './PoolDuelCard.styles';
+import { useLeeks } from '../../../hooks/leeks/useLeeks';
+import { useRemoveLeekFromPool } from '../../../hooks/pools/useRemoveLeekFromPool';
+import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
+import { IPoolDuel } from '../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
+import LeekList from '../leek-list/LeekList';
+import { IDropdownItem } from '../shared/dropdown/Dropdown.types';
 
 interface IPoolDuelCardProps {
   pool: IPoolDuel;

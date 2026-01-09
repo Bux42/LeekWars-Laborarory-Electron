@@ -5,10 +5,10 @@ import { usePoolDuels } from '../../../../hooks/pools/usePoolDuels';
 import { useUpdatePoolDuel } from '../../../../hooks/pools/useUpdatePoolDuel';
 import { IPoolDuel } from '../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
 import BasePoolWrapper from '../../../components/pool/BasePoolWrapper';
-import PoolDuelCard from './PoolDuelCard';
 import { useStartPoolDuel } from '../../../../hooks/pools/useStartPoolDuel';
 import Spinner from '../../../components/shared/spinner/Spinner';
 import { theme } from '../../../theme';
+import PoolDuelCard from '../../../components/pool-duel-card/PoolDuelCard';
 
 function PoolDuel() {
   const navigate = useNavigate();

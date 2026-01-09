@@ -5,6 +5,7 @@ import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.typ
 import { theme } from '../../theme';
 import { getImage } from '../../utils/ImageLoader';
 import Dropdown from '../shared/dropdown/Dropdown';
+import { IDropdownItem } from '../shared/dropdown/Dropdown.types';
 import HoverTooltip from '../shared/hover-tooltip/HoverTooltip';
 import LeekDetail from '../leek-detail/LeekDetail';
 import EntityAiPath from '../entity-ai-path/EntityAiPath';
