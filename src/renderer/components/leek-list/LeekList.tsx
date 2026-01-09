@@ -5,9 +5,10 @@ import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.typ
 import { theme } from '../../theme';
 import { getImage } from '../../utils/ImageLoader';
 import Dropdown from '../shared/dropdown/Dropdown';
-import { IDropdownItem } from '../shared/dropdown/Dropdown.types';
 import HoverTooltip from '../shared/hover-tooltip/HoverTooltip';
 import LeekDetail from '../leek-detail/LeekDetail';
+import EntityAiPath from '../entity-ai-path/EntityAiPath';
+
 function LeekList({
   leeks,
   showElo = false,
@@ -141,7 +142,9 @@ function LeekList({
                 {Number.prototype.toLocaleString.call(leek.elo)}
               </td>
             )}
-            <td style={styles.td}>{leek.aiFilePath}</td>
+            <td style={styles.td}>
+              <EntityAiPath entityAiPath={leek.aiFilePath} />
+            </td>
             {getDropdownItems && (
               <td style={styles.actionsCell}>
                 <Dropdown
