@@ -1,10 +1,10 @@
 import React from 'react';
 import { basePoolWrapperStyles as styles } from './BasePoolWrapper.styles';
 import { IBasePoolWrapperProps } from './BasePoolWrapper.types';
-import Toggle from '../shared/toggle/Toggle';
-import Input from '../shared/input/Input';
-import Button from '../shared/button/Button';
-import Spinner from '../shared/spinner/Spinner';
+import Toggle from '../../shared/toggle/Toggle';
+import Input from '../../shared/input/Input';
+import Button from '../../shared/button/Button';
+import Spinner from '../../shared/spinner/Spinner';
 
 const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
   pool,

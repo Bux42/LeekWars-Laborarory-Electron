@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { leekCreationStyles as styles } from './LeekCreation.styles';
 import { IEntityBuild } from '../../../services/leekwars-laboratory/types/builds/EntityBuild.types';
-import EntityBuild from '../../components/entity-build/EntityBuild';
-import LeekAvatarPicker from '../../components/leek-avatar-picker/LeekAvatarPicker';
+import LeekAvatarPicker from '../../components/leek/leek-avatar-picker/LeekAvatarPicker';
 import Input from '../../components/shared/input/Input';
 import Button from '../../components/shared/button/Button';
 import FileBrowser from '../../components/file-browser/FileBrowser';
 import { IFileListItem } from '../../../services/FileService/requests/FileList.types';
 import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { useAddLeek } from '../../../hooks/leeks/useAddLeek';
+import EntityBuild from '../../components/entity/entity-build/EntityBuild';
 
 function LeekCreation() {
   const navigate = useNavigate();

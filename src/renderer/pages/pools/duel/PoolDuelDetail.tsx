@@ -2,12 +2,12 @@ import React from 'react';
 import { usePoolDuels } from '../../../../hooks/pools/usePoolDuels';
 import { usePoolDuelId } from '../../../../hooks/pools/usePoolDuelId';
 import { poolsStyles as styles } from '../Pools.styles';
-import BasePoolWrapper from '../../../components/pool/BasePoolWrapper';
+import BasePoolWrapper from '../../../components/pool/base-pool-wrapper/BasePoolWrapper';
 import { useUpdatePoolDuel } from '../../../../hooks/pools/useUpdatePoolDuel';
 import { useStartPoolDuel } from '../../../../hooks/pools/useStartPoolDuel';
 import { IPoolDuel } from '../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
 import Spinner from '../../../components/shared/spinner/Spinner';
-import PoolDuelCard from '../../../components/pool-duel-card/PoolDuelCard';
+import PoolDuelCard from '../../../components/pool/duel/pool-duel-card/PoolDuelCard';
 
 function PoolDuelDetail() {
   const poolId = usePoolDuelId();

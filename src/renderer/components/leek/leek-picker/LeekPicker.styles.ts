@@ -1,4 +1,4 @@
-import { theme } from '../../theme';
+import { theme } from '../../../theme';
 
 export interface ILeekPickerStyles {
   container: React.CSSProperties;

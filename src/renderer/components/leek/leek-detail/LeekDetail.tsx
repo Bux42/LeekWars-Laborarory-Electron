@@ -1,11 +1,11 @@
 import React from 'react';
 import { leekDetailStyles as styles } from './LeekDetail.styles';
 import { ILeekDetailProps } from './LeekDetail.types';
-import { getImage } from '../../utils/ImageLoader';
-import { getTotalStats } from '../../utils/EntityBuildHelpers';
-import { WEAPONS_IDS_TO_NAMES } from '../../constants/leekwars/Weapons';
-import { CHIPS_IDS_TO_NAMES } from '../../constants/leekwars/Chips';
-import { COMPONENTS_IDS_TO_NAMES } from '../../constants/leekwars/Components';
+import { getImage } from '../../../utils/ImageLoader';
+import { getTotalStats } from '../../../utils/EntityBuildHelpers';
+import { WEAPONS_IDS_TO_NAMES } from '../../../constants/leekwars/Weapons';
+import { CHIPS_IDS_TO_NAMES } from '../../../constants/leekwars/Chips';
+import { COMPONENTS_IDS_TO_NAMES } from '../../../constants/leekwars/Components';
 
 function LeekDetail({ leek }: ILeekDetailProps) {
   const totalStats = getTotalStats(leek.build);

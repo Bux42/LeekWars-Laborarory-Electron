@@ -1,11 +1,11 @@
 import React from 'react';
 import { entityBuildStyles as styles } from './EntityBuild.styles';
 import { IEntityBuildProps } from './EntityBuild.types';
-import { getImage } from '../../utils/ImageLoader';
-import { WEAPONS_IDS_TO_NAMES } from '../../constants/leekwars/Weapons';
-import { CHIPS_IDS_TO_NAMES } from '../../constants/leekwars/Chips';
-import { COMPONENTS_IDS_TO_NAMES } from '../../constants/leekwars/Components';
-import { getTotalStats } from '../../utils/EntityBuildHelpers';
+import { getTotalStats } from '../../../utils/EntityBuildHelpers';
+import { CHIPS_IDS_TO_NAMES } from '../../../constants/leekwars/Chips';
+import { COMPONENTS_IDS_TO_NAMES } from '../../../constants/leekwars/Components';
+import { WEAPONS_IDS_TO_NAMES } from '../../../constants/leekwars/Weapons';
+import { getImage } from '../../../utils/ImageLoader';
 
 function EntityBuild({ entityBuild }: IEntityBuildProps) {
   const { level } = entityBuild;

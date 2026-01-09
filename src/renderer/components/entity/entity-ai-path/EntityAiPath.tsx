@@ -1,5 +1,5 @@
 import React from 'react';
-import HoverTooltip from '../shared/hover-tooltip/HoverTooltip';
+import HoverTooltip from '../../shared/hover-tooltip/HoverTooltip';
 import { IEntityAiPathProps } from './EntityAiPath.types';
 
 const EntityAiPath: React.FC<IEntityAiPathProps> = ({ entityAiPath }) => {

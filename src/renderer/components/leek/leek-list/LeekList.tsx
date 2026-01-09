@@ -1,14 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { leekListStyles as styles } from './LeekList.styles';
 import { ILeekListProps, SortField, SortDirection } from './LeekList.types';
-import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
-import { theme } from '../../theme';
-import { getImage } from '../../utils/ImageLoader';
-import Dropdown from '../shared/dropdown/Dropdown';
-import { IDropdownItem } from '../shared/dropdown/Dropdown.types';
-import HoverTooltip from '../shared/hover-tooltip/HoverTooltip';
+import { ILeek } from '../../../../services/leekwars-laboratory/types/leek/Leek.types';
+import { theme } from '../../../theme';
+import { getImage } from '../../../utils/ImageLoader';
+import Dropdown from '../../shared/dropdown/Dropdown';
+import HoverTooltip from '../../shared/hover-tooltip/HoverTooltip';
 import LeekDetail from '../leek-detail/LeekDetail';
-import EntityAiPath from '../entity-ai-path/EntityAiPath';
+import EntityAiPath from '../../entity/entity-ai-path/EntityAiPath';
 
 function LeekList({
   leeks,

@@ -1,8 +1,8 @@
 import React from 'react';
 import { leekPickerStyles as styles } from './LeekPicker.styles';
 import { ILeekPickerProps } from './LeekPicker.types';
-import { getImage } from '../../utils/ImageLoader';
-import { theme } from '../../theme';
+import { getImage } from '../../../utils/ImageLoader';
+import { theme } from '../../../theme';
 
 function LeekPicker({
   availableLeeks,

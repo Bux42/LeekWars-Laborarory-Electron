@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { leekAvatarPickerStyles as styles } from './LeekAvatarPicker.styles';
 import { ILeekAvatarPickerProps } from './LeekAvatarPicker.types';
 import { ALL_AVATAR_NAMES } from './LeekAvatarPicker.constants';
-import { getImage } from '../../utils/ImageLoader';
-import Button from '../shared/button/Button';
+import { getImage } from '../../../utils/ImageLoader';
+import Button from '../../shared/button/Button';
 
 const DEFAULT_AVATAR = 'leek1_front_green';
 

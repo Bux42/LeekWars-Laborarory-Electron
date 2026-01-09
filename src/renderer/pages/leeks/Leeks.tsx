@@ -4,7 +4,7 @@ import { leeksStyles as styles } from './Leeks.styles';
 import { theme } from '../../theme';
 import { useLeeks } from '../../../hooks/leeks/useLeeks';
 import { useDeleteLeek } from '../../../hooks/leeks/useDeleteLeek';
-import LeekList from '../../components/leek-list/LeekList';
+import LeekList from '../../components/leek/leek-list/LeekList';
 import Button from '../../components/shared/button/Button';
 import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { IDropdownItem } from '../../components/shared/dropdown/Dropdown.types';

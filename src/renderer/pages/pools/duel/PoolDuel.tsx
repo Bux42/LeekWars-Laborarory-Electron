@@ -4,11 +4,11 @@ import { poolsStyles as styles } from '../Pools.styles';
 import { usePoolDuels } from '../../../../hooks/pools/usePoolDuels';
 import { useUpdatePoolDuel } from '../../../../hooks/pools/useUpdatePoolDuel';
 import { IPoolDuel } from '../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
-import BasePoolWrapper from '../../../components/pool/BasePoolWrapper';
+import BasePoolWrapper from '../../../components/pool/base-pool-wrapper/BasePoolWrapper';
 import { useStartPoolDuel } from '../../../../hooks/pools/useStartPoolDuel';
 import Spinner from '../../../components/shared/spinner/Spinner';
 import { theme } from '../../../theme';
-import PoolDuelCard from '../../../components/pool-duel-card/PoolDuelCard';
+import PoolDuelCard from '../../../components/pool/duel/pool-duel-card/PoolDuelCard';
 
 function PoolDuel() {
   const navigate = useNavigate();
