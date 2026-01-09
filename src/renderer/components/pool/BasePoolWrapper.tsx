@@ -4,6 +4,7 @@ import { IBasePoolWrapperProps } from './BasePoolWrapper.types';
 import Toggle from '../shared/toggle/Toggle';
 import Input from '../shared/input/Input';
 import Button from '../shared/button/Button';
+import Spinner from '../shared/spinner/Spinner';
 
 const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
   pool,
@@ -16,6 +17,14 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
   onSetFightLimit,
   onStart,
 }) => {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleStart = async () => {
+    setLoading(true);
+    await onStart();
+    setLoading(false);
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
@@ -26,11 +35,11 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
             onChange={(checked) => onSetEnabled(checked)}
           />
         </div>
-        <Button onClick={onStart} variant="primary">
+        <Button onClick={handleStart} variant="primary">
           Start
         </Button>
+        {loading && <Spinner label="Starting pool..." />}
       </div>
-
       <div style={styles.infoGrid}>
         <div style={styles.infoItem}>
           <span style={styles.label}>Deterministic</span>
