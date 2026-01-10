@@ -4,9 +4,16 @@ import { IPoolDuelListProps } from './PoolDuelList.types';
 import { poolDuelListStyles as styles } from './PoolDuelList.styles';
 import Button from '../../../shared/button/Button';
 import { theme } from '../../../../theme';
+import Spinner from '../../../shared/spinner/Spinner';
+import { usePoolRunDuels } from '../../../../../hooks/pool-runs/usePoolRunDuels';
 
 const PoolDuelList: React.FC<IPoolDuelListProps> = ({ pools }) => {
   const navigate = useNavigate();
+  const { data: runs = [] } = usePoolRunDuels();
+
+  const getActiveRunsCount = (poolId: string) => {
+    return runs.filter((run) => run.pool.id === poolId && run.running).length;
+  };
 
   return (
     <div style={styles.container}>
@@ -26,7 +33,16 @@ const PoolDuelList: React.FC<IPoolDuelListProps> = ({ pools }) => {
           }}
         >
           <div style={styles.info}>
-            <span style={styles.name}>{pool.name}</span>
+            <div style={styles.nameContainer}>
+              <span style={styles.name}>{pool.name}</span>
+              {getActiveRunsCount(pool.id) > 0 && (
+                <Spinner
+                  size="small"
+                  label={`${getActiveRunsCount(pool.id)} running`}
+                  direction="row"
+                />
+              )}
+            </div>
             <span style={styles.details}>
               {pool.leekIds.length} leeks • Pool ID: {pool.id.substring(0, 8)}
               ...
@@ -43,16 +59,7 @@ const PoolDuelList: React.FC<IPoolDuelListProps> = ({ pools }) => {
         </div>
       ))}
       {pools.length === 0 && (
-        <p
-          style={{
-            color: theme.colors.text.tertiary,
-            fontStyle: 'italic',
-            textAlign: 'center',
-            padding: theme.spacing.md,
-          }}
-        >
-          No pool duels found.
-        </p>
+        <p style={styles.emptyText}>No pool duels found.</p>
       )}
     </div>
   );

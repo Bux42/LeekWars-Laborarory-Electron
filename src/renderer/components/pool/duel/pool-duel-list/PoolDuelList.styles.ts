@@ -34,4 +34,15 @@ export const poolDuelListStyles = {
     display: 'flex',
     alignItems: 'center',
   },
+  nameContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+  },
+  emptyText: {
+    color: theme.colors.text.tertiary,
+    fontStyle: 'italic',
+    textAlign: 'center' as const,
+    padding: theme.spacing.md,
+  },
 };
