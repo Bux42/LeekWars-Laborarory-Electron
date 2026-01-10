@@ -6,6 +6,7 @@ import Pools from './pages/pools/Pools';
 import PoolDuel from './pages/pools/duel/PoolDuel';
 import PoolDuelDetail from './pages/pools/duel/PoolDuelDetail';
 import PoolRunsDuel from './pages/pools/duel/PoolRunsDuel';
+import PoolRunDuelDetail from './pages/pools/duel/PoolRunDuelDetail';
 import Leeks from './pages/leeks/Leeks';
 import LeekCreation from './pages/leek-creation/LeekCreation';
 
@@ -32,7 +33,10 @@ export default function App() {
               path="/pools/duels/:poolId/runs"
               element={<PoolRunsDuel />}
             />
-            {/* Future: <Route path="/pools/duels/:poolId/runs/:runId" element={<PoolRunDuelDetail />} /> */}
+            <Route
+              path="/pools/duels/:poolId/runs/:runId"
+              element={<PoolRunDuelDetail />}
+            />
             <Route path="/leeks" element={<Leeks />} />
             <Route path="/new-leek" element={<LeekCreation />} />
           </Routes>

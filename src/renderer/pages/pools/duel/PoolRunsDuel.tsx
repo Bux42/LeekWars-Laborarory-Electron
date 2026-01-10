@@ -5,8 +5,10 @@ import { poolsStyles as styles } from '../Pools.styles';
 import PoolRunList from '../../../components/pool-runs/pool-run-list/PoolRunList';
 import Spinner from '../../../components/shared/spinner/Spinner';
 import { IPoolRunBase } from '../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
+import { useNavigate } from 'react-router-dom';
 
 const PoolRunsDuel: React.FC = () => {
+  const navigate = useNavigate();
   const poolId = usePoolDuelId();
   const {
     data: runs = [],
@@ -15,8 +17,7 @@ const PoolRunsDuel: React.FC = () => {
   } = usePoolRunDuelsByPoolId(poolId || '', 1000);
 
   const handleViewRun = (run: IPoolRunBase) => {
-    // navigate to specific run if needed, for now just log
-    console.log('Viewing run:', run.id);
+    navigate(`/pools/duels/${poolId}/runs/${run.id}`);
   };
 
   if (isLoading) {
