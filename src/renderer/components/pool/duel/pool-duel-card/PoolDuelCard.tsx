@@ -18,7 +18,16 @@ interface IPoolDuelCardProps {
 const PoolDuelCard: React.FC<IPoolDuelCardProps> = ({ pool }) => {
   const navigate = useNavigate();
   const { data: allLeeks = [], isLoading, error } = useLeeks();
-  const { data: runs = [] } = usePoolRunDuelsByPoolId(pool.id, 1000);
+
+  // First we fetch to see if any run is active
+  const initialQuery = usePoolRunDuelsByPoolId(pool.id);
+
+  // If at least one run is active, we poll
+  const hasActiveRuns = initialQuery.data?.some((run) => run.running) ?? false;
+  const { data: runs = [] } = usePoolRunDuelsByPoolId(
+    pool.id,
+    hasActiveRuns ? 1000 : undefined,
+  );
   const removeLeekMutation = useRemoveLeekFromPool();
 
   const activeRunsCount = useMemo(

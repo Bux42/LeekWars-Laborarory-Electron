@@ -9,7 +9,13 @@ import { usePoolRunDuels } from '../../../../../hooks/pool-runs/usePoolRunDuels'
 
 const PoolDuelList: React.FC<IPoolDuelListProps> = ({ pools }) => {
   const navigate = useNavigate();
-  const { data: runs = [] } = usePoolRunDuels(1000);
+
+  // First we fetch to see if any run is active
+  const initialQuery = usePoolRunDuels();
+
+  // If at least one run is active, we poll
+  const hasActiveRuns = initialQuery.data?.some((run) => run.running) ?? false;
+  const { data: runs = [] } = usePoolRunDuels(hasActiveRuns ? 1000 : undefined);
 
   const getActiveRunsCount = (poolId: string) => {
     return runs.filter((run) => run.pool.id === poolId && run.running).length;

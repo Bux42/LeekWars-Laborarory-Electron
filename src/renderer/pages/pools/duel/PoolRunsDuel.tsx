@@ -10,11 +10,17 @@ import { useNavigate } from 'react-router-dom';
 const PoolRunsDuel: React.FC = () => {
   const navigate = useNavigate();
   const poolId = usePoolDuelId();
+
+  // First we fetch to see if any run is active
+  const initialQuery = usePoolRunDuelsByPoolId(poolId || '');
+
+  // If at least one run is active, we poll
+  const hasActiveRuns = initialQuery.data?.some((run) => run.running) ?? false;
   const {
     data: runs = [],
     isLoading,
     error,
-  } = usePoolRunDuelsByPoolId(poolId || '', 1000);
+  } = usePoolRunDuelsByPoolId(poolId || '', hasActiveRuns ? 1000 : undefined);
 
   const handleViewRun = (run: IPoolRunBase) => {
     navigate(`/pools/duels/${poolId}/runs/${run.id}`);
