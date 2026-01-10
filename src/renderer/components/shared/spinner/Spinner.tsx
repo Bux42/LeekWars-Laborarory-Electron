@@ -6,9 +6,10 @@ const Spinner: React.FC<ISpinnerProps> = ({
   size = 'medium',
   color,
   label,
+  direction = 'column',
 }) => {
   return (
-    <div style={styles.container}>
+    <div style={styles.container(direction)}>
       {/* Inject keyframes locally if they don't exist */}
       <style>
         {`

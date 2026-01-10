@@ -1,13 +1,13 @@
 import { theme } from '../../../theme';
 
 export const spinnerStyles = {
-  container: {
+  container: (direction: 'row' | 'column' = 'column') => ({
     display: 'flex',
-    flexDirection: 'column' as const,
+    flexDirection: direction as any,
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing.sm,
-  },
+  }),
   spinner: (size: 'small' | 'medium' | 'large', color?: string) => {
     const sizeMap = {
       small: '16px',
