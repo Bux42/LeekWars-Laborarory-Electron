@@ -42,3 +42,26 @@ export const getDuration = (
 
   return parts.join(' ');
 };
+
+/**
+ * Returns a human-readable relative time string (e.g., "5 minutes ago")
+ * @param timestamp The timestamp in milliseconds
+ * @returns A formatted relative time string or 'N/A'
+ */
+export const getTimeAgo = (timestamp: number | undefined): string => {
+  if (!timestamp) return 'N/A';
+
+  const diff = Math.max(0, Date.now() - timestamp);
+
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+  if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  if (seconds > 10) return `${seconds} seconds ago`;
+
+  return 'just now';
+};

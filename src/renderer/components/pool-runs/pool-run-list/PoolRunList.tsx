@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IPoolRunListProps } from './PoolRunList.types';
 import { poolRunListStyles as styles } from './PoolRunList.styles';
-import { getDuration } from '../../../utils/DateUtils';
+import { getDuration, getTimeAgo } from '../../../utils/DateUtils';
 import Button from '../../shared/button/Button';
 import Spinner from '../../shared/spinner/Spinner';
 import { theme } from '../../../theme';
@@ -11,15 +11,13 @@ const PoolRunList: React.FC<IPoolRunListProps> = ({ runs, onViewRun }) => {
   const [, setTick] = useState(0);
 
   useEffect(() => {
-    const hasActiveRuns = runs.some((run) => run.running);
-    if (!hasActiveRuns) return;
-
+    // Also tick if we want the "x minutes ago" to be dynamic
     const interval = setInterval(() => {
       setTick((t) => t + 1);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [runs]);
+  }, []);
 
   return (
     <div style={styles.container}>
@@ -48,7 +46,9 @@ const PoolRunList: React.FC<IPoolRunListProps> = ({ runs, onViewRun }) => {
             <span style={styles.details}>
               Duration: {getDuration(run.startTime, run.endTime)}
               {run.interrupted && ' • Interrupted'}
-              {!run.running && !run.interrupted && ' • Completed'}
+              {!run.running && !run.interrupted && (
+                <> • Completed ({getTimeAgo(run.endTime)})</>
+              )}
             </span>
           </div>
           <div style={styles.actions}>
