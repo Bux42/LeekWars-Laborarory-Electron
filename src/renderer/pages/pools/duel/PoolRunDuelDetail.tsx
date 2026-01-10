@@ -4,6 +4,7 @@ import { usePoolRunDuel } from '../../../../hooks/pool-runs/duel/usePoolRunDuel'
 import BasePoolRunWrapper from '../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
 import Spinner from '../../../components/shared/spinner/Spinner';
 import { poolsStyles as styles } from '../Pools.styles';
+import LeekList from '../../../components/leek/leek-list/LeekList';
 
 const PoolRunDuelDetail: React.FC = () => {
   const runId = usePoolRunDuelId();
@@ -44,7 +45,9 @@ const PoolRunDuelDetail: React.FC = () => {
       <div style={styles.sectionHeader}>
         <h2 style={styles.sectionTitle}>Run Details</h2>
       </div>
-      <BasePoolRunWrapper run={run} />
+      <BasePoolRunWrapper run={run}>
+        <LeekList leeks={run.leeks} showElo />
+      </BasePoolRunWrapper>
     </div>
   );
 };

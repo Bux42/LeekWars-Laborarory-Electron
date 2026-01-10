@@ -14,6 +14,7 @@ import LeekService from '../../services/LeekService/LeekService';
 import FileService from '../../services/FileService/FileService';
 import PoolDuelService from '../../services/PoolDuelService/PoolDuelService';
 import PoolRunDuelService from '../../services/PoolRunDuelService/PoolRunDuelService';
+import PoolFightDuelService from '../../services/PoolFightDuelService/PoolFightDuelService';
 import { BaseService } from '../../services/BaseService';
 
 const STORAGE_KEY = 'leekwars-laboratory-port';
@@ -70,6 +71,7 @@ export function ServerProvider({ children }: IServerProviderProps) {
       fileService: FileService,
       poolDuelService: PoolDuelService,
       poolRunDuelService: PoolRunDuelService,
+      poolFightDuelService: PoolFightDuelService,
     }),
     [isServerRunning, port, setPort, checkServerStatus],
   );
