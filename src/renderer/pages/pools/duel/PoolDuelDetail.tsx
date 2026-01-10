@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { usePoolDuels } from '../../../../hooks/pools/duel/usePoolDuels';
 import { usePoolDuelId } from '../../../../hooks/pools/duel/usePoolDuelId';
 import { poolsStyles as styles } from '../Pools.styles';
@@ -10,6 +11,7 @@ import Spinner from '../../../components/shared/spinner/Spinner';
 import PoolDuelCard from '../../../components/pool/duel/pool-duel-card/PoolDuelCard';
 
 function PoolDuelDetail() {
+  const navigate = useNavigate();
   const poolId = usePoolDuelId();
   const { data: pools = [], isLoading, error } = usePoolDuels();
   const updateMutation = useUpdatePoolDuel();
@@ -32,7 +34,10 @@ function PoolDuelDetail() {
 
   const handleStartPool = async (poolId: string) => {
     try {
-      await startMutation.mutateAsync({ id: poolId });
+      const result = await startMutation.mutateAsync({ id: poolId });
+      if (result?.run_id) {
+        navigate(`/pools/duels/${poolId}/runs/${result.run_id}`);
+      }
     } catch (err) {
       console.error('Failed to start pool duel:', err);
     }
