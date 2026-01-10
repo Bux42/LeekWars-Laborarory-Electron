@@ -9,7 +9,7 @@ import { usePoolRunDuels } from '../../../../../hooks/pool-runs/usePoolRunDuels'
 
 const PoolDuelList: React.FC<IPoolDuelListProps> = ({ pools }) => {
   const navigate = useNavigate();
-  const { data: runs = [] } = usePoolRunDuels();
+  const { data: runs = [] } = usePoolRunDuels(1000);
 
   const getActiveRunsCount = (poolId: string) => {
     return runs.filter((run) => run.pool.id === poolId && run.running).length;

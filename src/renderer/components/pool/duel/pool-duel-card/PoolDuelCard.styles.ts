@@ -16,6 +16,10 @@ export const poolDuelCardStyles = {
     color: theme.colors.text.tertiary,
     marginBottom: theme.spacing.sm,
   },
+  details: {
+    fontSize: '0.85rem',
+    color: theme.colors.text.secondary,
+  },
   loadingText: {
     color: theme.colors.text.tertiary,
     fontStyle: 'italic' as const,
@@ -26,5 +30,20 @@ export const poolDuelCardStyles = {
   emptyText: {
     color: theme.colors.text.tertiary,
     fontStyle: 'italic' as const,
+  },
+  runsSummary: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '12px',
+    backgroundColor: 'rgba(0, 122, 204, 0.1)',
+    borderRadius: '4px',
+    marginBottom: '16px',
+    border: `1px solid ${theme.colors.border.primary}`,
+  },
+  runsInfo: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
   },
 };
