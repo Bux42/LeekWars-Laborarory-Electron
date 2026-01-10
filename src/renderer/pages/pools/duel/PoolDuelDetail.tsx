@@ -1,10 +1,10 @@
 import React from 'react';
-import { usePoolDuels } from '../../../../hooks/pools/usePoolDuels';
-import { usePoolDuelId } from '../../../../hooks/pools/usePoolDuelId';
+import { usePoolDuels } from '../../../../hooks/pools/duel/usePoolDuels';
+import { usePoolDuelId } from '../../../../hooks/pools/duel/usePoolDuelId';
 import { poolsStyles as styles } from '../Pools.styles';
 import BasePoolWrapper from '../../../components/pool/base-pool-wrapper/BasePoolWrapper';
-import { useUpdatePoolDuel } from '../../../../hooks/pools/useUpdatePoolDuel';
-import { useStartPoolDuel } from '../../../../hooks/pools/useStartPoolDuel';
+import { useUpdatePoolDuel } from '../../../../hooks/pools/duel/useUpdatePoolDuel';
+import { useStartPoolDuel } from '../../../../hooks/pools/duel/useStartPoolDuel';
 import { IPoolDuel } from '../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
 import Spinner from '../../../components/shared/spinner/Spinner';
 import PoolDuelCard from '../../../components/pool/duel/pool-duel-card/PoolDuelCard';

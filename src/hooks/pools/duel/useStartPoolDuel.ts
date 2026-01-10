@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { useServerContext } from '../../context/server/ServerContext';
-import { IStartPoolDuelRequest } from '../../services/PoolDuelService/requests/StartPoolDuel.types';
+import { useServerContext } from '../../../context/server/ServerContext';
+import { IStartPoolDuelRequest } from '../../../services/PoolDuelService/requests/StartPoolDuel.types';
 
 export const useStartPoolDuel = () => {
   const { poolDuelService } = useServerContext();

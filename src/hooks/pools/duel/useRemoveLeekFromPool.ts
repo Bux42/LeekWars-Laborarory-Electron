@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useServerContext } from '../../context/server/ServerContext';
-import { IRemoveLeekFromPoolRequest } from '../../services/PoolDuelService/requests/RemoveLeekFromPool.types';
+import { useServerContext } from '../../../context/server/ServerContext';
+import { IRemoveLeekFromPoolRequest } from '../../../services/PoolDuelService/requests/RemoveLeekFromPool.types';
 
 export const useRemoveLeekFromPool = () => {
   const { poolDuelService } = useServerContext();

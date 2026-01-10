@@ -1,6 +1,6 @@
 import React from 'react';
-import { usePoolDuelId } from '../../../../hooks/pools/usePoolDuelId';
-import { usePoolRunDuelsByPoolId } from '../../../../hooks/pool-runs/usePoolRunDuelsByPoolId';
+import { usePoolDuelId } from '../../../../hooks/pools/duel/usePoolDuelId';
+import { usePoolRunDuelsByPoolId } from '../../../../hooks/pool-runs/duel/usePoolRunDuelsByPoolId';
 import { poolsStyles as styles } from '../Pools.styles';
 import PoolRunList from '../../../components/pool-runs/pool-run-list/PoolRunList';
 import Spinner from '../../../components/shared/spinner/Spinner';

@@ -1,5 +1,5 @@
 import { poolsStyles as styles } from '../Pools.styles';
-import { usePoolDuels } from '../../../../hooks/pools/usePoolDuels';
+import { usePoolDuels } from '../../../../hooks/pools/duel/usePoolDuels';
 import PoolDuelList from '../../../components/pool/duel/pool-duel-list/PoolDuelList';
 
 function PoolDuel() {

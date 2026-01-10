@@ -5,7 +5,7 @@ import { poolDuelListStyles as styles } from './PoolDuelList.styles';
 import Button from '../../../shared/button/Button';
 import { theme } from '../../../../theme';
 import Spinner from '../../../shared/spinner/Spinner';
-import { usePoolRunDuels } from '../../../../../hooks/pool-runs/usePoolRunDuels';
+import { usePoolRunDuels } from '../../../../../hooks/pool-runs/duel/usePoolRunDuels';
 
 const PoolDuelList: React.FC<IPoolDuelListProps> = ({ pools }) => {
   const navigate = useNavigate();
