@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLeeks } from '../../../../../hooks/leeks/useLeeks';
 import { useRemoveLeekFromPool } from '../../../../../hooks/pools/duel/useRemoveLeekFromPool';
 import { usePoolRunDuelsByPoolId } from '../../../../../hooks/pool-runs/duel/usePoolRunDuelsByPoolId';
+import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
 import { ILeek } from '../../../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { IPoolDuel } from '../../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
 import LeekList from '../../../leek/leek-list/LeekList';
@@ -29,6 +30,11 @@ const PoolDuelCard: React.FC<IPoolDuelCardProps> = ({ pool }) => {
     hasActiveRuns ? 1000 : undefined,
   );
   const removeLeekMutation = useRemoveLeekFromPool();
+
+  const { totalScenarios, totalFights } = usePoolFightEstimation(
+    pool.leekIds.length,
+    pool.fightLimit,
+  );
 
   const activeRunsCount = useMemo(
     () => runs.filter((run) => run.running).length,
@@ -76,9 +82,6 @@ const PoolDuelCard: React.FC<IPoolDuelCardProps> = ({ pool }) => {
       </p>
     );
   }
-
-  const totalScenarios = pool.leekIds.length * (pool.leekIds.length - 1);
-  const totalFights = totalScenarios * (pool.fightLimit || 1);
 
   return (
     <div style={styles.container}>
