@@ -12,6 +12,10 @@ import {
   IStartPoolDuelRequest,
   IStartPoolDuelResponse,
 } from './requests/StartPoolDuel.types';
+import {
+  IAddLeekToPoolRequest,
+  IAddLeekToPoolResponse,
+} from './requests/AddLeekToPool.types';
 
 class PoolDuelService extends BaseService {
   /**
@@ -41,6 +45,18 @@ class PoolDuelService extends BaseService {
   ): Promise<IRemoveLeekFromPoolResponse> {
     return this.deleteWithBody<IRemoveLeekFromPoolResponse>(
       '/api/pools/duel/remove-leek',
+      params,
+    );
+  }
+
+  /**
+   * Add a leek to a pool duel
+   */
+  public async addLeekToPool(
+    params: IAddLeekToPoolRequest,
+  ): Promise<IAddLeekToPoolResponse> {
+    return this.post<IAddLeekToPoolResponse>(
+      '/api/pools/duel/add-leek',
       params,
     );
   }
