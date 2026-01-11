@@ -5,9 +5,11 @@ import { useLeeks } from '../../../../../hooks/leeks/useLeeks';
 import { useRemoveLeekFromPool } from '../../../../../hooks/pools/duel/useRemoveLeekFromPool';
 import { usePoolRunDuelsByPoolId } from '../../../../../hooks/pool-runs/duel/usePoolRunDuelsByPoolId';
 import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
+import { useAddLeekToPool } from '../../../../../hooks/pools/duel/useAddLeekToPool';
 import { ILeek } from '../../../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { IPoolDuel } from '../../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
 import LeekList from '../../../leek/leek-list/LeekList';
+import LeekPicker from '../../../leek/leek-picker/LeekPicker';
 import { IDropdownItem } from '../../../shared/dropdown/Dropdown.types';
 import Button from '../../../shared/button/Button';
 import Spinner from '../../../shared/spinner/Spinner';
@@ -30,6 +32,18 @@ const PoolDuelCard: React.FC<IPoolDuelCardProps> = ({ pool }) => {
     hasActiveRuns ? 1000 : undefined,
   );
   const removeLeekMutation = useRemoveLeekFromPool();
+  const addLeekMutation = useAddLeekToPool();
+
+  const handleAddLeek = async (leekId: string) => {
+    try {
+      await addLeekMutation.mutateAsync({
+        poolId: pool.id,
+        leekId,
+      });
+    } catch (err) {
+      console.error('Failed to add leek to pool:', err);
+    }
+  };
 
   const { totalScenarios, totalFights } = usePoolFightEstimation(
     pool.leekIds.length,
@@ -89,7 +103,11 @@ const PoolDuelCard: React.FC<IPoolDuelCardProps> = ({ pool }) => {
         Total estimated fights: {totalFights} ({totalScenarios} duel
         combinations x {pool.fightLimit || 1} fights)
       </div>
-
+      <LeekPicker
+        availableLeeks={allLeeks}
+        selectedLeekIds={pool.leekIds}
+        onLeekSelect={handleAddLeek}
+      />
       {runs.length > 0 && (
         <div style={styles.runsSummary}>
           <div style={styles.runsInfo}>
