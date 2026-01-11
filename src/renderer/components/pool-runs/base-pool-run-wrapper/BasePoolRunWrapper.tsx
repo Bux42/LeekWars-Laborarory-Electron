@@ -2,12 +2,23 @@ import React from 'react';
 import { basePoolRunWrapperStyles as styles } from './BasePoolRunWrapper.styles';
 import { IBasePoolRunWrapperProps } from './BasePoolRunWrapper.types';
 import Spinner from '../../shared/spinner/Spinner';
+import Button from '../../shared/button/Button';
 import { formatDate, getDuration } from '../../../utils/DateUtils';
 
 const BasePoolRunWrapper: React.FC<IBasePoolRunWrapperProps> = ({
   run,
   children,
+  onStop,
 }) => {
+  const [stopping, setStopping] = React.useState(false);
+
+  const handleStop = async () => {
+    if (onStop) {
+      setStopping(true);
+      await onStop();
+      setStopping(false);
+    }
+  };
   return (
     <div style={styles.container}>
       <div style={styles.header}>
@@ -22,9 +33,16 @@ const BasePoolRunWrapper: React.FC<IBasePoolRunWrapperProps> = ({
           </span>
           {run.running && <Spinner />}
         </div>
-        <div style={styles.label}>
-          ID: <span style={{ fontFamily: 'monospace' }}>{run.id}</span>
-        </div>
+
+        {run.running && onStop ? (
+          <Button onClick={handleStop} variant="danger" disabled={stopping}>
+            {stopping ? 'Stopping...' : 'Stop'}
+          </Button>
+        ) : (
+          <div style={styles.label}>
+            ID: <span style={{ fontFamily: 'monospace' }}>{run.id}</span>
+          </div>
+        )}
       </div>
 
       <div style={styles.infoGrid}>

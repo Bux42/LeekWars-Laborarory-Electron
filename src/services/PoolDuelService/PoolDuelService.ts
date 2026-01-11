@@ -16,6 +16,10 @@ import {
   IAddLeekToPoolRequest,
   IAddLeekToPoolResponse,
 } from './requests/AddLeekToPool.types';
+import {
+  IStopPoolDuelRequest,
+  IStopPoolDuelResponse,
+} from './requests/StopPoolDuel.types';
 
 class PoolDuelService extends BaseService {
   /**
@@ -68,6 +72,18 @@ class PoolDuelService extends BaseService {
     params: IStartPoolDuelRequest,
   ): Promise<IStartPoolDuelResponse> {
     return this.post<IStartPoolDuelResponse>('/api/pools/duel/start', params);
+  }
+
+  /**
+   * Stop a pool duel run
+   */
+  public async stopPool(
+    params: IStopPoolDuelRequest,
+  ): Promise<IStopPoolDuelResponse> {
+    return this.post<IStopPoolDuelResponse>(
+      '/api/pools/duel/stop-pool',
+      params,
+    );
   }
 }
 

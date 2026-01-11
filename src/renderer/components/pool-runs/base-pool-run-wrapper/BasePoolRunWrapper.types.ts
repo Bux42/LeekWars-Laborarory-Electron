@@ -3,4 +3,5 @@ import { IPoolRunBase } from '../../../../services/leekwars-laboratory/types/poo
 export interface IBasePoolRunWrapperProps {
   run: IPoolRunBase;
   children?: React.ReactNode;
+  onStop?: () => void;
 }

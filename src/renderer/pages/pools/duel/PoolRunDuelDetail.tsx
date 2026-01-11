@@ -3,6 +3,7 @@ import { usePoolRunDuelId } from '../../../../hooks/pool-runs/duel/usePoolRunDue
 import { usePoolRunDuel } from '../../../../hooks/pool-runs/duel/usePoolRunDuel';
 import { usePoolFightEstimation } from '../../../../hooks/pools/duel/usePoolFightEstimation';
 import { usePoolFightDuelCountByPoolRunId } from '../../../../hooks/fights/duel/usePoolFightDuelCountByPoolRunId';
+import { useStopPoolDuel } from '../../../../hooks/pools/duel/useStopPoolDuel';
 import BasePoolRunWrapper from '../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
 import ProgressBar from '../../../components/shared/progress-bar/ProgressBar';
 import Spinner from '../../../components/shared/spinner/Spinner';
@@ -11,9 +12,20 @@ import LeekList from '../../../components/leek/leek-list/LeekList';
 
 const PoolRunDuelDetail: React.FC = () => {
   const runId = usePoolRunDuelId();
+  const stopMutation = useStopPoolDuel();
 
   // First we fetch to see if it exists and its status
   const startQuery = usePoolRunDuel(runId || '');
+
+  const handleStop = async () => {
+    if (run?.id) {
+      try {
+        await stopMutation.mutateAsync({ id: run.id });
+      } catch (err) {
+        console.error('Failed to stop pool:', err);
+      }
+    }
+  };
 
   // If it's running, we poll every second
   const isRunning = startQuery.data?.running ?? false;
@@ -58,7 +70,7 @@ const PoolRunDuelDetail: React.FC = () => {
       <div style={styles.sectionHeader}>
         <h2 style={styles.sectionTitle}>Run Details</h2>
       </div>
-      <BasePoolRunWrapper run={run}>
+      <BasePoolRunWrapper run={run} onStop={handleStop}>
         <div style={{ marginBottom: '24px' }}>
           <ProgressBar
             label="Fight Progress"
