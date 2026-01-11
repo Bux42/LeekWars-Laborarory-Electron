@@ -4,6 +4,7 @@ import FileService from '../../services/FileService/FileService';
 import PoolDuelService from '../../services/PoolDuelService/PoolDuelService';
 import PoolRunDuelService from '../../services/PoolRunDuelService/PoolRunDuelService';
 import PoolFightDuelService from '../../services/PoolFightDuelService/PoolFightDuelService';
+import LeekscriptAIService from '../../services/LeekscriptAIService/LeekscriptAIService';
 
 export interface IServerContextValue {
   isServerRunning: boolean;
@@ -16,6 +17,7 @@ export interface IServerContextValue {
   poolDuelService: typeof PoolDuelService;
   poolRunDuelService: typeof PoolRunDuelService;
   poolFightDuelService: typeof PoolFightDuelService;
+  leekscriptAIService: typeof LeekscriptAIService;
 }
 
 export interface IServerProviderProps {
