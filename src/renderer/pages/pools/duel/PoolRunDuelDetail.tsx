@@ -9,6 +9,7 @@ import ProgressBar from '../../../components/shared/progress-bar/ProgressBar';
 import Spinner from '../../../components/shared/spinner/Spinner';
 import { poolsStyles as styles } from '../Pools.styles';
 import LeekList from '../../../components/leek/leek-list/LeekList';
+import LeekDetail from '../../../components/leek/leek-detail/LeekDetail';
 
 const PoolRunDuelDetail: React.FC = () => {
   const runId = usePoolRunDuelId();
@@ -78,7 +79,9 @@ const PoolRunDuelDetail: React.FC = () => {
             max={totalFights}
           />
         </div>
-        <LeekList leeks={run.leeks} showElo />
+        {run.leeks.map((leek) => (
+          <LeekDetail leek={leek} />
+        ))}
       </BasePoolRunWrapper>
     </div>
   );
