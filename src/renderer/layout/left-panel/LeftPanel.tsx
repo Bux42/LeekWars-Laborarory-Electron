@@ -21,6 +21,7 @@ function LeftPanel() {
       children: [{ path: '/pools/duels', label: 'Duels' }],
     },
     { path: '/leeks', label: 'Leeks' },
+    { path: '/ais', label: 'AIs' },
   ];
 
   const getNavLinkStyle = (path: string, isSubItem = false) => ({
