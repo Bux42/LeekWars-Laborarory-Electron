@@ -2,6 +2,7 @@ import { ILeekScriptAI } from '../../leekwars-laboratory/leekscript-ai/Leekscrip
 
 export interface IGetByMergedCodeHashRequest {
   mergedCodeHash: string;
+  removeCode?: boolean;
 }
 
 export interface IGetByMergedCodeHashResponse {

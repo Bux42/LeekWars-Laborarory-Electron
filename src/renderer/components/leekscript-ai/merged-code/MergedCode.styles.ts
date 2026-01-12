@@ -28,6 +28,8 @@ export const mergedCodeStyles = {
     color: theme.colors.accent.primary,
     fontSize: '0.9rem',
     fontFamily: 'monospace',
+    cursor: 'pointer',
+    textDecoration: 'underline' as const,
   },
   codeContainer: {
     maxHeight: '400px',
