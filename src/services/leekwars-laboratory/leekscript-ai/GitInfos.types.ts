@@ -1,6 +1,7 @@
 export interface IGitInfos {
-  gitRepoUrl: string;
-  gitCommitHash: string;
+  repoUrl: string;
+  branchName: string;
+  commitHash: string;
   hasUncommittedChanges: boolean;
-  gitDiffOutput: string;
+  diffOutput: string;
 }

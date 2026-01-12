@@ -4,16 +4,16 @@ import { gitInfosStyles as styles } from './GitInfos.styles';
 
 const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos }) => {
   const getCommitUrl = () => {
-    if (!gitInfos.gitRepoUrl || !gitInfos.gitCommitHash) return null;
+    if (!gitInfos.repoUrl || !gitInfos.commitHash) return null;
 
     // Check if it's a github repo
-    if (gitInfos.gitRepoUrl.includes('github.com')) {
-      let baseUrl = gitInfos.gitRepoUrl;
+    if (gitInfos.repoUrl.includes('github.com')) {
+      let baseUrl = gitInfos.repoUrl;
       // Remove trailing .git if present
       if (baseUrl.endsWith('.git')) {
         baseUrl = baseUrl.substring(0, baseUrl.length - 4);
       }
-      return `${baseUrl}/commit/${gitInfos.gitCommitHash}`;
+      return `${baseUrl}/commit/${gitInfos.commitHash}`;
     }
 
     return null;
@@ -32,12 +32,12 @@ const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos }) => {
       <div style={styles.infoGrid}>
         <span style={styles.label}>Repository</span>
         <a
-          href={gitInfos.gitRepoUrl}
+          href={gitInfos.repoUrl}
           target="_blank"
           rel="noopener noreferrer"
           style={styles.link}
         >
-          {gitInfos.gitRepoUrl}
+          {gitInfos.repoUrl}
         </a>
 
         <span style={styles.label}>Commit Hash</span>
@@ -48,17 +48,17 @@ const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos }) => {
             rel="noopener noreferrer"
             style={styles.link}
           >
-            {gitInfos.gitCommitHash}
+            {gitInfos.commitHash}
           </a>
         ) : (
-          <span style={styles.value}>{gitInfos.gitCommitHash}</span>
+          <span style={styles.value}>{gitInfos.commitHash}</span>
         )}
       </div>
 
-      {gitInfos.gitDiffOutput && (
+      {gitInfos.diffOutput && (
         <div style={styles.diffContainer}>
           <div style={styles.label}>Uncommitted Changes Diff</div>
-          <pre style={styles.diffCode}>{gitInfos.gitDiffOutput}</pre>
+          <pre style={styles.diffCode}>{gitInfos.diffOutput}</pre>
         </div>
       )}
     </div>
