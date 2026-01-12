@@ -11,6 +11,7 @@ import Leeks from './pages/leeks/Leeks';
 import LeekCreation from './pages/leek-creation/LeekCreation';
 import AIs from './pages/ais/AIs';
 import AIDetail from './pages/ais/details/AIDetail';
+import CreateAI from './pages/ais/create/CreateAI';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,7 @@ export default function App() {
             <Route path="/leeks" element={<Leeks />} />
             <Route path="/new-leek" element={<LeekCreation />} />
             <Route path="/ais" element={<AIs />} />
+            <Route path="/ais/create" element={<CreateAI />} />
             <Route path="/ais/:hash" element={<AIDetail />} />
           </Routes>
         </Layout>

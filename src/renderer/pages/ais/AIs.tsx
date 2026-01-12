@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { aisStyles as styles } from './AIs.styles';
 import Button from '../../components/shared/button/Button';
 import LeekscriptAI from '../../components/leekscript-ai/LeekscriptAI';
@@ -6,10 +7,11 @@ import Spinner from '../../components/shared/spinner/Spinner';
 import { useLeekscriptAIs } from '../../../hooks/leekscript-ai/useLeekscriptAIs';
 
 const AIs: React.FC = () => {
+  const navigate = useNavigate();
   const { data: ais = [], isLoading, error } = useLeekscriptAIs(true);
 
   const handleAddAI = () => {
-    console.log('adding ai');
+    navigate('/ais/create');
   };
 
   return (
