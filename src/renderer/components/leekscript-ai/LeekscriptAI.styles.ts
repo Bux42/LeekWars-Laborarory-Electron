@@ -15,6 +15,12 @@ export const leekscriptAIStyles = {
     paddingBottom: '4px',
     display: 'inline-block',
   },
+  mainTitle: {
+    color: theme.colors.text.primary,
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    marginBottom: theme.spacing.sm,
+  },
   metadataContainer: {
     backgroundColor: theme.colors.background.tertiary,
     padding: theme.spacing.md,

@@ -9,12 +9,8 @@ const LeekscriptAI: React.FC<ILeekscriptAIProps> = ({ leekscriptAI }) => {
   return (
     <div style={styles.container} id={`leekscript-ai-${leekscriptAI.id}`}>
       <div>
-        <h3 style={styles.sectionTitle}>General Information</h3>
+        <h3 style={styles.mainTitle}>{leekscriptAI.name}</h3>
         <div style={styles.metadataContainer}>
-          <div style={styles.metadataItem}>
-            <span style={styles.label}>Name</span>
-            <span style={styles.value}>{leekscriptAI.name}</span>
-          </div>
           <div style={styles.metadataItem}>
             <span style={styles.label}>Creation Date</span>
             <span style={styles.value}>

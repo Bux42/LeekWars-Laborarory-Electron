@@ -40,4 +40,11 @@ export const aisStyles = {
     textAlign: 'center' as const,
     padding: theme.spacing.xl,
   },
+  aiCard: {
+    backgroundColor: theme.colors.background.secondary,
+    border: `1px solid ${theme.colors.border.secondary}`,
+    borderRadius: theme.borderRadius.lg,
+    padding: theme.spacing.lg,
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+  },
 };

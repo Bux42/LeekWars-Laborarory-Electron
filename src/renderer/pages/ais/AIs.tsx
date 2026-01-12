@@ -34,7 +34,9 @@ const AIs: React.FC = () => {
       ) : (
         <div style={styles.list}>
           {ais.map((ai) => (
-            <LeekscriptAI key={ai.id} leekscriptAI={ai} />
+            <div key={ai.id} style={styles.aiCard}>
+              <LeekscriptAI leekscriptAI={ai} />
+            </div>
           ))}
         </div>
       )}
