@@ -20,4 +20,24 @@ export const aisStyles = {
     fontSize: '1.5rem',
     fontWeight: 'bold',
   },
+  list: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: theme.spacing.xl,
+  },
+  loadingText: {
+    color: theme.colors.text.secondary,
+    textAlign: 'center' as const,
+    padding: theme.spacing.xl,
+  },
+  errorText: {
+    color: theme.colors.accent.error,
+    textAlign: 'center' as const,
+    padding: theme.spacing.xl,
+  },
+  emptyText: {
+    color: theme.colors.text.tertiary,
+    textAlign: 'center' as const,
+    padding: theme.spacing.xl,
+  },
 };

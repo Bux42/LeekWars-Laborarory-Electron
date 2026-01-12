@@ -1,8 +1,13 @@
 import React from 'react';
 import { aisStyles as styles } from './AIs.styles';
 import Button from '../../components/shared/button/Button';
+import LeekscriptAI from '../../components/leekscript-ai/LeekscriptAI';
+import Spinner from '../../components/shared/spinner/Spinner';
+import { useLeekscriptAIs } from '../../../hooks/leekscript-ai/useLeekscriptAIs';
 
 const AIs: React.FC = () => {
+  const { data: ais = [], isLoading, error } = useLeekscriptAIs(true);
+
   const handleAddAI = () => {
     console.log('adding ai');
   };
@@ -10,14 +15,29 @@ const AIs: React.FC = () => {
   return (
     <div style={styles.container}>
       <header style={styles.header}>
-        <h1 style={styles.title}>AIs</h1>
+        <h1 style={styles.title}>All AIs</h1>
         <Button onClick={handleAddAI} variant="primary">
           Add AI
         </Button>
       </header>
-      <div>
-        <p>Manage your LeekScript AIs here.</p>
-      </div>
+
+      {isLoading ? (
+        <div style={styles.loadingText}>
+          <Spinner label="Loading AIs..." />
+        </div>
+      ) : error ? (
+        <p style={styles.errorText}>
+          Error: {error instanceof Error ? error.message : 'Failed to load AIs'}
+        </p>
+      ) : ais.length === 0 ? (
+        <p style={styles.emptyText}>No leekscript AIs found.</p>
+      ) : (
+        <div style={styles.list}>
+          {ais.map((ai) => (
+            <LeekscriptAI key={ai.id} leekscriptAI={ai} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

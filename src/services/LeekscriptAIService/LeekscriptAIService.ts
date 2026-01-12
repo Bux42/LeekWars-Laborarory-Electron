@@ -1,14 +1,23 @@
 import { BaseService } from '../BaseService';
 import { IGetByMergedCodeHashResponse } from './requests/GetByMergedCodeHash.types';
-import { IGetAllLeekscriptAisResponse } from './requests/GetAllLeekscriptAis.types';
+import {
+  IGetAllLeekscriptAisRequest,
+  IGetAllLeekscriptAisResponse,
+} from './requests/GetAllLeekscriptAis.types';
 
 class LeekscriptAIService extends BaseService {
   /**
    * Get all LeekScript AIs from the server
    */
-  public async getAllLeekscriptAis(): Promise<IGetAllLeekscriptAisResponse> {
+  public async getAllLeekscriptAis(
+    params?: IGetAllLeekscriptAisRequest,
+  ): Promise<IGetAllLeekscriptAisResponse> {
+    const query =
+      params?.removeCode !== undefined
+        ? `?removeCode=${params.removeCode}`
+        : '';
     return this.get<IGetAllLeekscriptAisResponse>(
-      '/api/leekscript-ais/get-all',
+      `/api/leekscript-ais/get-all${query}`,
     );
   }
 
