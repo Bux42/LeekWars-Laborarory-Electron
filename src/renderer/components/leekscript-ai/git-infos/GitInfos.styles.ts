@@ -32,6 +32,14 @@ export const gitInfosStyles = {
     fontFamily: 'monospace',
     wordBreak: 'break-all' as const,
   },
+  link: {
+    color: theme.colors.accent.primary,
+    fontSize: '0.9rem',
+    fontFamily: 'monospace',
+    wordBreak: 'break-all' as const,
+    textDecoration: 'none',
+    cursor: 'pointer',
+  },
   badge: (hasChanges: boolean) => ({
     display: 'inline-block',
     padding: '2px 6px',

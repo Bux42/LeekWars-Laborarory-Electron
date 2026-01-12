@@ -3,6 +3,24 @@ import { IGitInfosProps } from './GitInfos.types';
 import { gitInfosStyles as styles } from './GitInfos.styles';
 
 const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos }) => {
+  const getCommitUrl = () => {
+    if (!gitInfos.gitRepoUrl || !gitInfos.gitCommitHash) return null;
+
+    // Check if it's a github repo
+    if (gitInfos.gitRepoUrl.includes('github.com')) {
+      let baseUrl = gitInfos.gitRepoUrl;
+      // Remove trailing .git if present
+      if (baseUrl.endsWith('.git')) {
+        baseUrl = baseUrl.substring(0, baseUrl.length - 4);
+      }
+      return `${baseUrl}/commit/${gitInfos.gitCommitHash}`;
+    }
+
+    return null;
+  };
+
+  const commitUrl = getCommitUrl();
+
   return (
     <div style={styles.container}>
       <div style={styles.title}>
@@ -13,10 +31,28 @@ const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos }) => {
       </div>
       <div style={styles.infoGrid}>
         <span style={styles.label}>Repository</span>
-        <span style={styles.value}>{gitInfos.gitRepoUrl}</span>
+        <a
+          href={gitInfos.gitRepoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={styles.link}
+        >
+          {gitInfos.gitRepoUrl}
+        </a>
 
         <span style={styles.label}>Commit Hash</span>
-        <span style={styles.value}>{gitInfos.gitCommitHash}</span>
+        {commitUrl ? (
+          <a
+            href={commitUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.link}
+          >
+            {gitInfos.gitCommitHash}
+          </a>
+        ) : (
+          <span style={styles.value}>{gitInfos.gitCommitHash}</span>
+        )}
       </div>
 
       {gitInfos.gitDiffOutput && (
