@@ -10,6 +10,10 @@ import {
   IAnalyzeAIFileRequest,
   IAnalyzeAIFileResponse,
 } from './requests/AnalyzeAIFile.types';
+import {
+  IAddLeekscriptAiRequest,
+  IAddLeekscriptAiResponse,
+} from './requests/AddLeekscriptAi.types';
 import { BaseService } from '../BaseService';
 
 class LeekscriptAIService extends BaseService {
@@ -49,6 +53,18 @@ class LeekscriptAIService extends BaseService {
   ): Promise<IAnalyzeAIFileResponse> {
     return this.post<IAnalyzeAIFileResponse>(
       '/api/leekscript-ais/analyze-file',
+      params,
+    );
+  }
+
+  /**
+   * Add a new LeekScript AI
+   */
+  public async addLeekscriptAi(
+    params: IAddLeekscriptAiRequest,
+  ): Promise<IAddLeekscriptAiResponse> {
+    return this.post<IAddLeekscriptAiResponse>(
+      '/api/leekscript-ais/add',
       params,
     );
   }
