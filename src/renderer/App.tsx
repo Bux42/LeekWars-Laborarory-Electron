@@ -10,7 +10,7 @@ import PoolRunDuelDetail from './pages/pools/duel/PoolRunDuelDetail';
 import Leeks from './pages/leeks/Leeks';
 import LeekCreation from './pages/leek-creation/LeekCreation';
 import AIs from './pages/ais/AIs';
-import AIDetail from './pages/ais/AIDetail';
+import AIDetail from './pages/ais/details/AIDetail';
 
 const queryClient = new QueryClient({
   defaultOptions: {

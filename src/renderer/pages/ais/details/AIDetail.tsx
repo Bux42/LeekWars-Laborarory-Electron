@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useLeekscriptAIByHash } from '../../../hooks/leekscript-ai/useLeekscriptAIByHash';
-import LeekscriptAI from '../../components/leekscript-ai/LeekscriptAI';
-import Spinner from '../../components/shared/spinner/Spinner';
+import { useLeekscriptAIByHash } from '../../../../hooks/leekscript-ai/useLeekscriptAIByHash';
+import LeekscriptAI from '../../../components/leekscript-ai/LeekscriptAI';
+import Spinner from '../../../components/shared/spinner/Spinner';
 import { aiDetailStyles as styles } from './AIDetail.styles';
 
 const AIDetail: React.FC = () => {
