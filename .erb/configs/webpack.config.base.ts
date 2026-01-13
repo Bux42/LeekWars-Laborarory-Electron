@@ -11,6 +11,9 @@ const configuration: webpack.Configuration = {
   externals: [...Object.keys(externals || {})],
 
   stats: 'errors-only',
+  watchOptions: {
+    ignored: ['**/.git/**', '**/node_modules/**'],
+  },
 
   module: {
     rules: [
