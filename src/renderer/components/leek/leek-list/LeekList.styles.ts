@@ -12,6 +12,7 @@ export interface ILeekListStyles {
   talentIcon: React.CSSProperties;
   sortIndicator: React.CSSProperties;
   actionsCell: React.CSSProperties;
+  hashLink: React.CSSProperties;
 }
 
 export const leekListStyles: ILeekListStyles = {
@@ -69,5 +70,12 @@ export const leekListStyles: ILeekListStyles = {
     color: theme.colors.text.primary,
     width: '60px',
     textAlign: 'center',
+  },
+  hashLink: {
+    color: theme.colors.accent.primary,
+    cursor: 'pointer',
+    textDecoration: 'underline',
+    fontFamily: 'monospace',
+    fontSize: '0.9rem',
   },
 };

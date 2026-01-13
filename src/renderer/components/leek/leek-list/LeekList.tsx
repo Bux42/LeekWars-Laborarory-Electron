@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { leekListStyles as styles } from './LeekList.styles';
 import { ILeekListProps, SortField, SortDirection } from './LeekList.types';
 import { ILeek } from '../../../../services/leekwars-laboratory/types/leek/Leek.types';
@@ -7,13 +8,13 @@ import { getImage } from '../../../utils/ImageLoader';
 import Dropdown from '../../shared/dropdown/Dropdown';
 import HoverTooltip from '../../shared/hover-tooltip/HoverTooltip';
 import LeekDetail from '../leek-detail/LeekDetail';
-import EntityAiPath from '../../entity/entity-ai-path/EntityAiPath';
 
 function LeekList({
   leeks,
   showElo = false,
   getDropdownItems,
 }: ILeekListProps) {
+  const navigate = useNavigate();
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -49,8 +50,8 @@ function LeekList({
         return sortDirection === 'asc' ? a.elo - b.elo : b.elo - a.elo;
       }
       if (sortField === 'ai') {
-        const aiA = a.aiFilePath.toLowerCase();
-        const aiB = b.aiFilePath.toLowerCase();
+        const aiA = (a.mergedCodeHash || '').toLowerCase();
+        const aiB = (b.mergedCodeHash || '').toLowerCase();
         return sortDirection === 'asc'
           ? aiA.localeCompare(aiB)
           : aiB.localeCompare(aiA);
@@ -143,7 +144,16 @@ function LeekList({
               </td>
             )}
             <td style={styles.td}>
-              <EntityAiPath entityAiPath={leek.aiFilePath} />
+              {leek.mergedCodeHash ? (
+                <span
+                  style={styles.hashLink}
+                  onClick={() => navigate(`/ais/${leek.mergedCodeHash}`)}
+                >
+                  {leek.mergedCodeHash.substring(0, 8)}
+                </span>
+              ) : (
+                <span style={{ color: theme.colors.text.tertiary }}>No AI</span>
+              )}
             </td>
             {getDropdownItems && (
               <td style={styles.actionsCell}>

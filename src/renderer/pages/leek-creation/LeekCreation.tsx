@@ -5,8 +5,7 @@ import { IEntityBuild } from '../../../services/leekwars-laboratory/types/builds
 import LeekAvatarPicker from '../../components/leek/leek-avatar-picker/LeekAvatarPicker';
 import Input from '../../components/shared/input/Input';
 import Button from '../../components/shared/button/Button';
-import FileBrowser from '../../components/file-browser/FileBrowser';
-import { IFileListItem } from '../../../services/FileService/requests/FileList.types';
+import LeekscriptAIPicker from '../../components/leekscript-ai/leekscript-ai-picker/LeekscriptAIPicker';
 import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { useAddLeek } from '../../../hooks/leeks/useAddLeek';
 import EntityBuild from '../../components/entity/entity-build/EntityBuild';
@@ -18,9 +17,7 @@ function LeekCreation() {
   const [selectedAvatar, setSelectedAvatar] =
     useState<string>('leek1_front_green');
   const [leekName, setLeekName] = useState<string>('');
-  const [selectedAiFile, setSelectedAiFile] = useState<IFileListItem | null>(
-    null,
-  );
+  const [selectedAiHash, setSelectedAiHash] = useState<string>('');
   const [success, setSuccess] = useState<string | null>(null);
 
   const addLeekMutation = useAddLeek();
@@ -47,7 +44,7 @@ function LeekCreation() {
   };
 
   const handleCreate = async () => {
-    if (!entityBuild || !leekName || !selectedAiFile) {
+    if (!entityBuild || !leekName || !selectedAiHash) {
       setError('Please complete all steps before creating');
       return;
     }
@@ -57,7 +54,7 @@ function LeekCreation() {
       name: leekName,
       build: entityBuild,
       elo: 1000,
-      aiFilePath: selectedAiFile.path,
+      mergedCodeHash: selectedAiHash,
       imageName: selectedAvatar,
     };
 
@@ -131,23 +128,25 @@ function LeekCreation() {
           </div>
 
           <div style={styles.section}>
-            <h2>Step 3: Select AI File</h2>
-            <FileBrowser
-              onFileSelect={setSelectedAiFile}
-              selectedFile={selectedAiFile}
-            />
-            {selectedAiFile && (
-              <p style={{ marginTop: '8px', color: '#4ec9b0' }}>
-                Selected: {selectedAiFile.name}
-              </p>
-            )}
+            <h2>Step 3: Select LeekScript AI Snapshot</h2>
+            <div style={styles.section}>
+              <LeekscriptAIPicker
+                onSelect={setSelectedAiHash}
+                selectedHash={selectedAiHash}
+              />
+              {selectedAiHash && (
+                <p style={{ marginTop: '8px', color: '#4ec9b0' }}>
+                  Selected Snapshot: {selectedAiHash.substring(0, 8)}
+                </p>
+              )}
+            </div>
           </div>
 
           <div style={styles.section}>
             <Button
               onClick={handleCreate}
               variant="primary"
-              disabled={creating || !leekName || !selectedAiFile}
+              disabled={creating || !leekName || !selectedAiHash}
             >
               {creating ? 'Creating...' : 'Create Leek'}
             </Button>
