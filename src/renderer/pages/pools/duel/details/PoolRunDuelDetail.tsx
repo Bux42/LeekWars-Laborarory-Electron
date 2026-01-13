@@ -1,15 +1,15 @@
 import React from 'react';
-import { usePoolRunDuelId } from '../../../../hooks/pool-runs/duel/usePoolRunDuelId';
-import { usePoolRunDuel } from '../../../../hooks/pool-runs/duel/usePoolRunDuel';
-import { usePoolFightEstimation } from '../../../../hooks/pools/duel/usePoolFightEstimation';
-import { usePoolFightDuelCountByPoolRunId } from '../../../../hooks/fights/duel/usePoolFightDuelCountByPoolRunId';
-import { useStopPoolDuel } from '../../../../hooks/pools/duel/useStopPoolDuel';
-import BasePoolRunWrapper from '../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
-import ProgressBar from '../../../components/shared/progress-bar/ProgressBar';
-import Spinner from '../../../components/shared/spinner/Spinner';
-import { poolsStyles as styles } from '../Pools.styles';
-import LeekList from '../../../components/leek/leek-list/LeekList';
-import LeekDetail from '../../../components/leek/leek-detail/LeekDetail';
+import { usePoolRunDuelId } from '../../../../../hooks/pool-runs/duel/usePoolRunDuelId';
+import { usePoolRunDuel } from '../../../../../hooks/pool-runs/duel/usePoolRunDuel';
+import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
+import { usePoolFightDuelCountByPoolRunId } from '../../../../../hooks/fights/duel/usePoolFightDuelCountByPoolRunId';
+import { useStopPoolDuel } from '../../../../../hooks/pools/duel/useStopPoolDuel';
+import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
+import ProgressBar from '../../../../components/shared/progress-bar/ProgressBar';
+import Spinner from '../../../../components/shared/spinner/Spinner';
+import { poolsStyles as styles } from '../../Pools.styles';
+import LeekList from '../../../../components/leek/leek-list/LeekList';
+import LeekDetail from '../../../../components/leek/leek-detail/LeekDetail';
 
 const PoolRunDuelDetail: React.FC = () => {
   const runId = usePoolRunDuelId();
