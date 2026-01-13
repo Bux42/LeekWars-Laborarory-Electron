@@ -68,6 +68,18 @@ class LeekscriptAIService extends BaseService {
       params,
     );
   }
+
+  /**
+   * Get the git diff of a LeekScript AI snapshot by its merged code hash
+   */
+  public async getGitDiffByMergedCodeHash(
+    mergedCodeHash: string,
+  ): Promise<string> {
+    return this.requestText(
+      `/api/leekscript-ais/get-git-diff-by-merged-code-hash?mergedCodeHash=${mergedCodeHash}`,
+      { method: 'GET' },
+    );
+  }
 }
 
 export default new LeekscriptAIService();

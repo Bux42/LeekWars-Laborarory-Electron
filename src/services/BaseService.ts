@@ -72,6 +72,44 @@ export abstract class BaseService {
   }
 
   /**
+   * Perform a fetch request and return the response as raw text
+   */
+  protected async requestText(
+    path: string,
+    options: RequestInit = {},
+  ): Promise<string> {
+    const url = `${this.baseUrl}${path.startsWith('/') ? '' : '/'}${path}`;
+
+    const headers = new Headers({
+      ...options.headers,
+    });
+
+    const response = await fetch(url, {
+      ...options,
+      headers,
+    });
+
+    if (!response.ok) {
+      let errorMessage = `HTTP error! status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        if (errorData && errorData.error) {
+          errorMessage = errorData.error;
+        } else if (errorData && errorData.message) {
+          errorMessage = errorData.message;
+        }
+      } catch {
+        if (response.statusText) {
+          errorMessage = `${errorMessage} (${response.statusText})`;
+        }
+      }
+      throw new Error(errorMessage);
+    }
+
+    return response.text();
+  }
+
+  /**
    * Check if the server is running
    */
   public async checkStatus(
