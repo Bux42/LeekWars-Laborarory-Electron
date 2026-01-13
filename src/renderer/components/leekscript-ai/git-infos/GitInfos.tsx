@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import Anser from 'anser';
 import { IGitInfosProps } from './GitInfos.types';
 import { gitInfosStyles as styles } from './GitInfos.styles';
+import { useLeekscriptGitDiff } from '../../../../hooks/leekscript-ai/useLeekscriptGitDiff';
+import Spinner from '../../shared/spinner/Spinner';
 
-const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos }) => {
+const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos, mergedCodeHash }) => {
+  const { data: remoteDiff, isLoading } = useLeekscriptGitDiff(
+    mergedCodeHash || '',
+  );
+
+  const diffToDisplay = remoteDiff ?? gitInfos.diffOutput;
+
   const getCommitUrl = () => {
     if (!gitInfos.repoUrl || !gitInfos.commitHash) return null;
 
@@ -20,6 +29,11 @@ const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos }) => {
   };
 
   const commitUrl = getCommitUrl();
+
+  const renderedDiff = useMemo(() => {
+    if (!diffToDisplay) return null;
+    return Anser.ansiToHtml(diffToDisplay, { use_classes: false });
+  }, [diffToDisplay]);
 
   return (
     <div style={styles.container}>
@@ -53,12 +67,21 @@ const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos }) => {
         ) : (
           <span style={styles.value}>{gitInfos.commitHash}</span>
         )}
+        <span style={styles.label}>Branch Name</span>
+        <span style={styles.value}>{gitInfos.branchName}</span>
       </div>
 
-      {gitInfos.diffOutput && (
+      {(isLoading || diffToDisplay) && (
         <div style={styles.diffContainer}>
           <div style={styles.label}>Uncommitted Changes Diff</div>
-          <pre style={styles.diffCode}>{gitInfos.diffOutput}</pre>
+          {isLoading ? (
+            <Spinner size="small" label="Loading diff..." />
+          ) : (
+            <pre
+              style={styles.diffCode}
+              dangerouslySetInnerHTML={{ __html: renderedDiff || '' }}
+            />
+          )}
         </div>
       )}
     </div>

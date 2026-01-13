@@ -32,7 +32,10 @@ const LeekscriptAI: React.FC<ILeekscriptAIProps> = ({ leekscriptAI }) => {
 
       <div>
         <h3 style={styles.sectionTitle}>Git Information</h3>
-        <GitInfos gitInfos={leekscriptAI.gitInfos} />
+        <GitInfos
+          gitInfos={leekscriptAI.gitInfos}
+          mergedCodeHash={leekscriptAI.mergedCode.hash}
+        />
       </div>
 
       <div>

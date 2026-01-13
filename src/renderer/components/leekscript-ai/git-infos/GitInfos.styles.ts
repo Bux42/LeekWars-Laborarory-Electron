@@ -54,8 +54,10 @@ export const gitInfosStyles = {
   }),
   diffContainer: {
     marginTop: theme.spacing.md,
-    maxHeight: '300px',
-    overflowY: 'auto' as const,
+    height: '250px',
+    minHeight: '100px',
+    resize: 'vertical' as const,
+    overflow: 'auto' as const,
     backgroundColor: '#1e1e1e',
     padding: theme.spacing.sm,
     borderRadius: theme.borderRadius.sm,

@@ -2,4 +2,5 @@ import { IGitInfos } from '../../../../services/leekwars-laboratory/leekscript-a
 
 export interface IGitInfosProps {
   gitInfos: IGitInfos;
+  mergedCodeHash?: string;
 }
