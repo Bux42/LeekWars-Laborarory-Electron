@@ -6,6 +6,7 @@ function Button({
   children,
   onClick,
   variant = 'primary',
+  type = 'button',
   disabled = false,
 }: IButtonProps) {
   const variantStyle = styles[variant];
@@ -17,7 +18,7 @@ function Button({
 
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
       style={combinedStyle}
       disabled={disabled}

@@ -12,6 +12,7 @@ import LeekCreation from './pages/leek-creation/LeekCreation';
 import AIs from './pages/ais/AIs';
 import AIDetail from './pages/ais/details/AIDetail';
 import CreateAI from './pages/ais/create/CreateAI';
+import DuelPoolCreation from './pages/pools/duel/create/DuelPoolCreation';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +32,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/pools" element={<Pools />} />
             <Route path="/pools/duels" element={<PoolDuel />} />
+            <Route path="/pools/duels/create" element={<DuelPoolCreation />} />
             <Route path="/pools/duels/:poolId" element={<PoolDuelDetail />} />
             <Route
               path="/pools/duels/:poolId/runs"

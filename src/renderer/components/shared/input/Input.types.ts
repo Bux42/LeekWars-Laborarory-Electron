@@ -1,5 +1,5 @@
 export interface IInputProps {
-  value: string;
+  value: string | number;
   onChange: (value: string) => void;
   type?: 'text' | 'number' | 'password' | 'email';
   placeholder?: string;
