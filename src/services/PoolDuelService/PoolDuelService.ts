@@ -20,6 +20,10 @@ import {
   IStopPoolDuelRequest,
   IStopPoolDuelResponse,
 } from './requests/StopPoolDuel.types';
+import {
+  IAddPoolDuelRequest,
+  IAddPoolDuelResponse,
+} from './requests/AddPoolDuel.types';
 
 class PoolDuelService extends BaseService {
   /**
@@ -84,6 +88,15 @@ class PoolDuelService extends BaseService {
       '/api/pools/duel/stop-pool',
       params,
     );
+  }
+
+  /**
+   * Add a new pool duel
+   */
+  public async addPoolDuel(
+    params: IAddPoolDuelRequest,
+  ): Promise<IAddPoolDuelResponse> {
+    return this.post<IAddPoolDuelResponse>('/api/pools/duel/add', params);
   }
 }
 
