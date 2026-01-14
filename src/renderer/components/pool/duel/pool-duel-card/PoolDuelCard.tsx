@@ -55,6 +55,11 @@ const PoolDuelCard: React.FC<IPoolDuelCardProps> = ({ pool }) => {
     [runs],
   );
 
+  const lastRun = useMemo(() => {
+    if (runs.length === 0) return null;
+    return [...runs].sort((a, b) => b.startTime - a.startTime)[0];
+  }, [runs]);
+
   const poolLeeks = useMemo(() => {
     return allLeeks.filter((leek) => pool.leekIds.includes(leek.id));
   }, [allLeeks, pool.leekIds]);
@@ -122,12 +127,24 @@ const PoolDuelCard: React.FC<IPoolDuelCardProps> = ({ pool }) => {
               />
             )}
           </div>
-          <Button
-            onClick={() => navigate(`/pools/duels/${pool.id}/runs`)}
-            variant="primary"
-          >
-            View runs
-          </Button>
+          <div style={styles.runsActions}>
+            {lastRun && (
+              <Button
+                onClick={() => {
+                  navigate(`/pools/duels/${pool.id}/runs/${lastRun.id}`);
+                }}
+                variant="primary"
+              >
+                View last run
+              </Button>
+            )}
+            <Button
+              onClick={() => navigate(`/pools/duels/${pool.id}/runs`)}
+              variant="secondary"
+            >
+              View all runs
+            </Button>
+          </div>
         </div>
       )}
 

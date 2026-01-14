@@ -46,4 +46,8 @@ export const poolDuelCardStyles = {
     alignItems: 'center',
     gap: '8px',
   },
+  runsActions: {
+    display: 'flex',
+    gap: '8px',
+  },
 };
