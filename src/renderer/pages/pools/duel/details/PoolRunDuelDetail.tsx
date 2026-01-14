@@ -10,6 +10,8 @@ import Spinner from '../../../../components/shared/spinner/Spinner';
 import { poolsStyles as styles } from '../../Pools.styles';
 import LeekList from '../../../../components/leek/leek-list/LeekList';
 import LeekDetail from '../../../../components/leek/leek-detail/LeekDetail';
+import { useEloProgression } from '../../../../../hooks/pool-fights/duel/useEloProgression';
+import { TalentChart } from '../../../../components/charts';
 
 const PoolRunDuelDetail: React.FC = () => {
   const runId = usePoolRunDuelId();
@@ -46,6 +48,16 @@ const PoolRunDuelDetail: React.FC = () => {
     isRunning ? 1000 : undefined,
   );
 
+  const { data: eloData } = useEloProgression(
+    runId || '',
+    isRunning ? 5000 : undefined, // Poll every 5s for the chart
+  );
+
+  const chartData = (eloData?.eloProgression || []).map((point) => ({
+    ...point,
+    datetime: point.timestamp,
+  }));
+
   if (isLoading && !run) {
     return (
       <div style={styles.container}>
@@ -79,8 +91,19 @@ const PoolRunDuelDetail: React.FC = () => {
             max={totalFights}
           />
         </div>
+
+        {chartData.length > 0 && (
+          <div style={{ marginBottom: '24px' }}>
+            <TalentChart
+              data={chartData}
+              title="Talent Progression"
+              height={350}
+            />
+          </div>
+        )}
+
         {run.leeks.map((leek) => (
-          <LeekDetail leek={leek} />
+          <LeekDetail key={leek.id} leek={leek} />
         ))}
       </BasePoolRunWrapper>
     </div>
