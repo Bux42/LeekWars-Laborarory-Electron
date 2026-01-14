@@ -94,6 +94,7 @@ const TalentChart: React.FC<ITalentChartProps> = ({
               }}
               labelFormatter={(label) => new Date(label).toLocaleString()}
               itemStyle={{ fontSize: 12 }}
+              itemSorter={(item) => (item.value as number) * -1}
             />
             <Legend
               wrapperStyle={{ paddingTop: 10 }}
