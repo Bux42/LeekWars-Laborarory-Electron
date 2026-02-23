@@ -1,5 +1,5 @@
-import { ILeek } from '../../../../services/leekwars-laboratory/types/leek/Leek.types';
+import { LeekResponse } from '../../../../services/leekwarsToolsAPI.schemas';
 
 export interface ILeekDetailProps {
-  leek: ILeek;
+  leek: LeekResponse;
 }

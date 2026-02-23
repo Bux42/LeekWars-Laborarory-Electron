@@ -12,17 +12,29 @@ import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolF
 import LeekList from '../../../../components/leek/leek-list/LeekList';
 import { ILeek } from '../../../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { IDropdownItem } from '../../../../components/shared/dropdown/Dropdown.types';
+import { usePostDuelPoolsCreate } from '../../../../../services/duel-pools/duel-pools';
+import { useGetLeeksAll } from '../../../../../services/leeks/leeks';
 
 function DuelPoolCreation() {
   const navigate = useNavigate();
-  const addPoolMutation = useAddPoolDuel();
-  const { data: leeks = [], isLoading: leeksLoading } = useLeeks();
+  // const addPoolMutation = useAddPoolDuel();
+  const createPoolDuelMutation = usePostDuelPoolsCreate();
+
+  const {
+    data,
+    isLoading: leeksLoading,
+    error: leeksError,
+  } = useGetLeeksAll({
+    query: {
+      queryKey: ['leeks'],
+    },
+  });
 
   const [name, setName] = useState('');
   const [enabled, setEnabled] = useState(false);
   const [resetElo, setResetElo] = useState(true);
   const [deterministic, setDeterministic] = useState(false);
-  const [startSeed, setStartSeed] = useState(0);
+  const [startSeed, setStartSeed] = useState(1);
   const [fightLimitEnabled, setFightLimitEnabled] = useState(true);
   const [fightLimit, setFightLimit] = useState(10);
   const [selectedLeekIds, setSelectedLeekIds] = useState<string[]>([]);
@@ -54,18 +66,30 @@ function DuelPoolCreation() {
 
     try {
       setError(null);
-      const result = await addPoolMutation.mutateAsync({
-        name,
-        enabled,
-        resetElo,
-        deterministic,
-        startSeed,
-        fightLimitEnabled,
-        fightLimit,
-        leekIds: selectedLeekIds,
+      const result = await createPoolDuelMutation.mutateAsync({
+        data: {
+          basePoolRequest: {
+            deterministic,
+            enabled,
+            fightLimit,
+            fightLimitEnabled,
+            name,
+            resetElo,
+            startSeed,
+          },
+          leekIds: selectedLeekIds,
+        },
+        // name,
+        // enabled,
+        // resetElo,
+        // deterministic,
+        // startSeed,
+        // fightLimitEnabled,
+        // fightLimit,
+        // leekIds: selectedLeekIds,
       });
 
-      if (result.success) {
+      if (result) {
         navigate('/pools/duels');
       } else {
         setError('Failed to create pool');
@@ -103,7 +127,7 @@ function DuelPoolCreation() {
     },
   ];
 
-  const isSubmitting = addPoolMutation.isPending;
+  const isSubmitting = createPoolDuelMutation.isPending;
 
   const { totalScenarios, totalFights } = usePoolFightEstimation(
     selectedLeekIds.length,
@@ -199,7 +223,7 @@ function DuelPoolCreation() {
             )}
             {selectedLeekIds.length > 0 && (
               <LeekList
-                leeks={leeks.filter((leek) =>
+                leeks={data?.leeks.filter((leek) =>
                   selectedLeekIds.includes(leek.id),
                 )}
                 getDropdownItems={getDropdownItems}
@@ -210,7 +234,7 @@ function DuelPoolCreation() {
             <Spinner size="small" label="Loading leeks..." />
           ) : (
             <LeekPicker
-              availableLeeks={leeks}
+              availableLeeks={data?.leeks || []}
               selectedLeekIds={selectedLeekIds}
               onLeekSelect={handleLeekSelect}
             />

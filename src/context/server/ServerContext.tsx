@@ -19,7 +19,7 @@ import LeekscriptAIService from '../../services/LeekscriptAIService/LeekscriptAI
 import { BaseService } from '../../services/BaseService';
 
 const STORAGE_KEY = 'leekwars-laboratory-port';
-const DEFAULT_PORT = 8080;
+const DEFAULT_PORT = 7000;
 
 // Get initial port from localStorage or use default
 const getInitialPort = (): number => {

@@ -2,18 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { leekListStyles as styles } from './LeekList.styles';
 import { ILeekListProps, SortField, SortDirection } from './LeekList.types';
-import { ILeek } from '../../../../services/leekwars-laboratory/types/leek/Leek.types';
+import { LeekResponse } from '../../../../services/leekwarsToolsAPI.schemas';
 import { theme } from '../../../theme';
 import { getImage } from '../../../utils/ImageLoader';
 import Dropdown from '../../shared/dropdown/Dropdown';
 import HoverTooltip from '../../shared/hover-tooltip/HoverTooltip';
 import LeekDetail from '../leek-detail/LeekDetail';
 
-function LeekList({
-  leeks,
-  showElo = false,
-  getDropdownItems,
-}: ILeekListProps) {
+function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
   const navigate = useNavigate();
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
@@ -33,25 +29,22 @@ function LeekList({
   };
 
   const sortedLeeks = useMemo(() => {
-    return [...leeks].sort((a: ILeek, b: ILeek) => {
+    return [...leeks].sort((a: LeekResponse, b: LeekResponse) => {
       if (sortField === 'name') {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
+        const nameA = (a.name ?? '').toLowerCase();
+        const nameB = (b.name ?? '').toLowerCase();
         return sortDirection === 'asc'
           ? nameA.localeCompare(nameB)
           : nameB.localeCompare(nameA);
       }
       if (sortField === 'level') {
         return sortDirection === 'asc'
-          ? a.build.level - b.build.level
-          : b.build.level - a.build.level;
-      }
-      if (sortField === 'talent') {
-        return sortDirection === 'asc' ? a.elo - b.elo : b.elo - a.elo;
+          ? (a.build?.level ?? 0) - (b.build?.level ?? 0)
+          : (b.build?.level ?? 0) - (a.build?.level ?? 0);
       }
       if (sortField === 'ai') {
-        const aiA = (a.mergedCodeHash || '').toLowerCase();
-        const aiB = (b.mergedCodeHash || '').toLowerCase();
+        const aiA = (a.ai?.id ?? '').toLowerCase();
+        const aiB = (b.ai?.id ?? '').toLowerCase();
         return sortDirection === 'asc'
           ? aiA.localeCompare(aiB)
           : aiB.localeCompare(aiA);
@@ -90,17 +83,6 @@ function LeekList({
               {getSortIndicator('level')}
             </span>
           </th>
-          {showElo && (
-            <th
-              style={getThStyle('talent')}
-              onClick={() => handleSort('talent')}
-            >
-              Talent
-              <span style={styles.sortIndicator}>
-                {getSortIndicator('talent')}
-              </span>
-            </th>
-          )}
           <th style={getThStyle('ai')} onClick={() => handleSort('ai')}>
             AI
             <span style={styles.sortIndicator}>{getSortIndicator('ai')}</span>
@@ -109,9 +91,9 @@ function LeekList({
         </tr>
       </thead>
       <tbody style={styles.tbody}>
-        {sortedLeeks.map((leek) => (
+        {sortedLeeks.map((leek, index) => (
           <tr
-            key={leek.id}
+            key={leek.id ?? `${leek.name ?? 'leek'}-${index}`}
             style={styles.tr}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor =
@@ -125,32 +107,25 @@ function LeekList({
             <td style={styles.td}>
               <HoverTooltip tooltip={<LeekDetail leek={leek} />}>
                 <img
-                  src={getImage(`leekwars/image/leek/${leek.imageName}`)}
-                  alt={leek.name}
+                  src={getImage(
+                    `leekwars/image/leek/${leek.imageName ?? 'leek/1'}`,
+                  )}
+                  alt={leek.name ?? 'Leek'}
                   style={styles.leekImage}
                 />
               </HoverTooltip>
             </td>
-            <td style={styles.td}>{leek.name}</td>
-            <td style={styles.td}>{leek.build.level}</td>
-            {showElo && (
-              <td style={styles.td}>
-                <img
-                  src={getImage('leekwars/image/talent')}
-                  alt="Talent"
-                  style={styles.talentIcon}
-                />
-                {Number.prototype.toLocaleString.call(leek.elo)}
-              </td>
-            )}
+            <td style={styles.td}>{leek.name ?? 'Unnamed Leek'}</td>
+            <td style={styles.td}>{leek.build?.level ?? '-'}</td>
             <td style={styles.td}>
-              {leek.mergedCodeHash ? (
-                <span
+              {leek.ai ? (
+                <button
+                  type="button"
                   style={styles.hashLink}
-                  onClick={() => navigate(`/ais/${leek.mergedCodeHash}`)}
+                  onClick={() => navigate(`/ai/${leek.ai?.id}`)}
                 >
-                  {leek.mergedCodeHash.substring(0, 8)}
-                </span>
+                  {leek.ai?.name}
+                </button>
               ) : (
                 <span style={{ color: theme.colors.text.tertiary }}>No AI</span>
               )}
@@ -159,8 +134,8 @@ function LeekList({
               <td style={styles.actionsCell}>
                 <Dropdown
                   items={getDropdownItems(leek)}
-                  isOpen={openDropdown === leek.id}
-                  onToggle={() => toggleDropdown(leek.id)}
+                  isOpen={openDropdown === (leek.id ?? '')}
+                  onToggle={() => toggleDropdown(leek.id ?? '')}
                 />
               </td>
             )}

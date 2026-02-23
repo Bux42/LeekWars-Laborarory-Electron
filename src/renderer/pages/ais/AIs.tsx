@@ -4,15 +4,45 @@ import { aisStyles as styles } from './AIs.styles';
 import Button from '../../components/shared/button/Button';
 import LeekscriptAI from '../../components/leekscript-ai/LeekscriptAI';
 import Spinner from '../../components/shared/spinner/Spinner';
-import { useLeekscriptAIs } from '../../../hooks/leekscript-ai/useLeekscriptAIs';
+import { useGetAiList } from '../../../services/ai/ai';
 
-const AIs: React.FC = () => {
+function AIs() {
   const navigate = useNavigate();
-  const { data: ais = [], isLoading, error } = useLeekscriptAIs(true);
+  const { data, isLoading, error } = useGetAiList();
+
+  const ais = data?.ais ?? [];
 
   const handleAddAI = () => {
     navigate('/ais/create');
   };
+
+  let content: React.ReactNode;
+
+  if (isLoading) {
+    content = (
+      <div style={styles.loadingText}>
+        <Spinner label="Loading AIs..." />
+      </div>
+    );
+  } else if (error) {
+    content = (
+      <p style={styles.errorText}>
+        Error: {error instanceof Error ? error.message : 'Failed to load AIs'}
+      </p>
+    );
+  } else if (ais.length === 0) {
+    content = <p style={styles.emptyText}>No AIs found.</p>;
+  } else {
+    content = (
+      <div style={styles.list}>
+        {ais.map((ai) => (
+          <div key={ai.id ?? ai.name} style={styles.aiCard}>
+            <LeekscriptAI leekscriptAI={ai} />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div style={styles.container}>
@@ -23,27 +53,9 @@ const AIs: React.FC = () => {
         </Button>
       </header>
 
-      {isLoading ? (
-        <div style={styles.loadingText}>
-          <Spinner label="Loading AIs..." />
-        </div>
-      ) : error ? (
-        <p style={styles.errorText}>
-          Error: {error instanceof Error ? error.message : 'Failed to load AIs'}
-        </p>
-      ) : ais.length === 0 ? (
-        <p style={styles.emptyText}>No leekscript AIs found.</p>
-      ) : (
-        <div style={styles.list}>
-          {ais.map((ai) => (
-            <div key={ai.id} style={styles.aiCard}>
-              <LeekscriptAI leekscriptAI={ai} />
-            </div>
-          ))}
-        </div>
-      )}
+      {content}
     </div>
   );
-};
+}
 
 export default AIs;

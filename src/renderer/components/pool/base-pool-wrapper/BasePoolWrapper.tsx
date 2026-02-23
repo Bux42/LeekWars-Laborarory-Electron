@@ -5,34 +5,134 @@ import Toggle from '../../shared/toggle/Toggle';
 import Input from '../../shared/input/Input';
 import Button from '../../shared/button/Button';
 import Spinner from '../../shared/spinner/Spinner';
+import {
+  usePostBasePoolsIdSetDeterministic,
+  usePostBasePoolsIdSetEnabled,
+  usePostBasePoolsIdSetFightLimit,
+  usePostBasePoolsIdSetFightLimitEnabled,
+  usePostBasePoolsIdSetResetElo,
+  usePostBasePoolsIdSetStartSeed,
+} from '../../../../services/base-pools/base-pools';
 
-const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
-  pool,
-  children,
-  onSetDeterministic,
-  onSetResetElo,
-  onSetEnabled,
-  onSetStartSeed,
-  onSetFightLimitEnabled,
-  onSetFightLimit,
-  onStart,
-}) => {
+function BasePoolWrapper({ pool, children, onStart }: IBasePoolWrapperProps) {
   const [loading, setLoading] = React.useState(false);
+  const [currentPool, setCurrentPool] = React.useState(pool);
+
+  const setDeterministicMutation = usePostBasePoolsIdSetDeterministic();
+  const setEnabledMutation = usePostBasePoolsIdSetEnabled();
+  const setFightLimitMutation = usePostBasePoolsIdSetFightLimit();
+  const setFightLimitEnabledMutation = usePostBasePoolsIdSetFightLimitEnabled();
+  const setResetEloMutation = usePostBasePoolsIdSetResetElo();
+  const setStartSeedMutation = usePostBasePoolsIdSetStartSeed();
+
+  React.useEffect(() => {
+    setCurrentPool(pool);
+  }, [pool]);
+
+  const triggerAsync = (promise: Promise<unknown>) => {
+    promise.catch(() => undefined);
+  };
+
+  const getPoolId = () => currentPool.id;
 
   const handleStart = async () => {
     setLoading(true);
-    await onStart();
-    setLoading(false);
+    try {
+      await onStart();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSetEnabled = async (value: boolean) => {
+    const poolId = getPoolId();
+    if (!poolId) {
+      return;
+    }
+
+    const updatedPool = await setEnabledMutation.mutateAsync({
+      id: poolId,
+      data: { value },
+    });
+    setCurrentPool(updatedPool);
+  };
+
+  const handleSetDeterministic = async (value: boolean) => {
+    const poolId = getPoolId();
+    if (!poolId) {
+      return;
+    }
+
+    const updatedPool = await setDeterministicMutation.mutateAsync({
+      id: poolId,
+      data: { value },
+    });
+    setCurrentPool(updatedPool);
+  };
+
+  const handleSetResetElo = async (value: boolean) => {
+    const poolId = getPoolId();
+    if (!poolId) {
+      return;
+    }
+
+    const updatedPool = await setResetEloMutation.mutateAsync({
+      id: poolId,
+      data: { value },
+    });
+    setCurrentPool(updatedPool);
+  };
+
+  const handleSetFightLimitEnabled = async (value: boolean) => {
+    const poolId = getPoolId();
+    if (!poolId) {
+      return;
+    }
+
+    const updatedPool = await setFightLimitEnabledMutation.mutateAsync({
+      id: poolId,
+      data: { value },
+    });
+    setCurrentPool(updatedPool);
+  };
+
+  const handleSetFightLimit = async (value: number) => {
+    const poolId = getPoolId();
+    if (!poolId) {
+      return;
+    }
+
+    const updatedPool = await setFightLimitMutation.mutateAsync({
+      id: poolId,
+      data: { value },
+    });
+    setCurrentPool(updatedPool);
+  };
+
+  const handleSetStartSeed = async (value: number) => {
+    const poolId = getPoolId();
+    if (!poolId) {
+      return;
+    }
+
+    const updatedPool = await setStartSeedMutation.mutateAsync({
+      id: poolId,
+      data: { value },
+    });
+    setCurrentPool(updatedPool);
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <div style={styles.titleContainer}>
-          <h2 style={styles.title}>{pool.name}</h2>
+          <h2 style={styles.title}>{currentPool.name}</h2>
           <Toggle
-            checked={pool.enabled}
-            onChange={(checked) => onSetEnabled(checked)}
+            checked={currentPool.enabled}
+            onChange={(checked) => {
+              triggerAsync(handleSetEnabled(checked));
+              return undefined;
+            }}
           />
         </div>
         <Button onClick={handleStart} variant="primary">
@@ -44,42 +144,57 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
         <div style={styles.infoItem}>
           <span style={styles.label}>Deterministic</span>
           <Toggle
-            checked={pool.deterministic}
-            onChange={(checked) => onSetDeterministic(checked)}
+            checked={currentPool.deterministic}
+            onChange={(checked) => {
+              triggerAsync(handleSetDeterministic(checked));
+              return undefined;
+            }}
           />
         </div>
-        {pool.deterministic && (
+        {currentPool.deterministic && (
           <div style={styles.infoItem}>
             <span style={styles.label}>Start Seed</span>
             <Input
-              value={pool.startSeed.toString()}
+              value={currentPool.startSeed.toString()}
               type="number"
-              onChange={(value) => onSetStartSeed(parseInt(value, 10) || 0)}
+              onChange={(value) => {
+                triggerAsync(handleSetStartSeed(parseInt(value, 10) || 0));
+                return undefined;
+              }}
             />
           </div>
         )}
         <div style={styles.infoItem}>
           <span style={styles.label}>Reset Elo</span>
           <Toggle
-            checked={pool.resetElo}
-            onChange={(checked) => onSetResetElo(checked)}
+            checked={currentPool.resetElo}
+            onChange={(checked) => {
+              triggerAsync(handleSetResetElo(checked));
+              return undefined;
+            }}
           />
         </div>
         <div style={styles.infoItem}>
           <span style={styles.label}>Fight Limit</span>
           <Toggle
             disabled // TODO: implement in API
-            checked={pool.fightLimitEnabled}
-            onChange={(checked) => onSetFightLimitEnabled(checked)}
+            checked={currentPool.fightLimitEnabled}
+            onChange={(checked) => {
+              triggerAsync(handleSetFightLimitEnabled(checked));
+              return undefined;
+            }}
           />
         </div>
-        {pool.fightLimitEnabled && (
+        {currentPool.fightLimitEnabled && (
           <div style={styles.infoItem}>
             <span style={styles.label}>Fight Limit</span>
             <Input
-              value={pool.fightLimit.toString()}
+              value={currentPool.fightLimit.toString()}
               type="number"
-              onChange={(value) => onSetFightLimit(parseInt(value, 10) || 1)}
+              onChange={(value) => {
+                triggerAsync(handleSetFightLimit(parseInt(value, 10) || 1));
+                return undefined;
+              }}
             />
           </div>
         )}
@@ -88,6 +203,6 @@ const BasePoolWrapper: React.FC<IBasePoolWrapperProps> = ({
       {children && <div style={styles.childrenContainer}>{children}</div>}
     </div>
   );
-};
+}
 
 export default BasePoolWrapper;

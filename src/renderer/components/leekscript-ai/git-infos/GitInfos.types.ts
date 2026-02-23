@@ -1,6 +1,5 @@
-import { IGitInfos } from '../../../../services/leekwars-laboratory/leekscript-ai/GitInfos.types';
+import { GitInfosResponse } from '../../../../services/leekwarsToolsAPI.schemas';
 
 export interface IGitInfosProps {
-  gitInfos: IGitInfos;
-  mergedCodeHash?: string;
+  gitInfos?: GitInfosResponse;
 }

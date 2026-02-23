@@ -28,7 +28,7 @@ import {
 } from './requests/FightLimitRequest.types';
 
 class LeekWarsLaboratoryService {
-  private port: number = 8080; // Default port
+  private port: number = 7000; // Default port
 
   /**
    * Set the port for the service

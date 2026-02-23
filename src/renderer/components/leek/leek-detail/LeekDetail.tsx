@@ -21,15 +21,6 @@ function LeekDetail({ leek }: ILeekDetailProps) {
         <div>
           <div style={styles.name}>{leek.name}</div>
           <div style={styles.level}>Level {leek.build.level}</div>
-          <div style={styles.elo}>
-            <img
-              height={16}
-              width={16}
-              src={getImage('leekwars/image/talent')}
-              alt="ELO"
-            />
-            {leek.elo}
-          </div>
         </div>
       </div>
 

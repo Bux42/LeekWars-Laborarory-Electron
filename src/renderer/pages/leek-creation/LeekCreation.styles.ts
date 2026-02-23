@@ -8,6 +8,7 @@ export interface ILeekCreationStyles {
   buildInfo: React.CSSProperties;
   avatarNameRow: React.CSSProperties;
   nameInputContainer: React.CSSProperties;
+  successMessage: React.CSSProperties;
 }
 
 export const leekCreationStyles: ILeekCreationStyles = {
@@ -53,5 +54,9 @@ export const leekCreationStyles: ILeekCreationStyles = {
   },
   nameInputContainer: {
     flex: 1,
+  },
+  successMessage: {
+    marginTop: theme.spacing.sm,
+    color: theme.colors.accent.success,
   },
 };

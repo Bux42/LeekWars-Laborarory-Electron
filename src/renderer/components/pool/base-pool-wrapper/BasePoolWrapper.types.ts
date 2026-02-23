@@ -1,14 +1,8 @@
 import { ReactNode } from 'react';
-import { IBasePool } from '../../../../services/leekwars-laboratory/types/pool/BasePool.types';
+import { BasePoolResponse } from '../../../../services/leekwarsToolsAPI.schemas';
 
 export interface IBasePoolWrapperProps {
-  pool: IBasePool;
+  pool: BasePoolResponse;
   children?: ReactNode;
-  onSetDeterministic: (value: boolean) => void;
-  onSetResetElo: (value: boolean) => void;
-  onSetEnabled: (value: boolean) => void;
-  onSetStartSeed: (value: number) => void;
-  onSetFightLimitEnabled: (value: boolean) => void;
-  onSetFightLimit: (value: number) => void;
-  onStart: () => void;
+  onStart: () => void | Promise<void>;
 }

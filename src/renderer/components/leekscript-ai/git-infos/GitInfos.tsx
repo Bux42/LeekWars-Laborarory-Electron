@@ -1,24 +1,13 @@
-import React, { useMemo } from 'react';
-import Anser from 'anser';
+import React from 'react';
 import { IGitInfosProps } from './GitInfos.types';
-import { gitInfosStyles as styles } from './GitInfos.styles';
-import { useLeekscriptGitDiff } from '../../../../hooks/leekscript-ai/useLeekscriptGitDiff';
-import Spinner from '../../shared/spinner/Spinner';
+import styles from './GitInfos.styles';
 
-const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos, mergedCodeHash }) => {
-  const { data: remoteDiff, isLoading } = useLeekscriptGitDiff(
-    mergedCodeHash || '',
-  );
-
-  const diffToDisplay = remoteDiff ?? gitInfos.diffOutput;
-
+function GitInfos({ gitInfos }: IGitInfosProps) {
   const getCommitUrl = () => {
-    if (!gitInfos.repoUrl || !gitInfos.commitHash) return null;
+    if (!gitInfos?.repoUrl || !gitInfos.commitHash) return null;
 
-    // Check if it's a github repo
     if (gitInfos.repoUrl.includes('github.com')) {
       let baseUrl = gitInfos.repoUrl;
-      // Remove trailing .git if present
       if (baseUrl.endsWith('.git')) {
         baseUrl = baseUrl.substring(0, baseUrl.length - 4);
       }
@@ -30,29 +19,23 @@ const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos, mergedCodeHash }) => {
 
   const commitUrl = getCommitUrl();
 
-  const renderedDiff = useMemo(() => {
-    if (!diffToDisplay) return null;
-    return Anser.ansiToHtml(diffToDisplay, { use_classes: false });
-  }, [diffToDisplay]);
-
   return (
     <div style={styles.container}>
-      <div style={styles.title}>
-        Git Information
-        <span style={styles.badge(gitInfos.hasUncommittedChanges)}>
-          {gitInfos.hasUncommittedChanges ? 'Dirty' : 'Clean'}
-        </span>
-      </div>
+      <div style={styles.title}>Git Information</div>
       <div style={styles.infoGrid}>
         <span style={styles.label}>Repository</span>
-        <a
-          href={gitInfos.repoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={styles.link}
-        >
-          {gitInfos.repoUrl}
-        </a>
+        {gitInfos?.repoUrl ? (
+          <a
+            href={gitInfos.repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.link}
+          >
+            {gitInfos.repoUrl}
+          </a>
+        ) : (
+          <span style={styles.value}>N/A</span>
+        )}
 
         <span style={styles.label}>Commit Hash</span>
         {commitUrl ? (
@@ -65,27 +48,19 @@ const GitInfos: React.FC<IGitInfosProps> = ({ gitInfos, mergedCodeHash }) => {
             {gitInfos.commitHash}
           </a>
         ) : (
-          <span style={styles.value}>{gitInfos.commitHash}</span>
+          <span style={styles.value}>{gitInfos?.commitHash || 'N/A'}</span>
         )}
-        <span style={styles.label}>Branch Name</span>
-        <span style={styles.value}>{gitInfos.branchName}</span>
-      </div>
 
-      {(isLoading || diffToDisplay) && (
-        <div style={styles.diffContainer}>
-          <div style={styles.label}>Uncommitted Changes Diff</div>
-          {isLoading ? (
-            <Spinner size="small" label="Loading diff..." />
-          ) : (
-            <pre
-              style={styles.diffCode}
-              dangerouslySetInnerHTML={{ __html: renderedDiff || '' }}
-            />
-          )}
-        </div>
-      )}
+        <span style={styles.label}>Branch Name</span>
+        <span style={styles.value}>{gitInfos?.branchName || 'N/A'}</span>
+
+        <span style={styles.label}>Main File</span>
+        <span style={styles.value}>
+          {gitInfos?.mainFileRelativePath || 'N/A'}
+        </span>
+      </div>
     </div>
   );
-};
+}
 
 export default GitInfos;

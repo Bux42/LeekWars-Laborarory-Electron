@@ -2,29 +2,43 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { leeksStyles as styles } from './Leeks.styles';
 import { theme } from '../../theme';
-import { useLeeks } from '../../../hooks/leeks/useLeeks';
 import { useDeleteLeek } from '../../../hooks/leeks/useDeleteLeek';
 import LeekList from '../../components/leek/leek-list/LeekList';
 import Button from '../../components/shared/button/Button';
-import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { IDropdownItem } from '../../components/shared/dropdown/Dropdown.types';
+import { LeekResponse } from '../../../services/leekwarsToolsAPI.schemas';
+import { useGetLeeksAll } from '../../../services/leeks/leeks';
 
 function Leeks() {
   const navigate = useNavigate();
-  const { data: leeks = [], isLoading: loading, error } = useLeeks();
+  const {
+    data,
+    isLoading: loading,
+    error,
+  } = useGetLeeksAll({
+    query: {
+      queryKey: ['leeks'],
+    },
+  });
+
+  const leeks = data?.leeks ?? [];
   const deleteLeekMutation = useDeleteLeek();
 
-  const handleEdit = (leek: ILeek) => {
+  const handleEdit = (leek: LeekResponse) => {
     console.log('Edit leek:', leek.name);
     // TODO: Implement edit logic
   };
 
-  const handleDuplicate = (leek: ILeek) => {
+  const handleDuplicate = (leek: LeekResponse) => {
     console.log('Duplicate leek:', leek.name);
     // TODO: Implement duplicate logic
   };
 
-  const handleDelete = async (leek: ILeek) => {
+  const handleDelete = async (leek: LeekResponse) => {
+    if (!leek.id) {
+      return;
+    }
+
     if (
       window.confirm(`Are you sure you want to delete leek "${leek.name}"?`)
     ) {
@@ -36,7 +50,7 @@ function Leeks() {
     }
   };
 
-  const getDropdownItems = (leek: ILeek): IDropdownItem[] => [
+  const getDropdownItems = (leek: LeekResponse): IDropdownItem[] => [
     {
       label: 'Edit',
       onClick: () => handleEdit(leek),
@@ -66,8 +80,7 @@ function Leeks() {
       <div style={styles.container}>
         <h1>Leeks</h1>
         <p style={{ color: theme.colors.accent.error }}>
-          Error:{' '}
-          {error instanceof Error ? error.message : 'Failed to fetch leeks'}
+          Error: Failed to fetch leeks
         </p>
       </div>
     );

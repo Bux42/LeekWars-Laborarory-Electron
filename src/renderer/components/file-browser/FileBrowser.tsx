@@ -1,51 +1,96 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { fileBrowserStyles as styles } from './FileBrowser.styles';
 import { IFileBrowserProps } from './FileBrowser.types';
 import { IFileListItem } from '../../../services/FileService/requests/FileList.types';
-import { useFileList } from '../../../hooks/files/useFileList';
-import { useResetFiles } from '../../../hooks/files/useResetFiles';
 import { theme } from '../../theme';
+import {
+  useGetFileListAll,
+  useGetFileMoveUp,
+  useGetFileResetCurrentDirectory,
+  usePostFileBrowseFolder,
+} from '../../../services/file/file';
+import {
+  BrowseDirectoryResponse,
+  FileInfo,
+} from '../../../services/leekwarsToolsAPI.schemas';
 
 function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
-  const [currentPath, setCurrentPath] = useState<string>('.');
+  const [browseDirectoryResponse, setBrowseDirectoryResponse] =
+    useState<BrowseDirectoryResponse | null>(null);
+  const fileListRef = useRef<HTMLDivElement | null>(null);
 
-  const {
-    data: files = [],
-    isLoading: loading,
-    error,
-    refetch,
-  } = useFileList(currentPath);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const resetMutation = useResetFiles();
+  const fileListAllQuery = useGetFileListAll();
+  const browseFolderMutation = usePostFileBrowseFolder();
+  const moveUpQuery = useGetFileMoveUp({ query: { enabled: false } });
+  const resetMutation = useGetFileResetCurrentDirectory({
+    query: { enabled: false },
+  });
 
-  const handleFileClick = (file: IFileListItem) => {
+  const currentDirectoryData = browseDirectoryResponse ?? fileListAllQuery.data;
+  const isLoading = fileListAllQuery.isLoading && !currentDirectoryData;
+  const error =
+    errorMessage || (fileListAllQuery.error ? 'Failed to fetch files' : null);
+
+  const handleFileClick = async (file: FileInfo) => {
     if (file.directory) {
-      setCurrentPath(file.path);
+      setErrorMessage(null);
+      try {
+        const response = await browseFolderMutation.mutateAsync({
+          data: { directoryPath: file.name },
+        });
+        setBrowseDirectoryResponse(response);
+      } catch {
+        setErrorMessage('Failed to browse folder');
+      }
     } else {
-      onFileSelect(file);
+      onFileSelect(file as unknown as IFileListItem);
     }
   };
 
   const handleHomeClick = async () => {
+    setErrorMessage(null);
     try {
-      await resetMutation.mutateAsync();
-      setCurrentPath('.');
-    } catch (err) {
-      console.error('Failed to reset directory:', err);
+      const response = await resetMutation.refetch();
+      if (response.data) {
+        setBrowseDirectoryResponse(response.data);
+      }
+    } catch {
+      setErrorMessage('Failed to reset directory');
     }
   };
 
-  const handleUpClick = () => {
-    setCurrentPath('..');
-    // If currentPath was already '..', the State update might not trigger a re-fetch if not handled.
-    // However, in our useFileList, the key depends on currentPath.
-    // If the server-side is stateful, we might need to force a refetch or use a mutation.
-    if (currentPath === '..') {
-      refetch();
+  const handleUpClick = async () => {
+    setErrorMessage(null);
+    try {
+      const response = await moveUpQuery.refetch();
+      if (response.data) {
+        setBrowseDirectoryResponse(response.data);
+      }
+    } catch {
+      setErrorMessage('Failed to move up directory');
     }
   };
 
-  if (loading) {
+  const emptyFolder =
+    !isLoading && !error && currentDirectoryData?.files?.length === 0;
+
+  useEffect(() => {
+    if (fileListRef.current) {
+      fileListRef.current.scrollTop = 0;
+    }
+  }, [currentDirectoryData?.currentDirectory]);
+
+  const onButtonMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.borderColor = theme.colors.border.secondary;
+  };
+
+  const onButtonMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.borderColor = theme.colors.border.primary;
+  };
+
+  if (isLoading) {
     return (
       <div style={styles.container}>
         <p style={styles.loading}>Loading files...</p>
@@ -56,10 +101,7 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
   if (error) {
     return (
       <div style={styles.container}>
-        <p style={styles.error}>
-          Error:{' '}
-          {error instanceof Error ? error.message : 'Failed to fetch files'}
-        </p>
+        <p style={styles.error}>Error: {error}</p>
       </div>
     );
   }
@@ -67,19 +109,15 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h3>File Browser</h3>
+        <h3>{currentDirectoryData?.currentDirectory || 'File Browser'}</h3>
         <div style={styles.headerButtons}>
           <button
             type="button"
             style={styles.backButton}
             onClick={handleUpClick}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = '#4e4e4e';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = theme.colors.border.primary;
-            }}
-            disabled={loading}
+            onMouseEnter={onButtonMouseEnter}
+            onMouseLeave={onButtonMouseLeave}
+            disabled={moveUpQuery.isFetching || isLoading}
             aria-label="Go up one directory"
           >
             ⬆️
@@ -88,21 +126,18 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
             type="button"
             style={styles.homeButton}
             onClick={handleHomeClick}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = '#4e4e4e';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = theme.colors.border.primary;
-            }}
-            disabled={resetMutation.isPending}
+            onMouseEnter={onButtonMouseEnter}
+            onMouseLeave={onButtonMouseLeave}
+            disabled={resetMutation.isFetching || isLoading}
             aria-label="Go to home directory"
           >
             🏠
           </button>
         </div>
       </div>
-      <div style={styles.fileList}>
-        {files.map((file) => {
+      <div style={styles.fileList} ref={fileListRef}>
+        {emptyFolder && <p>This folder is empty</p>}
+        {currentDirectoryData?.files?.map((file) => {
           const isSelected = selectedFile?.path === file.path;
           return (
             <div
@@ -115,7 +150,8 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
               aria-label={`Select ${file.name}`}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#4e4e4e';
+                  e.currentTarget.style.borderColor =
+                    theme.colors.border.secondary;
                 }
               }}
               onMouseLeave={(e) => {

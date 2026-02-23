@@ -3,7 +3,7 @@
  * Handles common functionality like port management and request helpers.
  */
 export abstract class BaseService {
-  private static port: number = 8080;
+  private static port: number = 7000;
 
   /**
    * Set the port for all services

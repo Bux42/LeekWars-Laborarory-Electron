@@ -1,6 +1,6 @@
 import { theme } from '../../theme';
 
-export const leekscriptAIStyles = {
+const leekscriptAIStyles = {
   container: {
     display: 'flex',
     flexDirection: 'column' as const,
@@ -46,3 +46,5 @@ export const leekscriptAIStyles = {
     fontSize: '0.9rem',
   },
 };
+
+export default leekscriptAIStyles;

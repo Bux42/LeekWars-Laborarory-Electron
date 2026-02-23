@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { basePoolRunWrapperStyles as styles } from './BasePoolRunWrapper.styles';
 import { IBasePoolRunWrapperProps } from './BasePoolRunWrapper.types';
 import Spinner from '../../shared/spinner/Spinner';
 import Button from '../../shared/button/Button';
 import { formatDate, getDuration } from '../../../utils/DateUtils';
 
-const BasePoolRunWrapper: React.FC<IBasePoolRunWrapperProps> = ({
+function BasePoolRunWrapper({
   run,
   children,
   onStop,
-}) => {
+}: IBasePoolRunWrapperProps) {
   const [stopping, setStopping] = React.useState(false);
 
   const handleStop = async () => {
@@ -19,17 +19,22 @@ const BasePoolRunWrapper: React.FC<IBasePoolRunWrapperProps> = ({
       setStopping(false);
     }
   };
+
+  const statusText = useMemo(() => {
+    if (run.interrupted) return 'Interrupted';
+    if (run.running) return 'Running';
+    return 'Completed';
+  }, [run.running, run.interrupted]);
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <div style={styles.titleContainer}>
-          <h2 style={styles.title}>Run: {run.pool?.name || 'Unknown Pool'}</h2>
+          <h2 style={styles.title}>
+            Run: {run.basePool?.name || 'Unknown Pool'}
+          </h2>
           <span style={styles.statusBadge(run.running, run.interrupted)}>
-            {run.interrupted
-              ? 'Interrupted'
-              : run.running
-                ? 'Running'
-                : 'Completed'}
+            {statusText}
           </span>
           {run.running && <Spinner />}
         </div>
@@ -48,18 +53,18 @@ const BasePoolRunWrapper: React.FC<IBasePoolRunWrapperProps> = ({
       <div style={styles.infoGrid}>
         <div style={styles.infoItem}>
           <span style={styles.label}>Start Time</span>
-          <span style={styles.value}>{formatDate(run.startTime)}</span>
+          <span style={styles.value}>{formatDate(run.startDate)}</span>
         </div>
         {!run.running && (
           <div style={styles.infoItem}>
             <span style={styles.label}>End Time</span>
-            <span style={styles.value}>{formatDate(run.endTime)}</span>
+            <span style={styles.value}>{formatDate(run.endDate)}</span>
           </div>
         )}
         <div style={styles.infoItem}>
           <span style={styles.label}>Duration</span>
           <span style={styles.value}>
-            {getDuration(run.startTime, run.endTime)}
+            {getDuration(run.startDate, run.endDate)}
           </span>
         </div>
         <div style={styles.infoItem}>
@@ -73,6 +78,6 @@ const BasePoolRunWrapper: React.FC<IBasePoolRunWrapperProps> = ({
       {children && <div style={styles.childrenContainer}>{children}</div>}
     </div>
   );
-};
+}
 
 export default BasePoolRunWrapper;

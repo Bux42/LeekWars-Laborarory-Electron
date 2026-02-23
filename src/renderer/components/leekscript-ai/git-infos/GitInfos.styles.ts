@@ -1,6 +1,6 @@
 import { theme } from '../../../theme';
 
-export const gitInfosStyles = {
+const gitInfosStyles = {
   container: {
     backgroundColor: theme.colors.background.tertiary,
     padding: theme.spacing.md,
@@ -71,3 +71,5 @@ export const gitInfosStyles = {
     margin: 0,
   },
 };
+
+export default gitInfosStyles;

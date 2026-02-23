@@ -14,6 +14,12 @@ function LeekPicker({
     (leek) => !selectedLeekIds.includes(leek.id),
   );
 
+  console.log('LeekPicker render', {
+    availableLeeks,
+    selectedLeekIds,
+    filteredLeeks,
+  });
+
   return (
     <div style={styles.container}>
       <div style={styles.title}>Add Leek to Pool</div>
@@ -46,7 +52,7 @@ function LeekPicker({
                 style={styles.leekAvatar}
               />
               <div style={styles.leekName}>{leek.name}</div>
-              <div style={styles.leekElo}>ELO: {leek.elo}</div>
+              {/* <div style={styles.leekElo}>ELO: {leek.elo}</div> */}
             </div>
           ))}
         </div>

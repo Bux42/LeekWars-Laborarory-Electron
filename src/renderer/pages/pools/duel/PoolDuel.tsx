@@ -3,10 +3,17 @@ import { poolsStyles as styles } from '../Pools.styles';
 import { usePoolDuels } from '../../../../hooks/pools/duel/usePoolDuels';
 import PoolDuelList from '../../../components/pool/duel/pool-duel-list/PoolDuelList';
 import Button from '../../../components/shared/button/Button';
+import { useGetDuelPoolsAll } from '../../../../services/duel-pools/duel-pools';
 
 function PoolDuel() {
   const navigate = useNavigate();
-  const { data: pools = [], isLoading, error } = usePoolDuels();
+  // const { data: pools = [], isLoading, error } = usePoolDuels();
+
+  const { data, isLoading, error } = useGetDuelPoolsAll({
+    query: {
+      queryKey: ['duelPools'],
+    },
+  });
 
   return (
     <div style={styles.container}>
@@ -28,10 +35,10 @@ function PoolDuel() {
             {error instanceof Error ? error.message : 'Failed to fetch pools'}
           </p>
         )}
-        {!isLoading && !error && pools.length === 0 && (
+        {!isLoading && !error && data?.pools?.length === 0 && (
           <p style={styles.emptyText}>No pools found.</p>
         )}
-        <PoolDuelList pools={pools} />
+        <PoolDuelList pools={data?.pools || []} />
       </div>
     </div>
   );

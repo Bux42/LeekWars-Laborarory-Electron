@@ -6,8 +6,7 @@ import LeekAvatarPicker from '../../components/leek/leek-avatar-picker/LeekAvata
 import Input from '../../components/shared/input/Input';
 import Button from '../../components/shared/button/Button';
 import LeekscriptAIPicker from '../../components/leekscript-ai/leekscript-ai-picker/LeekscriptAIPicker';
-import { ILeek } from '../../../services/leekwars-laboratory/types/leek/Leek.types';
-import { useAddLeek } from '../../../hooks/leeks/useAddLeek';
+import { usePostLeeksAdd } from '../../../services/leeks/leeks';
 import EntityBuild from '../../components/entity/entity-build/EntityBuild';
 
 function LeekCreation() {
@@ -17,10 +16,10 @@ function LeekCreation() {
   const [selectedAvatar, setSelectedAvatar] =
     useState<string>('leek1_front_green');
   const [leekName, setLeekName] = useState<string>('');
-  const [selectedAiHash, setSelectedAiHash] = useState<string>('');
+  const [selectedAiId, setSelectedAiId] = useState<string>('');
   const [success, setSuccess] = useState<string | null>(null);
 
-  const addLeekMutation = useAddLeek();
+  const addLeekMutation = usePostLeeksAdd();
 
   const handleFileImport = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -44,17 +43,15 @@ function LeekCreation() {
   };
 
   const handleCreate = async () => {
-    if (!entityBuild || !leekName || !selectedAiHash) {
+    if (!entityBuild || !leekName || !selectedAiId) {
       setError('Please complete all steps before creating');
       return;
     }
 
-    const newLeek: ILeek = {
-      id: '',
+    const newLeek = {
       name: leekName,
       build: entityBuild,
-      elo: 1000,
-      mergedCodeHash: selectedAiHash,
+      aiId: selectedAiId,
       imageName: selectedAvatar,
     };
 
@@ -62,8 +59,9 @@ function LeekCreation() {
       setError(null);
       setSuccess(null);
 
-      const response = await addLeekMutation.mutateAsync({ leek: newLeek });
-      setSuccess(`Leek "${response.leek.name}" created successfully!`);
+      const response = await addLeekMutation.mutateAsync({ data: newLeek });
+      const createdLeekName = response.leek?.name ?? leekName;
+      setSuccess(`Leek "${createdLeekName}" created successfully!`);
 
       // Redirect to leeks page after a short delay
       navigate('/leeks');
@@ -131,12 +129,12 @@ function LeekCreation() {
             <h2>Step 3: Select LeekScript AI Snapshot</h2>
             <div style={styles.section}>
               <LeekscriptAIPicker
-                onSelect={setSelectedAiHash}
-                selectedHash={selectedAiHash}
+                onSelect={setSelectedAiId}
+                selectedAiId={selectedAiId}
               />
-              {selectedAiHash && (
-                <p style={{ marginTop: '8px', color: '#4ec9b0' }}>
-                  Selected Snapshot: {selectedAiHash.substring(0, 8)}
+              {selectedAiId && (
+                <p style={styles.successMessage}>
+                  Selected AI ID: {selectedAiId.substring(0, 8)}
                 </p>
               )}
             </div>
@@ -146,13 +144,11 @@ function LeekCreation() {
             <Button
               onClick={handleCreate}
               variant="primary"
-              disabled={creating || !leekName || !selectedAiHash}
+              disabled={creating || !leekName || !selectedAiId}
             >
               {creating ? 'Creating...' : 'Create Leek'}
             </Button>
-            {success && (
-              <p style={{ marginTop: '8px', color: '#4ec9b0' }}>{success}</p>
-            )}
+            {success && <p style={styles.successMessage}>{success}</p>}
           </div>
         </>
       )}

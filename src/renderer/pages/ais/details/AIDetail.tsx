@@ -1,18 +1,14 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useLeekscriptAIByHash } from '../../../../hooks/leekscript-ai/useLeekscriptAIByHash';
+import { useGetAiId } from '../../../../services/ai/ai';
 import LeekscriptAI from '../../../components/leekscript-ai/LeekscriptAI';
 import Spinner from '../../../components/shared/spinner/Spinner';
 import { aiDetailStyles as styles } from './AIDetail.styles';
 
-const AIDetail: React.FC = () => {
-  const { hash } = useParams<{ hash: string }>();
+function AIDetail() {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const {
-    data: ai,
-    isLoading,
-    error,
-  } = useLeekscriptAIByHash(hash || '', true);
+  const { data: ai, isLoading, error } = useGetAiId(id || '');
 
   if (isLoading) {
     return (
@@ -29,9 +25,7 @@ const AIDetail: React.FC = () => {
           &larr; Back to all AIs
         </div>
         <p style={styles.errorText}>
-          {error
-            ? `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
-            : 'AI not found for this hash.'}
+          {error ? 'Error: Failed to load AI.' : 'AI not found for this id.'}
         </p>
       </div>
     );
@@ -48,6 +42,6 @@ const AIDetail: React.FC = () => {
       <LeekscriptAI leekscriptAI={ai} />
     </div>
   );
-};
+}
 
 export default AIDetail;

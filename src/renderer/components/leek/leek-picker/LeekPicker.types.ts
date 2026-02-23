@@ -1,7 +1,7 @@
-import { ILeek } from '../../../../services/leekwars-laboratory/types/leek/Leek.types';
+import { LeekResponse } from '../../../../services/leekwarsToolsAPI.schemas';
 
 export interface ILeekPickerProps {
-  availableLeeks: ILeek[];
+  availableLeeks: LeekResponse[];
   selectedLeekIds: string[];
   onLeekSelect: (leekId: string) => void;
 }

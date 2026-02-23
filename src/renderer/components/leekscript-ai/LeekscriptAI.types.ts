@@ -1,5 +1,5 @@
-import { ILeekScriptAI } from '../../../services/leekwars-laboratory/leekscript-ai/LeekscriptAI.types';
+import { EntityAIResponse } from '../../../services/leekwarsToolsAPI.schemas';
 
 export interface ILeekscriptAIProps {
-  leekscriptAI: ILeekScriptAI;
+  leekscriptAI: EntityAIResponse;
 }

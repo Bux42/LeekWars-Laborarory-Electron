@@ -6,7 +6,7 @@ import Button from '../../shared/button/Button';
 import Spinner from '../../shared/spinner/Spinner';
 import { theme } from '../../../theme';
 
-const PoolRunList: React.FC<IPoolRunListProps> = ({ runs, onViewRun }) => {
+function PoolRunList({ runs, onViewRun }: IPoolRunListProps) {
   // Local state to force re-render for active runs durations
   const [, setTick] = useState(0);
 
@@ -39,15 +39,15 @@ const PoolRunList: React.FC<IPoolRunListProps> = ({ runs, onViewRun }) => {
           <div style={styles.info}>
             <div style={styles.titleContainer}>
               <span style={styles.poolName}>
-                {run.pool?.name || 'Unknown Pool'}
+                {run.basePool?.name || 'Unknown Pool'}
               </span>
               {run.running && <Spinner size="small" />}
             </div>
             <span style={styles.details}>
-              Duration: {getDuration(run.startTime, run.endTime)}
+              Duration: {getDuration(run.startDate, run.endDate)}
               {run.interrupted && ' • Interrupted'}
               {!run.running && !run.interrupted && (
-                <> • Completed ({getTimeAgo(run.endTime)})</>
+                <> • Completed ({getTimeAgo(run.endDate)})</>
               )}
             </span>
           </div>
@@ -61,6 +61,6 @@ const PoolRunList: React.FC<IPoolRunListProps> = ({ runs, onViewRun }) => {
       {runs.length === 0 && <p style={styles.emptyText}>No pool runs found.</p>}
     </div>
   );
-};
+}
 
 export default PoolRunList;

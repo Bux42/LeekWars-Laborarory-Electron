@@ -1,13 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { usePoolDuelId } from '../../../../hooks/pools/duel/usePoolDuelId';
 import { usePoolRunDuelsByPoolId } from '../../../../hooks/pool-runs/duel/usePoolRunDuelsByPoolId';
 import { poolsStyles as styles } from '../Pools.styles';
 import PoolRunList from '../../../components/pool-runs/pool-run-list/PoolRunList';
 import Spinner from '../../../components/shared/spinner/Spinner';
 import { IPoolRunBase } from '../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
-import { useNavigate } from 'react-router-dom';
 
-const PoolRunsDuel: React.FC = () => {
+function PoolRunsDuel() {
   const navigate = useNavigate();
   const poolId = usePoolDuelId();
 
@@ -53,6 +53,6 @@ const PoolRunsDuel: React.FC = () => {
       <PoolRunList runs={runs} onViewRun={handleViewRun} />
     </div>
   );
-};
+}
 
 export default PoolRunsDuel;
