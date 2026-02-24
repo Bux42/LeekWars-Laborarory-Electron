@@ -14,18 +14,13 @@ function PoolDuelDetail() {
   const { data: pool, isLoading, error } = useGetDuelPoolsId(poolId!);
   const startMutation = usePostDuelPoolRunsIdStart();
 
-  // const handleUpdatePool = async (
-  //   pool: IPoolDuel,
-  //   changes: Partial<IPoolDuel>,
-  // ) => {
-  //   try {
-  //     await updateMutation.mutateAsync({
-  //       pool: { ...pool, ...changes },
-  //     });
-  //   } catch (err) {
-  //     console.error('Failed to update pool:', err);
-  //   }
-  // };
+  if (!poolId) {
+    return (
+      <div style={styles.container}>
+        <p style={styles.errorText}>Invalid pool ID</p>
+      </div>
+    );
+  }
 
   const handleStartPool = async () => {
     try {

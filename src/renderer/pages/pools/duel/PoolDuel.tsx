@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { poolsStyles as styles } from '../Pools.styles';
-import { usePoolDuels } from '../../../../hooks/pools/duel/usePoolDuels';
 import PoolDuelList from '../../../components/pool/duel/pool-duel-list/PoolDuelList';
 import Button from '../../../components/shared/button/Button';
 import { useGetDuelPoolsAll } from '../../../../services/duel-pools/duel-pools';

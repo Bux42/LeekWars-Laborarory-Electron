@@ -15,21 +15,21 @@ export interface AnalyzeAIRequest {
 }
 
 export interface GitInfosResponse {
-  repoUrl?: string;
-  branchName?: string;
-  commitHash?: string;
-  mainFileRelativePath?: string;
+  repoUrl: string;
+  branchName: string;
+  commitHash: string;
+  mainFileRelativePath: string;
 }
 
 export interface EntityAIResponse {
-  id?: string;
-  name?: string;
-  description?: string;
-  gitInfos?: GitInfosResponse;
+  id: string;
+  name: string;
+  description: string;
+  gitInfos: GitInfosResponse;
 }
 
 export interface AddAIResponse {
-  ai?: EntityAIResponse;
+  ai: EntityAIResponse;
 }
 
 export interface AnalyzeAIResponse {
@@ -38,7 +38,7 @@ export interface AnalyzeAIResponse {
 }
 
 export interface ListAIResponse {
-  ais?: EntityAIResponse[];
+  ais: EntityAIResponse[];
 }
 
 export interface AddLeekToDuelPoolRequest {
@@ -68,8 +68,8 @@ export interface RemoveLeekFromDuelPoolRequest {
  * Represents a base pool returned by the API
  */
 export interface BasePoolResponse {
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
   enabled: boolean;
   resetElo: boolean;
   deterministic: boolean;
@@ -97,70 +97,70 @@ export interface EntityStats {
 
 export interface EntityBuild {
   investedCapital: number;
-  equippedComponentIds?: number[];
-  bonusStats?: EntityStats;
-  investedStats?: EntityStats;
-  totalStats?: EntityStats;
+  equippedComponentIds: number[];
+  bonusStats: EntityStats;
+  investedStats: EntityStats;
+  totalStats: EntityStats;
   level: number;
-  selectedChipIds?: number[];
-  selectedWeaponIds?: number[];
+  selectedChipIds: number[];
+  selectedWeaponIds: number[];
   totalCapital: number;
 }
 
 export interface LeekResponse {
-  id?: string;
-  name?: string;
-  imageName?: string;
-  build?: EntityBuild;
-  ai?: EntityAIResponse;
+  id: string;
+  name: string;
+  imageName: string;
+  build: EntityBuild;
+  ai: EntityAIResponse;
   creationDate: number;
 }
 
 export interface DuelPoolResponse {
-  id?: string;
-  basePool?: BasePoolResponse;
-  leeks?: LeekResponse[];
+  id: string;
+  basePool: BasePoolResponse;
+  leeks: LeekResponse[];
 }
 
 export interface GetDuelPoolsResponse {
-  pools?: DuelPoolResponse[];
+  pools: DuelPoolResponse[];
 }
 
 export interface PoolLeekResponse {
-  id?: string;
-  originalLeekId?: string;
-  name?: string;
-  imageName?: string;
-  build?: EntityBuild;
-  ai?: EntityAIResponse;
+  id: string;
+  originalLeekId: string;
+  name: string;
+  imageName: string;
+  build: EntityBuild;
+  ai: EntityAIResponse;
   elo: number;
 }
 
 export interface DuelPoolRunResponse {
-  id?: string;
+  id: string;
   interrupted: boolean;
   running: boolean;
-  leeks?: PoolLeekResponse[];
-  basePool?: BasePoolResponse;
-  duelPoolId?: string;
+  basePool: BasePoolResponse;
   startDate: number;
   endDate: number;
+  leeks: PoolLeekResponse[];
+  duelPoolId: string;
 }
 
 export interface ListDuelPoolRunResponse {
-  runs?: DuelPoolRunResponse[];
+  runs: DuelPoolRunResponse[];
 }
 
 export interface GenerateFightRequest {
-  fightId?: string;
+  fightId: string;
 }
 
 export interface GenerateFightResponse {
-  fightId?: string;
+  fightId: string;
 }
 
 export interface BrowseDirectoryRequest {
-  directoryPath?: string;
+  directoryPath: string;
 }
 
 export interface FileInfo {
@@ -178,8 +178,8 @@ export interface FileInfo {
 }
 
 export interface BrowseDirectoryResponse {
-  files?: FileInfo[];
-  currentDirectory?: string;
+  files: FileInfo[];
+  currentDirectory: string;
 }
 
 export interface CheckPathRequest {
@@ -191,7 +191,7 @@ export interface CheckPathResponse {
 }
 
 export interface GetTopLevelResponse {
-  topLevel?: string;
+  topLevel: string;
 }
 
 export interface GitPorcelainItem {
@@ -200,7 +200,7 @@ export interface GitPorcelainItem {
 }
 
 export interface StatusPorcelainResponse {
-  items?: GitPorcelainItem[];
+  items: GitPorcelainItem[];
 }
 
 export interface AddLeekRequest {
@@ -211,11 +211,11 @@ export interface AddLeekRequest {
 }
 
 export interface AddLeekResponse {
-  leek?: LeekResponse;
+  leek: LeekResponse;
 }
 
 export interface GetAllLeeksResponse {
-  leeks?: LeekResponse[];
+  leeks: LeekResponse[];
 }
 
 export interface SetBooleanRequest {
@@ -234,5 +234,7 @@ export interface UpdatePoolNameRequest {
  * Represents a response containing a list of base pools returned by the API
  */
 export interface GetBasePoolsResponse {
-  pools?: BasePoolResponse[];
+  pools: BasePoolResponse[];
 }
+
+export type GetApiFightGetByPoolRunIdId200Item = { [key: string]: unknown };

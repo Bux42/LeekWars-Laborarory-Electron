@@ -3,8 +3,6 @@ import { IPoolDuelListProps } from './PoolDuelList.types';
 import { poolDuelListStyles as styles } from './PoolDuelList.styles';
 import Button from '../../../shared/button/Button';
 import { theme } from '../../../../theme';
-import Spinner from '../../../shared/spinner/Spinner';
-import { usePoolRunDuels } from '../../../../../hooks/pool-runs/duel/usePoolRunDuels';
 
 function PoolDuelList({ pools }: IPoolDuelListProps) {
   const navigate = useNavigate();
