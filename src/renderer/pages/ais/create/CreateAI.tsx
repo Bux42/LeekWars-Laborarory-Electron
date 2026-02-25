@@ -192,7 +192,7 @@ function CreateAI() {
         <Button
           onClick={handleCreate}
           variant="primary"
-          disabled={!validFile || createPending}
+          // disabled={!validFile || createPending}
         >
           {createPending ? 'Creating...' : 'Register AI'}
         </Button>

@@ -21,8 +21,16 @@ function LeftPanel() {
       children: [{ path: '/pools/duels', label: 'Duels' }],
     },
     { path: '/leeks', label: 'Leeks' },
+    { path: '/farmers', label: 'Farmers' },
     { path: '/ais', label: 'AIs' },
   ];
+
+  const getNavLinkColor = (path: string, isSubItem = false) => {
+    if (location.pathname === path) {
+      return theme.colors.text.primary;
+    }
+    return isSubItem ? theme.colors.text.secondary : theme.colors.text.primary;
+  };
 
   const getNavLinkStyle = (path: string, isSubItem = false) => ({
     ...(isSubItem ? styles.subNavLink : styles.navLink),
@@ -30,12 +38,7 @@ function LeftPanel() {
       location.pathname === path
         ? theme.colors.background.elevated
         : 'transparent',
-    color:
-      location.pathname === path
-        ? theme.colors.text.primary
-        : isSubItem
-          ? theme.colors.text.secondary
-          : theme.colors.text.primary,
+    color: getNavLinkColor(path, isSubItem),
   });
 
   const renderNavItem = (item: NavItem, isSubItem = false) => {

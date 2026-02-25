@@ -13,6 +13,8 @@ import AIDetail from './pages/ais/details/AIDetail';
 import CreateAI from './pages/ais/create/CreateAI';
 import DuelPoolCreation from './pages/pools/duel/create/DuelPoolCreation';
 import Providers from './providers/Providers';
+import Farmers from './pages/farmers/Farmers';
+import FarmerCreation from './pages/farmer-creation/FarmerCreation';
 
 export default function App() {
   return (
@@ -35,6 +37,8 @@ export default function App() {
             />
             <Route path="/leeks" element={<Leeks />} />
             <Route path="/new-leek" element={<LeekCreation />} />
+            <Route path="/farmers" element={<Farmers />} />
+            <Route path="/new-farmer" element={<FarmerCreation />} />
             <Route path="/ais" element={<AIs />} />
             <Route path="/ais/create" element={<CreateAI />} />
             <Route path="/ai/:id" element={<AIDetail />} />
