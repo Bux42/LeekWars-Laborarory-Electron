@@ -12,6 +12,7 @@ import LeekDetail from '../../../../components/leek/leek-detail/LeekDetail';
 import PoolDuelLeek from '../../../../components/pool/duel/pool-duel-leek/PoolDuelLeek';
 import { useGetApiFightDuelGetCountByPoolRunIdId } from '../../../../../services/duel-fights/duel-fights';
 import PoolDuelFightList from '../../../../components/pool/duel/fight/pool-duel-fight-list/PoolDuelFightList';
+import { useWs } from '../../../../../services/websocket/useWs';
 
 function PoolRunDuelDetail() {
   const runId = usePoolRunDuelId();
@@ -38,6 +39,10 @@ function PoolRunDuelDetail() {
       setProcessedFights(fightCountData.count);
     }
   }, [fightCountData]);
+
+  useWs('DUEL_POOL_FIGHT_COUNT', (payload) => {
+    console.log(payload.count); // fully typed
+  });
 
   // const handleStop = async () => {
   //   if (run?.id) {
