@@ -4,6 +4,7 @@
 
 import path from 'path';
 import webpack from 'webpack';
+import dotenv from 'dotenv';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -14,6 +15,8 @@ import baseConfig from './webpack.config.base';
 import webpackPaths from './webpack.paths';
 import checkNodeEnv from '../scripts/check-node-env';
 import deleteSourceMaps from '../scripts/delete-source-maps';
+
+dotenv.config({ path: path.resolve(webpackPaths.rootPath, '.env') });
 
 checkNodeEnv('production');
 deleteSourceMaps();
@@ -109,6 +112,7 @@ const configuration: webpack.Configuration = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
       DEBUG_PROD: false,
+      VUE_FRONT_END_URL: 'http://localhost:8080/',
     }),
 
     new MiniCssExtractPlugin({

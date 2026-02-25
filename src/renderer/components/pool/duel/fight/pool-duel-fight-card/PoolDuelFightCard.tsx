@@ -31,7 +31,12 @@ function PoolDuelFightCard({ fight, leek1, leek2 }: IPoolDuelFightCardProps) {
       },
       {
         onSuccess: () => {
-          window.open(`http://localhost:8080/fight/${fight.id}`, '_blank');
+          const fightUrl = new URL(
+            `fight/${fight.id}`,
+            process.env.VUE_FRONT_END_URL || 'http://localhost:8080/',
+          ).toString();
+
+          window.open(fightUrl, '_blank');
         },
         onError: (err) => {
           console.error('Failed to generate fight:', err);
