@@ -6,6 +6,8 @@ export interface IPoolDuelFightCardStyles {
   fightCard: CSSProperties;
   leekContainer: (color: FightColor) => CSSProperties;
   resultContainer: CSSProperties;
+  eyeIcon: CSSProperties;
+  spin: CSSProperties;
 }
 
 export const poolDuelFightCardStyles: IPoolDuelFightCardStyles = {
@@ -27,5 +29,12 @@ export const poolDuelFightCardStyles: IPoolDuelFightCardStyles = {
   resultContainer: {
     margin: '0 20px',
     fontWeight: 'bold',
+  },
+  eyeIcon: {
+    marginLeft: '10px',
+    cursor: 'pointer',
+  },
+  spin: {
+    marginLeft: '10px',
   },
 };

@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { Spin } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
 import { IPoolDuelFightCardProps } from './PoolDuelFightCard.types';
 import { poolDuelFightCardStyles as styles } from './PoolDuelFightCard.styles';
@@ -6,6 +7,8 @@ import { getTimeAgo } from '../../../../../utils/DateUtils';
 import { usePostFightGenerate } from '../../../../../../services/fights/fights';
 
 function PoolDuelFightCard({ fight, leek1, leek2 }: IPoolDuelFightCardProps) {
+  const [generatingFight, setGeneratingFight] = useState<boolean>(false);
+
   const draw = useMemo(() => {
     if (!fight.winnerLeekId) {
       return true;
@@ -23,6 +26,7 @@ function PoolDuelFightCard({ fight, leek1, leek2 }: IPoolDuelFightCardProps) {
   };
 
   const handleGenerateFight = () => {
+    setGeneratingFight(true);
     generateFight(
       {
         data: {
@@ -41,6 +45,9 @@ function PoolDuelFightCard({ fight, leek1, leek2 }: IPoolDuelFightCardProps) {
         onError: (err) => {
           console.error('Failed to generate fight:', err);
         },
+        onSettled: () => {
+          setGeneratingFight(false);
+        },
       },
     );
   };
@@ -55,10 +62,11 @@ function PoolDuelFightCard({ fight, leek1, leek2 }: IPoolDuelFightCardProps) {
         {leek2.name}
       </div>
       {getTimeAgo(fight.date)}
-      <EyeOutlined
-        style={{ marginLeft: '10px', cursor: 'pointer' }}
-        onClick={handleGenerateFight}
-      />
+      {generatingFight ? (
+        <Spin style={styles.spin} />
+      ) : (
+        <EyeOutlined style={styles.eyeIcon} onClick={handleGenerateFight} />
+      )}
     </div>
   );
 }
