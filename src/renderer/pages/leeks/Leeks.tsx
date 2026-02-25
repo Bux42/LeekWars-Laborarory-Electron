@@ -94,7 +94,11 @@ function Leeks() {
           Add Leek
         </Button>
       </div>
-      <LeekList leeks={leeks} getDropdownItems={getDropdownItems} />
+      {leeks.length === 0 ? (
+        <p>No leeks found.</p>
+      ) : (
+        <LeekList leeks={leeks} getDropdownItems={getDropdownItems} />
+      )}
     </div>
   );
 }

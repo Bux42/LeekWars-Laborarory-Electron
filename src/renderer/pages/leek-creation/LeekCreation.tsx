@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UploadOutlined } from '@ant-design/icons';
+import { Upload, Button as AntButton } from 'antd';
+import { RcFile } from 'antd/es/upload';
 import { leekCreationStyles as styles } from './LeekCreation.styles';
 import { IEntityBuild } from '../../../services/leekwars-laboratory/types/builds/EntityBuild.types';
 import LeekAvatarPicker from '../../components/leek/leek-avatar-picker/LeekAvatarPicker';
@@ -8,6 +11,7 @@ import Button from '../../components/shared/button/Button';
 import LeekscriptAIPicker from '../../components/leekscript-ai/leekscript-ai-picker/LeekscriptAIPicker';
 import { usePostLeeksAdd } from '../../../services/leeks/leeks';
 import EntityBuild from '../../components/entity/entity-build/EntityBuild';
+import { AddLeekRequest } from '../../../services/leekwarsToolsAPI.schemas';
 
 function LeekCreation() {
   const navigate = useNavigate();
@@ -20,27 +24,6 @@ function LeekCreation() {
   const [success, setSuccess] = useState<string | null>(null);
 
   const addLeekMutation = usePostLeeksAdd();
-
-  const handleFileImport = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    try {
-      const text = await file.text();
-      const json = JSON.parse(text) as IEntityBuild;
-      setEntityBuild(json);
-      setError(null);
-
-      // Set leek name from file name (without extension)
-      const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
-      setLeekName(fileNameWithoutExtension);
-    } catch {
-      setError('Failed to parse JSON file');
-      setEntityBuild(null);
-    }
-  };
 
   const handleCreate = async () => {
     if (!entityBuild || !leekName || !selectedAiId) {
@@ -59,7 +42,9 @@ function LeekCreation() {
       setError(null);
       setSuccess(null);
 
-      const response = await addLeekMutation.mutateAsync({ data: newLeek });
+      const response = await addLeekMutation.mutateAsync({
+        data: newLeek as AddLeekRequest,
+      });
       const createdLeekName = response.leek?.name ?? leekName;
       setSuccess(`Leek "${createdLeekName}" created successfully!`);
 
@@ -68,6 +53,34 @@ function LeekCreation() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create leek');
     }
+  };
+
+  const beforeUpload = (file: RcFile) => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const jsonText = e.target?.result;
+
+      if (typeof jsonText !== 'string') {
+        setError('Failed to read file');
+        return;
+      }
+
+      try {
+        const json = JSON.parse(jsonText) as IEntityBuild;
+        setEntityBuild(json);
+        setError(null);
+
+        // Set leek name from file name (without extension)
+        const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
+        setLeekName(fileNameWithoutExtension);
+      } catch {
+        setError('Failed to parse JSON file');
+        setEntityBuild(null);
+      }
+    };
+    reader.readAsText(file);
+    return false; // Prevent automatic upload
   };
 
   const creating = addLeekMutation.isPending;
@@ -90,12 +103,13 @@ function LeekCreation() {
           exported JSON file to import:
         </p>
 
-        <input
-          type="file"
+        <Upload
           accept=".json"
-          onChange={handleFileImport}
-          style={styles.fileInput}
-        />
+          showUploadList={false}
+          beforeUpload={beforeUpload}
+        >
+          <AntButton icon={<UploadOutlined />}>Select your JSON file</AntButton>
+        </Upload>
 
         {error && <p style={styles.error}>{error}</p>}
       </div>

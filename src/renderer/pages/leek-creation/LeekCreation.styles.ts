@@ -25,6 +25,9 @@ export const leekCreationStyles: ILeekCreationStyles = {
     padding: theme.spacing.md,
     backgroundColor: theme.colors.background.secondary,
     borderRadius: theme.borderRadius.md,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing.md,
   },
   fileInput: {
     marginTop: theme.spacing.sm,

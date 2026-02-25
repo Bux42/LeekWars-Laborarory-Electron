@@ -5,14 +5,25 @@ import BasePoolWrapper from '../../../../components/pool/base-pool-wrapper/BaseP
 import Spinner from '../../../../components/shared/spinner/Spinner';
 import PoolDuelCard from '../../../../components/pool/duel/pool-duel-card/PoolDuelCard';
 import { useGetDuelPoolsId } from '../../../../../services/duel-pools/duel-pools';
-import { usePostDuelPoolRunsIdStart } from '../../../../../services/duel-pool-runs/duel-pool-runs';
+import {
+  useGetDuelPoolRunGetByPoolIdId,
+  usePostDuelPoolRunIdStart,
+} from '../../../../../services/duel-pool-runs/duel-pool-runs';
+import Button from '../../../../components/shared/button/Button';
 
 function PoolDuelDetail() {
   const navigate = useNavigate();
   const poolId = usePoolDuelId();
 
   const { data: pool, isLoading, error } = useGetDuelPoolsId(poolId!);
-  const startMutation = usePostDuelPoolRunsIdStart();
+
+  const {
+    data: runsData,
+    isLoading: runsLoading,
+    error: runsError,
+  } = useGetDuelPoolRunGetByPoolIdId(poolId || '');
+
+  const startMutation = usePostDuelPoolRunIdStart();
 
   if (!poolId) {
     return (
@@ -54,6 +65,22 @@ function PoolDuelDetail() {
   return (
     <div style={styles.container}>
       <BasePoolWrapper pool={pool.basePool} onStart={handleStartPool}>
+        {runsData?.runs?.length > 0 && (
+          <>
+            <Button onClick={() => navigate(`/pools/duels/${poolId}/runs`)}>
+              View {runsData?.runs?.length} Runs
+            </Button>
+            <Button
+              onClick={() =>
+                navigate(
+                  `/pools/duels/${poolId}/runs/${runsData?.runs?.[0]?.id}`,
+                )
+              }
+            >
+              View last run
+            </Button>
+          </>
+        )}
         <PoolDuelCard pool={pool} />
       </BasePoolWrapper>
     </div>

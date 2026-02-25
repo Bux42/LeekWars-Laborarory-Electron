@@ -159,6 +159,24 @@ export interface GenerateFightResponse {
   fightId: string;
 }
 
+export interface GetCountByPoolRunIdResponse {
+  count: number;
+}
+
+export interface PoolFightDuelResponse {
+  id: string;
+  poolRunId: string;
+  seed: number;
+  date: number;
+  leek1Id: string;
+  leek2Id: string;
+  winnerLeekId?: string;
+}
+
+export interface GetFightsByPoolRunIdResponse {
+  fights: PoolFightDuelResponse[];
+}
+
 export interface BrowseDirectoryRequest {
   directoryPath: string;
 }
@@ -236,5 +254,3 @@ export interface UpdatePoolNameRequest {
 export interface GetBasePoolsResponse {
   pools: BasePoolResponse[];
 }
-
-export type GetApiFightGetByPoolRunIdId200Item = { [key: string]: unknown };

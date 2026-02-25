@@ -31,25 +31,25 @@ import { apiClient } from '.././lib/api-client';
  * Retrieves all duel pool runs, including the leeks in each pool and their current Elo ratings.
  * @summary Get all duel pool runs
  */
-export const getDuelPoolRunsAll = (signal?: AbortSignal) => {
+export const getDuelPoolRunAll = (signal?: AbortSignal) => {
   return apiClient<ListDuelPoolRunResponse>({
-    url: `/duel-pool-runs/all`,
+    url: `/duel-pool-run/all`,
     method: 'GET',
     signal,
   });
 };
 
-export const getGetDuelPoolRunsAllQueryKey = () => {
-  return [`/duel-pool-runs/all`] as const;
+export const getGetDuelPoolRunAllQueryKey = () => {
+  return [`/duel-pool-run/all`] as const;
 };
 
-export const getGetDuelPoolRunsAllQueryOptions = <
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+export const getGetDuelPoolRunAllQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDuelPoolRunAll>>,
   TError = void,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
-      Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+      Awaited<ReturnType<typeof getDuelPoolRunAll>>,
       TError,
       TData
     >
@@ -57,41 +57,41 @@ export const getGetDuelPoolRunsAllQueryOptions = <
 }) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetDuelPoolRunsAllQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetDuelPoolRunAllQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getDuelPoolRunsAll>>
-  > = ({ signal }) => getDuelPoolRunsAll(signal);
+    Awaited<ReturnType<typeof getDuelPoolRunAll>>
+  > = ({ signal }) => getDuelPoolRunAll(signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+    Awaited<ReturnType<typeof getDuelPoolRunAll>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetDuelPoolRunsAllQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getDuelPoolRunsAll>>
+export type GetDuelPoolRunAllQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDuelPoolRunAll>>
 >;
-export type GetDuelPoolRunsAllQueryError = void;
+export type GetDuelPoolRunAllQueryError = void;
 
-export function useGetDuelPoolRunsAll<
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+export function useGetDuelPoolRunAll<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunAll>>,
   TError = void,
 >(
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+        Awaited<ReturnType<typeof getDuelPoolRunAll>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+          Awaited<ReturnType<typeof getDuelPoolRunAll>>,
           TError,
-          Awaited<ReturnType<typeof getDuelPoolRunsAll>>
+          Awaited<ReturnType<typeof getDuelPoolRunAll>>
         >,
         'initialData'
       >;
@@ -100,23 +100,23 @@ export function useGetDuelPoolRunsAll<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetDuelPoolRunsAll<
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+export function useGetDuelPoolRunAll<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunAll>>,
   TError = void,
 >(
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+        Awaited<ReturnType<typeof getDuelPoolRunAll>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+          Awaited<ReturnType<typeof getDuelPoolRunAll>>,
           TError,
-          Awaited<ReturnType<typeof getDuelPoolRunsAll>>
+          Awaited<ReturnType<typeof getDuelPoolRunAll>>
         >,
         'initialData'
       >;
@@ -125,14 +125,14 @@ export function useGetDuelPoolRunsAll<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetDuelPoolRunsAll<
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+export function useGetDuelPoolRunAll<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunAll>>,
   TError = void,
 >(
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+        Awaited<ReturnType<typeof getDuelPoolRunAll>>,
         TError,
         TData
       >
@@ -146,14 +146,14 @@ export function useGetDuelPoolRunsAll<
  * @summary Get all duel pool runs
  */
 
-export function useGetDuelPoolRunsAll<
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+export function useGetDuelPoolRunAll<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunAll>>,
   TError = void,
 >(
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getDuelPoolRunsAll>>,
+        Awaited<ReturnType<typeof getDuelPoolRunAll>>,
         TError,
         TData
       >
@@ -163,7 +163,169 @@ export function useGetDuelPoolRunsAll<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetDuelPoolRunsAllQueryOptions(options);
+  const queryOptions = getGetDuelPoolRunAllQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Retrieves all duel pool runs associated with a specific duel pool ID, including the leeks in each pool and their current Elo ratings.
+ * @summary Get duel pool runs by duel pool ID
+ */
+export const getDuelPoolRunGetByPoolIdId = (
+  id: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<ListDuelPoolRunResponse>({
+    url: `/duel-pool-run/get-by-pool-id/${id}`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetDuelPoolRunGetByPoolIdIdQueryKey = (id: string) => {
+  return [`/duel-pool-run/get-by-pool-id/${id}`] as const;
+};
+
+export const getGetDuelPoolRunGetByPoolIdIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetDuelPoolRunGetByPoolIdIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>
+  > = ({ signal }) => getDuelPoolRunGetByPoolIdId(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetDuelPoolRunGetByPoolIdIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>
+>;
+export type GetDuelPoolRunGetByPoolIdIdQueryError = void;
+
+export function useGetDuelPoolRunGetByPoolIdId<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+          TError,
+          Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetDuelPoolRunGetByPoolIdId<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+          TError,
+          Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetDuelPoolRunGetByPoolIdId<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get duel pool runs by duel pool ID
+ */
+
+export function useGetDuelPoolRunGetByPoolIdId<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetDuelPoolRunGetByPoolIdIdQueryOptions(id, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
@@ -177,27 +339,27 @@ export function useGetDuelPoolRunsAll<
  * Retrieves a duel pool run by its ID, including the leeks in the pool and their current Elo ratings.
  * @summary Get duel pool run by ID
  */
-export const getDuelPoolRunsId = (id: string, signal?: AbortSignal) => {
+export const getDuelPoolRunId = (id: string, signal?: AbortSignal) => {
   return apiClient<DuelPoolRunResponse>({
-    url: `/duel-pool-runs/${id}`,
+    url: `/duel-pool-run/${id}`,
     method: 'GET',
     signal,
   });
 };
 
-export const getGetDuelPoolRunsIdQueryKey = (id: string) => {
-  return [`/duel-pool-runs/${id}`] as const;
+export const getGetDuelPoolRunIdQueryKey = (id: string) => {
+  return [`/duel-pool-run/${id}`] as const;
 };
 
-export const getGetDuelPoolRunsIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+export const getGetDuelPoolRunIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDuelPoolRunId>>,
   TError = void,
 >(
   id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+        Awaited<ReturnType<typeof getDuelPoolRunId>>,
         TError,
         TData
       >
@@ -206,11 +368,11 @@ export const getGetDuelPoolRunsIdQueryOptions = <
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetDuelPoolRunsIdQueryKey(id);
+  const queryKey = queryOptions?.queryKey ?? getGetDuelPoolRunIdQueryKey(id);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getDuelPoolRunsId>>
-  > = ({ signal }) => getDuelPoolRunsId(id, signal);
+    Awaited<ReturnType<typeof getDuelPoolRunId>>
+  > = ({ signal }) => getDuelPoolRunId(id, signal);
 
   return {
     queryKey,
@@ -218,35 +380,35 @@ export const getGetDuelPoolRunsIdQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+    Awaited<ReturnType<typeof getDuelPoolRunId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetDuelPoolRunsIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getDuelPoolRunsId>>
+export type GetDuelPoolRunIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDuelPoolRunId>>
 >;
-export type GetDuelPoolRunsIdQueryError = void;
+export type GetDuelPoolRunIdQueryError = void;
 
-export function useGetDuelPoolRunsId<
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+export function useGetDuelPoolRunId<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunId>>,
   TError = void,
 >(
   id: string,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+        Awaited<ReturnType<typeof getDuelPoolRunId>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+          Awaited<ReturnType<typeof getDuelPoolRunId>>,
           TError,
-          Awaited<ReturnType<typeof getDuelPoolRunsId>>
+          Awaited<ReturnType<typeof getDuelPoolRunId>>
         >,
         'initialData'
       >;
@@ -255,24 +417,24 @@ export function useGetDuelPoolRunsId<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetDuelPoolRunsId<
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+export function useGetDuelPoolRunId<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunId>>,
   TError = void,
 >(
   id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+        Awaited<ReturnType<typeof getDuelPoolRunId>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+          Awaited<ReturnType<typeof getDuelPoolRunId>>,
           TError,
-          Awaited<ReturnType<typeof getDuelPoolRunsId>>
+          Awaited<ReturnType<typeof getDuelPoolRunId>>
         >,
         'initialData'
       >;
@@ -281,15 +443,15 @@ export function useGetDuelPoolRunsId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetDuelPoolRunsId<
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+export function useGetDuelPoolRunId<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunId>>,
   TError = void,
 >(
   id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+        Awaited<ReturnType<typeof getDuelPoolRunId>>,
         TError,
         TData
       >
@@ -303,15 +465,15 @@ export function useGetDuelPoolRunsId<
  * @summary Get duel pool run by ID
  */
 
-export function useGetDuelPoolRunsId<
-  TData = Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+export function useGetDuelPoolRunId<
+  TData = Awaited<ReturnType<typeof getDuelPoolRunId>>,
   TError = void,
 >(
   id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getDuelPoolRunsId>>,
+        Awaited<ReturnType<typeof getDuelPoolRunId>>,
         TError,
         TData
       >
@@ -321,7 +483,7 @@ export function useGetDuelPoolRunsId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetDuelPoolRunsIdQueryOptions(id, options);
+  const queryOptions = getGetDuelPoolRunIdQueryOptions(id, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
@@ -335,31 +497,31 @@ export function useGetDuelPoolRunsId<
  * Starts a duel pool run, which will generate fights based on the leeks in the pool and the pool's configuration.
  * @summary Start a duel pool run
  */
-export const postDuelPoolRunsIdStart = (id: string, signal?: AbortSignal) => {
+export const postDuelPoolRunIdStart = (id: string, signal?: AbortSignal) => {
   return apiClient<DuelPoolRunResponse>({
-    url: `/duel-pool-runs/${id}/start`,
+    url: `/duel-pool-run/${id}/start`,
     method: 'POST',
     signal,
   });
 };
 
-export const getPostDuelPoolRunsIdStartMutationOptions = <
+export const getPostDuelPoolRunIdStartMutationOptions = <
   TError = void,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postDuelPoolRunsIdStart>>,
+    Awaited<ReturnType<typeof postDuelPoolRunIdStart>>,
     TError,
     { id: string },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postDuelPoolRunsIdStart>>,
+  Awaited<ReturnType<typeof postDuelPoolRunIdStart>>,
   TError,
   { id: string },
   TContext
 > => {
-  const mutationKey = ['postDuelPoolRunsIdStart'];
+  const mutationKey = ['postDuelPoolRunIdStart'];
   const { mutation: mutationOptions } = options
     ? options.mutation &&
       'mutationKey' in options.mutation &&
@@ -369,30 +531,30 @@ export const getPostDuelPoolRunsIdStartMutationOptions = <
     : { mutation: { mutationKey } };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postDuelPoolRunsIdStart>>,
+    Awaited<ReturnType<typeof postDuelPoolRunIdStart>>,
     { id: string }
   > = (props) => {
     const { id } = props ?? {};
 
-    return postDuelPoolRunsIdStart(id);
+    return postDuelPoolRunIdStart(id);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostDuelPoolRunsIdStartMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postDuelPoolRunsIdStart>>
+export type PostDuelPoolRunIdStartMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postDuelPoolRunIdStart>>
 >;
 
-export type PostDuelPoolRunsIdStartMutationError = void;
+export type PostDuelPoolRunIdStartMutationError = void;
 
 /**
  * @summary Start a duel pool run
  */
-export const usePostDuelPoolRunsIdStart = <TError = void, TContext = unknown>(
+export const usePostDuelPoolRunIdStart = <TError = void, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postDuelPoolRunsIdStart>>,
+      Awaited<ReturnType<typeof postDuelPoolRunIdStart>>,
       TError,
       { id: string },
       TContext
@@ -400,13 +562,13 @@ export const usePostDuelPoolRunsIdStart = <TError = void, TContext = unknown>(
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof postDuelPoolRunsIdStart>>,
+  Awaited<ReturnType<typeof postDuelPoolRunIdStart>>,
   TError,
   { id: string },
   TContext
 > => {
   return useMutation(
-    getPostDuelPoolRunsIdStartMutationOptions(options),
+    getPostDuelPoolRunIdStartMutationOptions(options),
     queryClient,
   );
 };

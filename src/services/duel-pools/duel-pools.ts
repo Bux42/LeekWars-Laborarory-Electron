@@ -25,6 +25,7 @@ import type {
   CreateDuelPoolRequest,
   DuelPoolResponse,
   GetDuelPoolsResponse,
+  ListDuelPoolRunResponse,
   RemoveLeekFromDuelPoolRequest,
 } from '../leekwarsToolsAPI.schemas';
 
@@ -565,3 +566,160 @@ export const usePostDuelPoolsIdRemoveLeek = <TError = void, TContext = unknown>(
     queryClient,
   );
 };
+/**
+ * Returns a list of all runs associated with a specific duel pool.
+ * @summary Get runs for a duel pool
+ */
+export const getDuelPoolsIdRuns = (id: string, signal?: AbortSignal) => {
+  return apiClient<ListDuelPoolRunResponse>({
+    url: `/duel-pools/${id}/runs`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetDuelPoolsIdRunsQueryKey = (id: string) => {
+  return [`/duel-pools/${id}/runs`] as const;
+};
+
+export const getGetDuelPoolsIdRunsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetDuelPoolsIdRunsQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getDuelPoolsIdRuns>>
+  > = ({ signal }) => getDuelPoolsIdRuns(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetDuelPoolsIdRunsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDuelPoolsIdRuns>>
+>;
+export type GetDuelPoolsIdRunsQueryError = void;
+
+export function useGetDuelPoolsIdRuns<
+  TData = Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+          TError,
+          Awaited<ReturnType<typeof getDuelPoolsIdRuns>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetDuelPoolsIdRuns<
+  TData = Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+          TError,
+          Awaited<ReturnType<typeof getDuelPoolsIdRuns>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetDuelPoolsIdRuns<
+  TData = Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get runs for a duel pool
+ */
+
+export function useGetDuelPoolsIdRuns<
+  TData = Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDuelPoolsIdRuns>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetDuelPoolsIdRunsQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
