@@ -11,6 +11,7 @@ import LeekDetail from '../leek-detail/LeekDetail';
 
 function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
   const navigate = useNavigate();
+
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);

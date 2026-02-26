@@ -23,6 +23,7 @@ import type {
 import type {
   AddFarmerRequest,
   AddFarmerResponse,
+  FarmerResponse,
   GetAllFarmersResponse,
 } from '../leekwarsToolsAPI.schemas';
 
@@ -234,3 +235,176 @@ export function useGetFarmersAll<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Adds a leek to a farmer.
+ * @summary Add a leek to a farmer
+ */
+export const postFarmersFarmerIdAddLeekLeekId = (
+  farmerId: string,
+  leekId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<FarmerResponse>({
+    url: `/farmers/${farmerId}/add-leek/${leekId}`,
+    method: 'POST',
+    signal,
+  });
+};
+
+export const getPostFarmersFarmerIdAddLeekLeekIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postFarmersFarmerIdAddLeekLeekId>>,
+    TError,
+    { farmerId: string; leekId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postFarmersFarmerIdAddLeekLeekId>>,
+  TError,
+  { farmerId: string; leekId: string },
+  TContext
+> => {
+  const mutationKey = ['postFarmersFarmerIdAddLeekLeekId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postFarmersFarmerIdAddLeekLeekId>>,
+    { farmerId: string; leekId: string }
+  > = (props) => {
+    const { farmerId, leekId } = props ?? {};
+
+    return postFarmersFarmerIdAddLeekLeekId(farmerId, leekId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostFarmersFarmerIdAddLeekLeekIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postFarmersFarmerIdAddLeekLeekId>>
+>;
+
+export type PostFarmersFarmerIdAddLeekLeekIdMutationError = void;
+
+/**
+ * @summary Add a leek to a farmer
+ */
+export const usePostFarmersFarmerIdAddLeekLeekId = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postFarmersFarmerIdAddLeekLeekId>>,
+      TError,
+      { farmerId: string; leekId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postFarmersFarmerIdAddLeekLeekId>>,
+  TError,
+  { farmerId: string; leekId: string },
+  TContext
+> => {
+  return useMutation(
+    getPostFarmersFarmerIdAddLeekLeekIdMutationOptions(options),
+    queryClient,
+  );
+};
+/**
+ * Removes a leek  from a farmer.
+ * @summary Remove a farmer leek
+ */
+export const deleteFarmersFarmerIdRemoveLeekLeekId = (
+  farmerId: string,
+  leekId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<FarmerResponse>({
+    url: `/farmers/${farmerId}/remove-leek/${leekId}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeleteFarmersFarmerIdRemoveLeekLeekIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteFarmersFarmerIdRemoveLeekLeekId>>,
+    TError,
+    { farmerId: string; leekId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteFarmersFarmerIdRemoveLeekLeekId>>,
+  TError,
+  { farmerId: string; leekId: string },
+  TContext
+> => {
+  const mutationKey = ['deleteFarmersFarmerIdRemoveLeekLeekId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteFarmersFarmerIdRemoveLeekLeekId>>,
+    { farmerId: string; leekId: string }
+  > = (props) => {
+    const { farmerId, leekId } = props ?? {};
+
+    return deleteFarmersFarmerIdRemoveLeekLeekId(farmerId, leekId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteFarmersFarmerIdRemoveLeekLeekIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteFarmersFarmerIdRemoveLeekLeekId>>
+>;
+
+export type DeleteFarmersFarmerIdRemoveLeekLeekIdMutationError = void;
+
+/**
+ * @summary Remove a farmer leek
+ */
+export const useDeleteFarmersFarmerIdRemoveLeekLeekId = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteFarmersFarmerIdRemoveLeekLeekId>>,
+      TError,
+      { farmerId: string; leekId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteFarmersFarmerIdRemoveLeekLeekId>>,
+  TError,
+  { farmerId: string; leekId: string },
+  TContext
+> => {
+  return useMutation(
+    getDeleteFarmersFarmerIdRemoveLeekLeekIdMutationOptions(options),
+    queryClient,
+  );
+};

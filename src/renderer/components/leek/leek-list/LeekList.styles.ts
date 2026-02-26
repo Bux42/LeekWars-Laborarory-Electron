@@ -75,7 +75,6 @@ export const leekListStyles: ILeekListStyles = {
     color: theme.colors.accent.primary,
     cursor: 'pointer',
     textDecoration: 'underline',
-    fontFamily: 'monospace',
     fontSize: '0.9rem',
   },
 };

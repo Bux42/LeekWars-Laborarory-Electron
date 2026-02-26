@@ -13,18 +13,29 @@ function Farmers() {
     error: farmersError,
   } = useGetFarmersAll();
 
+  if (farmersLoading) {
+    return <p>Loading farmers...</p>;
+  }
+
+  if (farmersError) {
+    return <p>Error loading farmers: {farmersError.message}</p>;
+  }
+
   return (
     <>
       <div style={styles.header}>
         <h1>Farmers</h1>
         <Button onClick={() => navigate('/new-farmer')}>Add Farmer</Button>
       </div>
+
       {farmersData?.farmers.length === 0 ? (
         <p>No farmers found.</p>
       ) : (
-        farmersData?.farmers.map((farmer) => (
-          <FarmerCard key={farmer.id} farmer={farmer} />
-        ))
+        <div style={styles.farmerList}>
+          {farmersData?.farmers.map((farmer) => (
+            <FarmerCard key={farmer.id} farmer={farmer} />
+          ))}
+        </div>
       )}
     </>
   );

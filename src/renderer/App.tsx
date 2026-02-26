@@ -44,7 +44,7 @@ export default function App() {
               <Route path="leeks" element={<Leeks />} />
               <Route path="new-leek" element={<LeekCreation />} />
               <Route path="farmers" element={<Farmers />} />
-              <Route path="farmer-creation" element={<FarmerCreation />} />
+              <Route path="new-farmer" element={<FarmerCreation />} />
 
               <Route path="ais">
                 <Route index element={<AIs />} />
