@@ -132,6 +132,7 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
         combinations x {pool.basePool.fightLimit || 1} fights)
       </div>
       <LeekPicker
+        label="Add Leek to Pool"
         availableLeeks={allLeeks?.leeks || []}
         selectedLeekIds={pool.leeks?.map((leek) => leek.id) || []}
         onLeekSelect={handleAddLeek}

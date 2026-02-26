@@ -5,6 +5,7 @@ import { getImage } from '../../../utils/ImageLoader';
 import { theme } from '../../../theme';
 
 function LeekPicker({
+  label,
   availableLeeks,
   selectedLeekIds,
   onLeekSelect,
@@ -22,7 +23,7 @@ function LeekPicker({
 
   return (
     <div style={styles.container}>
-      <div style={styles.title}>Add Leek to Pool</div>
+      <div style={styles.title}>{label}</div>
       {filteredLeeks.length === 0 ? (
         <p style={styles.emptyText}>
           No more leeks available. All leeks are already in this pool.

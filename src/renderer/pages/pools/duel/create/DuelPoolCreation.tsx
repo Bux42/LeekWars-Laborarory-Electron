@@ -234,6 +234,7 @@ function DuelPoolCreation() {
             <Spinner size="small" label="Loading leeks..." />
           ) : (
             <LeekPicker
+              label="Add Leek to Pool"
               availableLeeks={data?.leeks || []}
               selectedLeekIds={selectedLeekIds}
               onLeekSelect={handleLeekSelect}
