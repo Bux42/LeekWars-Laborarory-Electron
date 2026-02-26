@@ -1,13 +1,7 @@
 import { theme } from '../../../../theme';
 
 export const duelPoolCreationStyles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    width: '100%',
-    height: '100%',
-    padding: theme.spacing.lg,
-    color: theme.colors.text.primary,
+  content: {
     overflowY: 'auto' as const,
   },
   title: {

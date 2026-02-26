@@ -1,15 +1,11 @@
 import { theme } from '../../../theme';
 
 export const createAiStyles = {
-  container: {
-    padding: theme.spacing.lg,
+  content: {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: theme.spacing.xl,
-    height: '100%',
-    width: '100%',
     overflowY: 'auto' as const,
-    color: theme.colors.text.primary,
   },
   header: {
     display: 'flex',

@@ -1,13 +1,10 @@
 import { theme } from '../../../theme';
 
 export const aiDetailStyles = {
-  container: {
-    padding: theme.spacing.lg,
+  content: {
     display: 'flex',
     flexDirection: 'column' as const,
     gap: theme.spacing.md,
-    height: '100%',
-    width: '100%',
     overflowY: 'auto' as const,
   },
   header: {

@@ -1,23 +1,24 @@
 import { theme } from '../../theme';
 
 export interface IFarmerCreationStyles {
-  container: React.CSSProperties;
   header: React.CSSProperties;
+  section: React.CSSProperties;
 }
 
 export const farmerCreationStyles: IFarmerCreationStyles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%',
-    padding: theme.spacing.lg,
-    color: theme.colors.text.primary,
-  },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: theme.spacing.md,
+  },
+  section: {
+    marginTop: theme.spacing.lg,
+    padding: theme.spacing.md,
+    backgroundColor: theme.colors.background.secondary,
+    borderRadius: theme.borderRadius.md,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing.md,
   },
 };

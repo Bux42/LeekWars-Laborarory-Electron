@@ -20,32 +20,21 @@ function PoolRunsDuel() {
   };
 
   if (isLoading) {
-    return (
-      <div style={styles.container}>
-        <Spinner label="Loading pool runs..." />
-      </div>
-    );
+    return <Spinner label="Loading pool runs..." />;
   }
 
   if (error) {
-    return (
-      <div style={styles.container}>
-        <p style={styles.errorText}>
-          Error:{' '}
-          {error instanceof Error ? error.message : 'Failed to fetch runs'}
-        </p>
-      </div>
-    );
+    return <p style={styles.errorText}>Error: Failed to fetch runs</p>;
   }
 
   return (
-    <div style={styles.container}>
+    <>
       <div style={styles.sectionHeader}>
         <h2 style={styles.sectionTitle}>Duel Pool Runs</h2>
       </div>
 
       <PoolRunList runs={data?.runs || []} onViewRun={handleViewRun} />
-    </div>
+    </>
   );
 }
 

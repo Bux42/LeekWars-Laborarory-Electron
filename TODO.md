@@ -5,9 +5,8 @@ I should also be able to select a leek color corresponding to the build into (po
 
 ## Small touch
 
-This electron app will be a standalone .exe with
+Implement notifications for when a pool run has finished? (it can take a long time depending on the pool)
 
-    - A custom icon
-    - A custom name
+## Automatic release
 
-I should be able to configure those two
+On github, I should be able to generate new releases, with a generated installer for the users to use directly

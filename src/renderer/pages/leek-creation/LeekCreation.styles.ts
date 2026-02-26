@@ -1,7 +1,6 @@
 import { theme } from '../../theme';
 
 export interface ILeekCreationStyles {
-  container: React.CSSProperties;
   section: React.CSSProperties;
   fileInput: React.CSSProperties;
   error: React.CSSProperties;
@@ -12,14 +11,6 @@ export interface ILeekCreationStyles {
 }
 
 export const leekCreationStyles: ILeekCreationStyles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%',
-    padding: theme.spacing.lg,
-    color: theme.colors.text.primary,
-  },
   section: {
     marginTop: theme.spacing.lg,
     padding: theme.spacing.md,

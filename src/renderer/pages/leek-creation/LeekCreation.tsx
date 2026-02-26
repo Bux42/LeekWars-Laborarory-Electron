@@ -86,7 +86,7 @@ function LeekCreation() {
   const creating = addLeekMutation.isPending;
 
   return (
-    <div style={styles.container}>
+    <>
       <h1>Create New Leek</h1>
 
       <div style={styles.section}>
@@ -166,7 +166,7 @@ function LeekCreation() {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }
 

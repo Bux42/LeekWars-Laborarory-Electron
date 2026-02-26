@@ -15,6 +15,7 @@ import DuelPoolCreation from './pages/pools/duel/create/DuelPoolCreation';
 import Providers from './providers/Providers';
 import Farmers from './pages/farmers/Farmers';
 import FarmerCreation from './pages/farmer-creation/FarmerCreation';
+import PageOutlet from './layout/page-outlet/PageOutlet';
 
 export default function App() {
   return (
@@ -22,27 +23,37 @@ export default function App() {
       <Router>
         <Layout>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/pools" element={<Pools />} />
-            <Route path="/pools/duels" element={<PoolDuel />} />
-            <Route path="/pools/duels/create" element={<DuelPoolCreation />} />
-            <Route path="/pools/duels/:poolId" element={<PoolDuelDetail />} />
-            <Route
-              path="/pools/duels/:poolId/runs"
-              element={<PoolRunsDuel />}
-            />
-            <Route
-              path="/pools/duels/:poolId/runs/:runId"
-              element={<PoolRunDuelDetail />}
-            />
-            <Route path="/leeks" element={<Leeks />} />
-            <Route path="/new-leek" element={<LeekCreation />} />
-            <Route path="/farmers" element={<Farmers />} />
-            <Route path="/farmer-creation" element={<FarmerCreation />} />
-            <Route path="/ais" element={<AIs />} />
-            <Route path="/ais/create" element={<CreateAI />} />
-            <Route path="/ai/:id" element={<AIDetail />} />
-            <Route path="/ais/:id" element={<AIDetail />} />
+            <Route path="/" element={<PageOutlet />}>
+              <Route index element={<Home />} />
+
+              <Route path="pools">
+                <Route index element={<Pools />} />
+                <Route path="duels">
+                  <Route index element={<PoolDuel />} />
+                  <Route path="create" element={<DuelPoolCreation />} />
+                  <Route path=":poolId">
+                    <Route index element={<PoolDuelDetail />} />
+                    <Route path="runs">
+                      <Route index element={<PoolRunsDuel />} />
+                      <Route path=":runId" element={<PoolRunDuelDetail />} />
+                    </Route>
+                  </Route>
+                </Route>
+              </Route>
+
+              <Route path="leeks" element={<Leeks />} />
+              <Route path="new-leek" element={<LeekCreation />} />
+              <Route path="farmers" element={<Farmers />} />
+              <Route path="farmer-creation" element={<FarmerCreation />} />
+
+              <Route path="ais">
+                <Route index element={<AIs />} />
+                <Route path="create" element={<CreateAI />} />
+                <Route path=":id" element={<AIDetail />} />
+              </Route>
+
+              <Route path="ai/:id" element={<AIDetail />} />
+            </Route>
           </Routes>
         </Layout>
       </Router>

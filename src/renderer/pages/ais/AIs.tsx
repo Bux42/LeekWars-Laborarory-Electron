@@ -45,7 +45,7 @@ function AIs() {
   }
 
   return (
-    <div style={styles.container}>
+    <>
       <header style={styles.header}>
         <h1 style={styles.title}>All AIs</h1>
         <Button onClick={handleAddAI} variant="primary">
@@ -54,7 +54,7 @@ function AIs() {
       </header>
 
       {content}
-    </div>
+    </>
   );
 }
 

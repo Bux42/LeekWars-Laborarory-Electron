@@ -118,7 +118,7 @@ function CreateAI() {
   }, [selectedFile, isAnalyzing, analysisResult]);
 
   return (
-    <div style={styles.container}>
+    <div style={styles.content}>
       <header style={styles.header}>
         <h1 style={styles.title}>Register New AI</h1>
         <p style={styles.subtitle}>

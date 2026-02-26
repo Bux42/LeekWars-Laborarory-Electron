@@ -10,10 +10,10 @@ import Spinner from '../../../../components/shared/spinner/Spinner';
 import Toggle from '../../../../components/shared/toggle/Toggle';
 import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
 import LeekList from '../../../../components/leek/leek-list/LeekList';
-import { ILeek } from '../../../../../services/leekwars-laboratory/types/leek/Leek.types';
 import { IDropdownItem } from '../../../../components/shared/dropdown/Dropdown.types';
 import { usePostDuelPoolsCreate } from '../../../../../services/duel-pools/duel-pools';
 import { useGetLeeksAll } from '../../../../../services/leeks/leeks';
+import { LeekResponse } from '../../../../../services/leekwarsToolsAPI.schemas';
 
 function DuelPoolCreation() {
   const navigate = useNavigate();
@@ -119,7 +119,7 @@ function DuelPoolCreation() {
     setStartSeed(seed);
   };
 
-  const getDropdownItems = (leek: ILeek): IDropdownItem[] => [
+  const getDropdownItems = (leek: LeekResponse): IDropdownItem[] => [
     {
       label: 'Delete',
       onClick: () => handleRemoveLeek(leek.id),
@@ -135,7 +135,7 @@ function DuelPoolCreation() {
   );
 
   return (
-    <div style={styles.container}>
+    <div style={styles.content}>
       <h1 style={styles.title}>Create New Duel Pool</h1>
 
       <form onSubmit={handleSubmit} style={styles.form}>
@@ -223,7 +223,7 @@ function DuelPoolCreation() {
             )}
             {selectedLeekIds.length > 0 && (
               <LeekList
-                leeks={data?.leeks.filter((leek) =>
+                leeks={(data?.leeks || []).filter((leek) =>
                   selectedLeekIds.includes(leek.id),
                 )}
                 getDropdownItems={getDropdownItems}

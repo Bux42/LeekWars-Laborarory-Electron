@@ -19,6 +19,10 @@ function PoolRunDuelDetail() {
   // const stopMutation = useStopPoolDuel();
   const [processedFights, setProcessedFights] = useState(0);
 
+  if (!runId) {
+    return <p style={styles.errorText}>Invalid run ID</p>;
+  }
+
   // First we fetch to see if it exists and its status
   // const startQuery = usePoolRunDuel(runId || '');
 
@@ -88,27 +92,15 @@ function PoolRunDuelDetail() {
   );
 
   if (poolDuelIsLoading) {
-    return (
-      <div style={styles.container}>
-        <Spinner label="Loading run details..." />
-      </div>
-    );
+    return <Spinner label="Loading run details..." />;
   }
 
   if (poolDuelError) {
-    return (
-      <div style={styles.container}>
-        <p style={styles.errorText}>
-          {poolDuelError
-            ? `Error: ${poolDuelError instanceof Error ? poolDuelError.message : 'Failed to fetch'}`
-            : 'Run not found'}
-        </p>
-      </div>
-    );
+    return <p style={styles.errorText}>Error: Failed to fetch</p>;
   }
 
   return (
-    <div style={styles.container}>
+    <>
       <div style={styles.sectionHeader}>
         <h2 style={styles.sectionTitle}>Run Details</h2>
       </div>
@@ -178,7 +170,7 @@ function PoolRunDuelDetail() {
         )}
  */}
       </BasePoolRunWrapper>
-    </div>
+    </>
   );
 }
 

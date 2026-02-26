@@ -14,7 +14,7 @@ function Farmers() {
   } = useGetFarmersAll();
 
   return (
-    <div style={styles.container}>
+    <>
       <div style={styles.header}>
         <h1>Farmers</h1>
         <Button onClick={() => navigate('/new-farmer')}>Add Farmer</Button>
@@ -26,7 +26,7 @@ function Farmers() {
           <FarmerCard key={farmer.id} farmer={farmer} />
         ))
       )}
-    </div>
+    </>
   );
 }
 

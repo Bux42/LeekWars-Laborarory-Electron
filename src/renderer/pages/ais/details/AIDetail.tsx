@@ -12,7 +12,7 @@ function AIDetail() {
 
   if (isLoading) {
     return (
-      <div style={styles.container}>
+      <div style={styles.content}>
         <Spinner label="Loading AI record..." />
       </div>
     );
@@ -20,7 +20,7 @@ function AIDetail() {
 
   if (error || !ai) {
     return (
-      <div style={styles.container}>
+      <div style={styles.content}>
         <div style={styles.backButton} onClick={() => navigate('/ais')}>
           &larr; Back to all AIs
         </div>
@@ -32,7 +32,7 @@ function AIDetail() {
   }
 
   return (
-    <div style={styles.container}>
+    <div style={styles.content}>
       <div style={styles.backButton} onClick={() => navigate('/ais')}>
         &larr; Back to all AIs
       </div>

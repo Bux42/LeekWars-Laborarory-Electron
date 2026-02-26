@@ -31,7 +31,7 @@ function FarmerCreation() {
   };
 
   return (
-    <div style={styles.container}>
+    <>
       <div style={styles.header}>
         <h1>Farmer Creation</h1>
       </div>
@@ -44,7 +44,7 @@ function FarmerCreation() {
           selectedLeekIds={selectedLeekIds}
         />
       </div>
-    </div>
+    </>
   );
 }
 

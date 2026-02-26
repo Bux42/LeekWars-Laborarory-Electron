@@ -1,16 +1,12 @@
-import { theme } from '../../theme';
-
 export interface IHomeStyles {
-  container: React.CSSProperties;
+  content: React.CSSProperties;
 }
 
 export const homeStyles: IHomeStyles = {
-  container: {
+  content: {
     display: 'flex',
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-    color: theme.colors.text.primary,
   },
 };

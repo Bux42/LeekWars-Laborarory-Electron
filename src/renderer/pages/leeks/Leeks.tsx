@@ -68,26 +68,26 @@ function Leeks() {
 
   if (loading) {
     return (
-      <div style={styles.container}>
+      <>
         <h1>Leeks</h1>
         <p>Loading leeks...</p>
-      </div>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div style={styles.container}>
+      <>
         <h1>Leeks</h1>
         <p style={{ color: theme.colors.accent.error }}>
           Error: Failed to fetch leeks
         </p>
-      </div>
+      </>
     );
   }
 
   return (
-    <div style={styles.container}>
+    <>
       <div style={styles.header}>
         <h1>Leeks</h1>
         <Button onClick={() => navigate('/new-leek')} variant="primary">
@@ -99,7 +99,7 @@ function Leeks() {
       ) : (
         <LeekList leeks={leeks} getDropdownItems={getDropdownItems} />
       )}
-    </div>
+    </>
   );
 }
 

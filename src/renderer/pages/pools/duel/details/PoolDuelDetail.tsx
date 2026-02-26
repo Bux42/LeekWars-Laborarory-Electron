@@ -26,11 +26,7 @@ function PoolDuelDetail() {
   const startMutation = usePostDuelPoolRunIdStart();
 
   if (!poolId) {
-    return (
-      <div style={styles.container}>
-        <p style={styles.errorText}>Invalid pool ID</p>
-      </div>
-    );
+    return <p style={styles.errorText}>Invalid pool ID</p>;
   }
 
   const handleStartPool = async () => {
@@ -45,45 +41,35 @@ function PoolDuelDetail() {
   };
 
   if (isLoading) {
-    return (
-      <div style={styles.container}>
-        <Spinner label="Loading pool details..." />
-      </div>
-    );
+    return <Spinner label="Loading pool details..." />;
   }
 
   if (error || !pool || !pool.basePool) {
     return (
-      <div style={styles.container}>
-        <p style={styles.errorText}>
-          {error ? 'Error: Failed to fetch pool details' : 'Pool not found'}
-        </p>
-      </div>
+      <p style={styles.errorText}>
+        {error ? 'Error: Failed to fetch pool details' : 'Pool not found'}
+      </p>
     );
   }
 
   return (
-    <div style={styles.container}>
-      <BasePoolWrapper pool={pool.basePool} onStart={handleStartPool}>
-        {runsData?.runs?.length > 0 && (
-          <>
-            <Button onClick={() => navigate(`/pools/duels/${poolId}/runs`)}>
-              View {runsData?.runs?.length} Runs
-            </Button>
-            <Button
-              onClick={() =>
-                navigate(
-                  `/pools/duels/${poolId}/runs/${runsData?.runs?.[0]?.id}`,
-                )
-              }
-            >
-              View last run
-            </Button>
-          </>
-        )}
-        <PoolDuelCard pool={pool} />
-      </BasePoolWrapper>
-    </div>
+    <BasePoolWrapper pool={pool.basePool} onStart={handleStartPool}>
+      {runsData?.runs?.length > 0 && (
+        <>
+          <Button onClick={() => navigate(`/pools/duels/${poolId}/runs`)}>
+            View {runsData?.runs?.length} Runs
+          </Button>
+          <Button
+            onClick={() =>
+              navigate(`/pools/duels/${poolId}/runs/${runsData?.runs?.[0]?.id}`)
+            }
+          >
+            View last run
+          </Button>
+        </>
+      )}
+      <PoolDuelCard pool={pool} />
+    </BasePoolWrapper>
   );
 }
 
