@@ -12,7 +12,7 @@ import {
   CreateBasePoolRequest,
   LeekResponse,
 } from '../../../../../services/leekwarsToolsAPI.schemas';
-import BasePoolForm from '../../../../components/pool/base-pool-form/BasePoolForm';
+import BasePoolForm from '../../../../components/pool/base/base-pool-form/BasePoolForm';
 
 function DuelPoolCreation() {
   const navigate = useNavigate();

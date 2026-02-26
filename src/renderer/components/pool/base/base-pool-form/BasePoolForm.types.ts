@@ -1,4 +1,4 @@
-import { CreateBasePoolRequest } from '../../../../services/leekwarsToolsAPI.schemas';
+import { CreateBasePoolRequest } from '../../../../../services/leekwarsToolsAPI.schemas';
 
 export interface IBasePoolFormProps {
   selectedLeeksCount: number;

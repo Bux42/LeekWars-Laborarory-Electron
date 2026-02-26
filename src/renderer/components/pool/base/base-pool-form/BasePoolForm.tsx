@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import Input from '../../shared/input/Input';
-import Toggle from '../../shared/toggle/Toggle';
+import Input from '../../../shared/input/Input';
+import Toggle from '../../../shared/toggle/Toggle';
 import { basePoolFormStyles as styles } from './BasePoolForm.styles';
 import { IBasePoolFormProps } from './BasePoolForm.types';
-import { CreateBasePoolRequest } from '../../../../services/leekwarsToolsAPI.schemas';
-import { usePoolFightEstimation } from '../../../../hooks/pools/duel/usePoolFightEstimation';
+import { CreateBasePoolRequest } from '../../../../../services/leekwarsToolsAPI.schemas';
+import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
 
 function BasePoolForm({
   selectedLeeksCount,

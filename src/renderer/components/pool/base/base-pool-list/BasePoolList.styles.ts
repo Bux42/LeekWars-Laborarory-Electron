@@ -1,9 +1,21 @@
+import React from 'react';
 import { theme } from '../../../../theme';
 
-export const poolDuelListStyles = {
+export interface IBasePoolListStyles {
+  container: React.CSSProperties;
+  item: React.CSSProperties;
+  info: React.CSSProperties;
+  nameContainer: React.CSSProperties;
+  name: React.CSSProperties;
+  details: React.CSSProperties;
+  actions: React.CSSProperties;
+  emptyText: React.CSSProperties;
+}
+
+export const basePoolListStyles: IBasePoolListStyles = {
   container: {
     display: 'flex',
-    flexDirection: 'column' as const,
+    flexDirection: 'column',
     gap: theme.spacing.sm,
   },
   item: {
@@ -18,12 +30,17 @@ export const poolDuelListStyles = {
   },
   info: {
     display: 'flex',
-    flexDirection: 'column' as const,
+    flexDirection: 'column',
     gap: '4px',
+  },
+  nameContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
   },
   name: {
     fontSize: '1rem',
-    fontWeight: 'bold' as const,
+    fontWeight: 'bold',
     color: theme.colors.text.primary,
   },
   details: {
@@ -34,15 +51,10 @@ export const poolDuelListStyles = {
     display: 'flex',
     alignItems: 'center',
   },
-  nameContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: theme.spacing.sm,
-  },
   emptyText: {
     color: theme.colors.text.tertiary,
     fontStyle: 'italic',
-    textAlign: 'center' as const,
+    textAlign: 'center',
     padding: theme.spacing.md,
   },
 };

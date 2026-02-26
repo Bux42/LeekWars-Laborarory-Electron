@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { farmerPoolCreationStyles as styles } from './FarmerPoolCreation.styles';
-import BasePoolForm from '../../../../components/pool/base-pool-form/BasePoolForm';
+import BasePoolForm from '../../../../components/pool/base/base-pool-form/BasePoolForm';
 import FarmerPicker from '../../../../components/farmer/farmer-picker/FarmerPicker';
 import Button from '../../../../components/shared/button/Button';
 import { usePostFarmerPoolsCreate } from '../../../../../services/farmer-pools/farmer-pools';
