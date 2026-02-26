@@ -18,7 +18,10 @@ function LeftPanel() {
     {
       path: '/pools',
       label: 'Pools',
-      children: [{ path: '/pools/duels', label: 'Duels' }],
+      children: [
+        { path: '/pools/duel', label: 'Duel' },
+        { path: '/pools/farmer', label: 'Farmer' },
+      ],
     },
     { path: '/leeks', label: 'Leeks' },
     { path: '/farmers', label: 'Farmers' },

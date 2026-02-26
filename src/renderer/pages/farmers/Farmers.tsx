@@ -2,7 +2,7 @@ import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { farmersStyles as styles } from './Farmers.styles';
 import { useGetFarmersAll } from '../../../services/farmers/farmers';
-import FarmerCard from '../../components/farmer/FarmerCard';
+import FarmerCard from '../../components/farmer/farmer-card/FarmerCard';
 
 function Farmers() {
   const navigate = useNavigate();

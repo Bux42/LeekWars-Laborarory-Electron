@@ -172,6 +172,21 @@ export interface GetAllFarmersResponse {
   farmers: FarmerResponse[];
 }
 
+export interface CreateFarmerPoolRequest {
+  farmerIds?: string[];
+  basePoolRequest?: CreateBasePoolRequest;
+}
+
+export interface FarmerPoolResponse {
+  id: string;
+  basePool: BasePoolResponse;
+  farmers: FarmerResponse[];
+}
+
+export interface GetAllFarmerPoolsResponse {
+  farmerPools: FarmerPoolResponse[];
+}
+
 export interface GenerateFightRequest {
   fightId: string;
 }

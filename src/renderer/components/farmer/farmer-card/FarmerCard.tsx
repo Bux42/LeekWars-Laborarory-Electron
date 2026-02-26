@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Button } from 'antd';
-import { IFarmerCardProps } from './FarmerCard.types';
+import { IFarmerCardProps } from '../FarmerCard.types';
 import { farmerCardStyles as styles } from './FarmerCard.styles';
-import LeekList from '../leek/leek-list/LeekList';
-import { IDropdownItem } from '../shared/dropdown/Dropdown.types';
+import LeekList from '../../leek/leek-list/LeekList';
+import { IDropdownItem } from '../../shared/dropdown/Dropdown.types';
 import {
   useDeleteFarmersFarmerIdRemoveLeekLeekId,
   usePostFarmersFarmerIdAddLeekLeekId,
-} from '../../../services/farmers/farmers';
+} from '../../../../services/farmers/farmers';
 import {
   FarmerResponse,
   LeekResponse,
-} from '../../../services/leekwarsToolsAPI.schemas';
-import LeekPicker from '../leek/leek-picker/LeekPicker';
-import { useGetLeeksAll } from '../../../services/leeks/leeks';
+} from '../../../../services/leekwarsToolsAPI.schemas';
+import LeekPicker from '../../leek/leek-picker/LeekPicker';
+import { useGetLeeksAll } from '../../../../services/leeks/leeks';
 
 function FarmerCard({ farmer }: IFarmerCardProps) {
   const [farmerResponse, setFarmerResponse] = useState<FarmerResponse>(farmer);

@@ -19,7 +19,7 @@ function PoolDuel() {
       <div style={styles.sectionHeader}>
         <h2 style={styles.sectionTitle}>Duel Pools</h2>
         <Button
-          onClick={() => navigate('/pools/duels/create')}
+          onClick={() => navigate('/pools/duel/create')}
           variant="primary"
         >
           Add Pool

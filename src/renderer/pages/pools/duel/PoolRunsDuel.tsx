@@ -16,7 +16,7 @@ function PoolRunsDuel() {
   );
 
   const handleViewRun = (run: IPoolRunBase) => {
-    navigate(`/pools/duels/${poolId}/runs/${run.id}`);
+    navigate(`/pools/duel/${poolId}/runs/${run.id}`);
   };
 
   if (isLoading) {

@@ -33,7 +33,7 @@ function PoolDuelDetail() {
     try {
       const result = await startMutation.mutateAsync({ id: poolId });
       if (result.id) {
-        navigate(`/pools/duels/${poolId}/runs/${result.id}`);
+        navigate(`/pools/duel/${poolId}/runs/${result.id}`);
       }
     } catch (err) {
       console.error('Failed to start pool duel:', err);
@@ -56,12 +56,12 @@ function PoolDuelDetail() {
     <BasePoolWrapper pool={pool.basePool} onStart={handleStartPool}>
       {runsData?.runs?.length > 0 && (
         <>
-          <Button onClick={() => navigate(`/pools/duels/${poolId}/runs`)}>
+          <Button onClick={() => navigate(`/pools/duel/${poolId}/runs`)}>
             View {runsData?.runs?.length} Runs
           </Button>
           <Button
             onClick={() =>
-              navigate(`/pools/duels/${poolId}/runs/${runsData?.runs?.[0]?.id}`)
+              navigate(`/pools/duel/${poolId}/runs/${runsData?.runs?.[0]?.id}`)
             }
           >
             View last run

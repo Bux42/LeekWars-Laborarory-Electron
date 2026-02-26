@@ -155,7 +155,7 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
             {lastRun && (
               <Button
                 onClick={() => {
-                  navigate(`/pools/duels/${pool.id}/runs/${lastRun.id}`);
+                  navigate(`/pools/duel/${pool.id}/runs/${lastRun.id}`);
                 }}
                 variant="primary"
               >
@@ -163,7 +163,7 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
               </Button>
             )}
             <Button
-              onClick={() => navigate(`/pools/duels/${pool.id}/runs`)}
+              onClick={() => navigate(`/pools/duel/${pool.id}/runs`)}
               variant="secondary"
             >
               View all runs

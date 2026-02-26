@@ -52,7 +52,7 @@ function PoolDuelList({ pools }: IPoolDuelListProps) {
           </div>
           <div style={styles.actions}>
             <Button
-              onClick={() => navigate(`/pools/duels/${pool.id}`)}
+              onClick={() => navigate(`/pools/duel/${pool.id}`)}
               variant="primary"
             >
               View Pool
