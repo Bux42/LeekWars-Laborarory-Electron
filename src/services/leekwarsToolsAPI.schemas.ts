@@ -151,6 +151,27 @@ export interface ListDuelPoolRunResponse {
   runs: DuelPoolRunResponse[];
 }
 
+export interface AddFarmerRequest {
+  name: string;
+  leekIds: string[];
+}
+
+export interface FarmerResponse {
+  id: string;
+  name: string;
+  creationDate: number;
+  lastUpdateDate: number;
+  leeks: LeekResponse[];
+}
+
+export interface AddFarmerResponse {
+  farmer: FarmerResponse;
+}
+
+export interface GetAllFarmersResponse {
+  farmers: FarmerResponse[];
+}
+
 export interface GenerateFightRequest {
   fightId: string;
 }
