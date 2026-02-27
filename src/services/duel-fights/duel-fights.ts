@@ -28,30 +28,42 @@ import { apiClient } from '.././lib/api-client';
  * Retrieves a list of fights associated with a specific pool run ID.
  * @summary Get fights by pool run ID
  */
-export const getApiFightDuelGetByPoolRunIdId = (
+export const getApiFightDuelGetByPoolRunIdIdOffsetLimit = (
   id: string,
+  offset: string,
+  limit: string,
   signal?: AbortSignal,
 ) => {
   return apiClient<GetFightsByPoolRunIdResponse>({
-    url: `/api/fight/duel/get-by-pool-run-id/${id}`,
+    url: `/api/fight/duel/get-by-pool-run-id/${id}/${offset}/${limit}`,
     method: 'GET',
     signal,
   });
 };
 
-export const getGetApiFightDuelGetByPoolRunIdIdQueryKey = (id: string) => {
-  return [`/api/fight/duel/get-by-pool-run-id/${id}`] as const;
+export const getGetApiFightDuelGetByPoolRunIdIdOffsetLimitQueryKey = (
+  id: string,
+  offset: string,
+  limit: string,
+) => {
+  return [
+    `/api/fight/duel/get-by-pool-run-id/${id}/${offset}/${limit}`,
+  ] as const;
 };
 
-export const getGetApiFightDuelGetByPoolRunIdIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+export const getGetApiFightDuelGetByPoolRunIdIdOffsetLimitQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>
+  >,
   TError = void,
 >(
   id: string,
+  offset: string,
+  limit: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
@@ -61,47 +73,55 @@ export const getGetApiFightDuelGetByPoolRunIdIdQueryOptions = <
   const { query: queryOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetApiFightDuelGetByPoolRunIdIdQueryKey(id);
+    queryOptions?.queryKey ??
+    getGetApiFightDuelGetByPoolRunIdIdOffsetLimitQueryKey(id, offset, limit);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>
-  > = ({ signal }) => getApiFightDuelGetByPoolRunIdId(id, signal);
+    Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>
+  > = ({ signal }) =>
+    getApiFightDuelGetByPoolRunIdIdOffsetLimit(id, offset, limit, signal);
 
   return {
     queryKey,
     queryFn,
-    enabled: !!id,
+    enabled: !!(id && offset && limit),
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+    Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetApiFightDuelGetByPoolRunIdIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>
+export type GetApiFightDuelGetByPoolRunIdIdOffsetLimitQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>
 >;
-export type GetApiFightDuelGetByPoolRunIdIdQueryError = void;
+export type GetApiFightDuelGetByPoolRunIdIdOffsetLimitQueryError = void;
 
-export function useGetApiFightDuelGetByPoolRunIdId<
-  TData = Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+export function useGetApiFightDuelGetByPoolRunIdIdOffsetLimit<
+  TData = Awaited<
+    ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>
+  >,
   TError = void,
 >(
   id: string,
+  offset: string,
+  limit: string,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+          Awaited<
+            ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>
+          >,
           TError,
-          Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>
+          Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>
         >,
         'initialData'
       >;
@@ -110,24 +130,30 @@ export function useGetApiFightDuelGetByPoolRunIdId<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetApiFightDuelGetByPoolRunIdId<
-  TData = Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+export function useGetApiFightDuelGetByPoolRunIdIdOffsetLimit<
+  TData = Awaited<
+    ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>
+  >,
   TError = void,
 >(
   id: string,
+  offset: string,
+  limit: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+          Awaited<
+            ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>
+          >,
           TError,
-          Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>
+          Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>
         >,
         'initialData'
       >;
@@ -136,15 +162,19 @@ export function useGetApiFightDuelGetByPoolRunIdId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetApiFightDuelGetByPoolRunIdId<
-  TData = Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+export function useGetApiFightDuelGetByPoolRunIdIdOffsetLimit<
+  TData = Awaited<
+    ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>
+  >,
   TError = void,
 >(
   id: string,
+  offset: string,
+  limit: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
@@ -158,15 +188,19 @@ export function useGetApiFightDuelGetByPoolRunIdId<
  * @summary Get fights by pool run ID
  */
 
-export function useGetApiFightDuelGetByPoolRunIdId<
-  TData = Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+export function useGetApiFightDuelGetByPoolRunIdIdOffsetLimit<
+  TData = Awaited<
+    ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>
+  >,
   TError = void,
 >(
   id: string,
+  offset: string,
+  limit: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getApiFightDuelGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
@@ -176,10 +210,13 @@ export function useGetApiFightDuelGetByPoolRunIdId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetApiFightDuelGetByPoolRunIdIdQueryOptions(
-    id,
-    options,
-  );
+  const queryOptions =
+    getGetApiFightDuelGetByPoolRunIdIdOffsetLimitQueryOptions(
+      id,
+      offset,
+      limit,
+      options,
+    );
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
