@@ -172,6 +172,10 @@ export interface GetAllFarmersResponse {
   farmers: FarmerResponse[];
 }
 
+export interface AddFarmerToPoolRequest {
+  farmerId?: string;
+}
+
 export interface CreateFarmerPoolRequest {
   farmerIds?: string[];
   basePoolRequest?: CreateBasePoolRequest;

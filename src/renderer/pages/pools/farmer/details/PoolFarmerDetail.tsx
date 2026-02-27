@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { useGetFarmerPoolsId } from '../../../../../services/farmer-pools/farmer-pools';
+import {
+  useGetFarmerPoolsId,
+  usePostFarmerPoolsIdAddFarmer,
+} from '../../../../../services/farmer-pools/farmer-pools';
 import BasePoolWrapper from '../../../../components/pool/base/base-pool-wrapper/BasePoolWrapper';
 import Button from '../../../../components/shared/button/Button';
 import { usePoolFarmerId } from '../../../../../hooks/pools/farmer/usePoolFarmerId';
@@ -9,6 +12,7 @@ import {
   usePostFarmersFarmerIdAddLeekLeekId,
 } from '../../../../../services/farmers/farmers';
 import FarmerPicker from '../../../../components/farmer/farmer-picker/FarmerPicker';
+import FarmerList from '../../../../components/farmer/farmer-list/FarmerList';
 
 function PoolFarmerDetail() {
   const navigate = useNavigate();
@@ -26,7 +30,7 @@ function PoolFarmerDetail() {
     error: farmersError,
   } = useGetFarmersAll();
 
-  const { mutate: addLeekToFarmer } = usePostFarmersFarmerIdAddLeekLeekId();
+  const { mutate: addFarmerToPool } = usePostFarmerPoolsIdAddFarmer();
 
   console.log('pool', pool);
   console.log('poolId', poolId);
@@ -57,18 +61,16 @@ function PoolFarmerDetail() {
       // Farmer is already selected, you can implement remove logic here if needed
       return;
     }
-    addLeekToFarmer(
-      { farmerId, leekId: 'some-leek-id' }, // Replace with actual leek ID
-      {
-        onSuccess: () => {
-          console.log('Leek added to farmer successfully');
-          // Optionally refetch pool details here to update the UI
+    try {
+      addFarmerToPool({
+        data: {
+          farmerId,
         },
-        onError: (err) => {
-          console.error('Failed to add leek to farmer:', err);
-        },
-      },
-    );
+        id: pool.id,
+      });
+    } catch (err) {
+      console.error('Failed to add farmer to pool:', err);
+    }
   };
 
   return (
@@ -94,7 +96,8 @@ function PoolFarmerDetail() {
         selectedFarmerIds={selectedFarmersIds}
         onFarmerSelect={onFarmerSelect}
       />
-      <PoolFarmerCard farmerPool={pool} />
+      <FarmerList farmers={pool.farmers} />
+      {/* <PoolFarmerCard farmerPool={pool} /> */}
     </BasePoolWrapper>
   );
 }

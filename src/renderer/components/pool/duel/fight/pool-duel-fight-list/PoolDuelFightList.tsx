@@ -19,6 +19,8 @@ function PoolDuelFightList({ poolDuelId, leeks }: IPoolDuelFightListProps) {
     return <div>No fights found for this pool duel.</div>;
   }
 
+  // TODO: pagination
+
   return (
     <div>
       {data.fights.map((fight) => {
@@ -29,7 +31,7 @@ function PoolDuelFightList({ poolDuelId, leeks }: IPoolDuelFightListProps) {
         console.log('leek2:', leek2);
         return (
           <PoolDuelFightCard
-            key={fight.leek1Id + fight.leek2Id}
+            key={fight.id}
             fight={fight}
             leek1={leeks.find((leek) => leek.id === fight.leek1Id)!}
             leek2={leeks.find((leek) => leek.id === fight.leek2Id)!}

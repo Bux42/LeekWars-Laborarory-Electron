@@ -21,6 +21,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AddFarmerToPoolRequest,
   CreateFarmerPoolRequest,
   FarmerPoolResponse,
   GetAllFarmerPoolsResponse,
@@ -415,3 +416,92 @@ export function useGetFarmerPoolsId<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Adds a farmer to a farmer pool by their IDs.
+ * @summary Add a farmer to a farmer pool
+ */
+export const postFarmerPoolsIdAddFarmer = (
+  id: string,
+  addFarmerToPoolRequest: AddFarmerToPoolRequest,
+  signal?: AbortSignal,
+) => {
+  return apiClient<void>({
+    url: `/farmer-pools/${id}/add-farmer`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: addFarmerToPoolRequest,
+    signal,
+  });
+};
+
+export const getPostFarmerPoolsIdAddFarmerMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postFarmerPoolsIdAddFarmer>>,
+    TError,
+    { id: string; data: AddFarmerToPoolRequest },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postFarmerPoolsIdAddFarmer>>,
+  TError,
+  { id: string; data: AddFarmerToPoolRequest },
+  TContext
+> => {
+  const mutationKey = ['postFarmerPoolsIdAddFarmer'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postFarmerPoolsIdAddFarmer>>,
+    { id: string; data: AddFarmerToPoolRequest }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return postFarmerPoolsIdAddFarmer(id, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostFarmerPoolsIdAddFarmerMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postFarmerPoolsIdAddFarmer>>
+>;
+export type PostFarmerPoolsIdAddFarmerMutationBody = AddFarmerToPoolRequest;
+export type PostFarmerPoolsIdAddFarmerMutationError = void;
+
+/**
+ * @summary Add a farmer to a farmer pool
+ */
+export const usePostFarmerPoolsIdAddFarmer = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postFarmerPoolsIdAddFarmer>>,
+      TError,
+      { id: string; data: AddFarmerToPoolRequest },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postFarmerPoolsIdAddFarmer>>,
+  TError,
+  { id: string; data: AddFarmerToPoolRequest },
+  TContext
+> => {
+  return useMutation(
+    getPostFarmerPoolsIdAddFarmerMutationOptions(options),
+    queryClient,
+  );
+};

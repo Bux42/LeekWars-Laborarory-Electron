@@ -5,6 +5,9 @@ import { IPoolDuelFightCardProps } from './PoolDuelFightCard.types';
 import { poolDuelFightCardStyles as styles } from './PoolDuelFightCard.styles';
 import { getTimeAgo } from '../../../../../utils/DateUtils';
 import { usePostFightGenerate } from '../../../../../../services/fights/fights';
+import HoverTooltip from '../../../../shared/hover-tooltip/HoverTooltip';
+import LeekDetail from '../../../../leek/leek-detail/LeekDetail';
+import { getImage } from '../../../../../utils/ImageLoader';
 
 function PoolDuelFightCard({ fight, leek1, leek2 }: IPoolDuelFightCardProps) {
   const [generatingFight, setGeneratingFight] = useState<boolean>(false);
@@ -55,11 +58,27 @@ function PoolDuelFightCard({ fight, leek1, leek2 }: IPoolDuelFightCardProps) {
   return (
     <div style={styles.fightCard}>
       <div style={styles.leekContainer(getFightColor(leek1.id))}>
+        <HoverTooltip tooltip={<LeekDetail leek={leek1} />}>
+          <img
+            src={getImage(`leekwars/image/leek/${leek1.imageName ?? 'leek/1'}`)}
+            alt={leek1.name ?? 'Leek'}
+            style={styles.leekImage}
+          />
+        </HoverTooltip>
         {leek1.name}
       </div>
       <div style={styles.resultContainer}>{draw ? 'Draw' : 'VS'}</div>
       <div style={styles.leekContainer(getFightColor(leek2.id))}>
         {leek2.name}
+        <HoverTooltip tooltip={<LeekDetail leek={leek2} />}>
+          <img
+            src={getImage(`leekwars/image/leek/${leek2.imageName ?? 'leek/1'}`)}
+            alt={leek2.name ?? 'Leek'}
+            style={styles.leekImage}
+            height={40}
+            width={40}
+          />
+        </HoverTooltip>
       </div>
       {getTimeAgo(fight.date)}
       {generatingFight ? (
