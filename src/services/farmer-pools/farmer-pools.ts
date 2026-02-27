@@ -505,3 +505,89 @@ export const usePostFarmerPoolsIdAddFarmer = <
     queryClient,
   );
 };
+/**
+ * Removes a farmer from a farmer pool by their IDs.
+ * @summary Remove a farmer from a farmer pool
+ */
+export const deleteFarmerPoolsIdRemoveFarmerFarmerId = (
+  id: string,
+  farmerId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<void>({
+    url: `/farmer-pools/${id}/remove-farmer/${farmerId}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeleteFarmerPoolsIdRemoveFarmerFarmerIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteFarmerPoolsIdRemoveFarmerFarmerId>>,
+    TError,
+    { id: string; farmerId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteFarmerPoolsIdRemoveFarmerFarmerId>>,
+  TError,
+  { id: string; farmerId: string },
+  TContext
+> => {
+  const mutationKey = ['deleteFarmerPoolsIdRemoveFarmerFarmerId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteFarmerPoolsIdRemoveFarmerFarmerId>>,
+    { id: string; farmerId: string }
+  > = (props) => {
+    const { id, farmerId } = props ?? {};
+
+    return deleteFarmerPoolsIdRemoveFarmerFarmerId(id, farmerId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteFarmerPoolsIdRemoveFarmerFarmerIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteFarmerPoolsIdRemoveFarmerFarmerId>>
+>;
+
+export type DeleteFarmerPoolsIdRemoveFarmerFarmerIdMutationError = void;
+
+/**
+ * @summary Remove a farmer from a farmer pool
+ */
+export const useDeleteFarmerPoolsIdRemoveFarmerFarmerId = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteFarmerPoolsIdRemoveFarmerFarmerId>>,
+      TError,
+      { id: string; farmerId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteFarmerPoolsIdRemoveFarmerFarmerId>>,
+  TError,
+  { id: string; farmerId: string },
+  TContext
+> => {
+  return useMutation(
+    getDeleteFarmerPoolsIdRemoveFarmerFarmerIdMutationOptions(options),
+    queryClient,
+  );
+};

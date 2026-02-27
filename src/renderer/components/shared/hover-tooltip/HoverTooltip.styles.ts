@@ -1,15 +1,17 @@
 import { theme } from '../../../theme';
 
 export interface IHoverTooltipStyles {
-  container: React.CSSProperties;
+  container: (height?: number, width?: number) => React.CSSProperties;
   tooltip: React.CSSProperties;
 }
 
 export const hoverTooltipStyles: IHoverTooltipStyles = {
-  container: {
+  container: (height, width) => ({
     position: 'relative',
     display: 'inline-block',
-  },
+    height: height ? `${height}px` : 'auto',
+    width: width ? `${width}px` : 'auto',
+  }),
   tooltip: {
     backgroundColor: theme.colors.background.elevated,
     border: `1px solid ${theme.colors.border.primary}`,

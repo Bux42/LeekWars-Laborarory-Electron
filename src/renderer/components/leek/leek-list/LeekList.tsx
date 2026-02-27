@@ -4,10 +4,8 @@ import { leekListStyles as styles } from './LeekList.styles';
 import { ILeekListProps, SortField, SortDirection } from './LeekList.types';
 import { LeekResponse } from '../../../../services/leekwarsToolsAPI.schemas';
 import { theme } from '../../../theme';
-import { getImage } from '../../../utils/ImageLoader';
 import Dropdown from '../../shared/dropdown/Dropdown';
-import HoverTooltip from '../../shared/hover-tooltip/HoverTooltip';
-import LeekDetail from '../leek-detail/LeekDetail';
+import LeekImage from '../leek-image/LeekImage';
 
 function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
   const navigate = useNavigate();
@@ -105,16 +103,8 @@ function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
                 theme.colors.background.secondary;
             }}
           >
-            <td style={styles.td}>
-              <HoverTooltip tooltip={<LeekDetail leek={leek} />}>
-                <img
-                  src={getImage(
-                    `leekwars/image/leek/${leek.imageName ?? 'leek/1'}`,
-                  )}
-                  alt={leek.name ?? 'Leek'}
-                  style={styles.leekImage}
-                />
-              </HoverTooltip>
+            <td style={styles.leekImageTd}>
+              <LeekImage leek={leek} showTooltip height={40} width={40} />
             </td>
             <td style={styles.td}>{leek.name ?? 'Unnamed Leek'}</td>
             <td style={styles.td}>{leek.build?.level ?? '-'}</td>

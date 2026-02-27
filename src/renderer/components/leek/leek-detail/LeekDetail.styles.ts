@@ -3,7 +3,6 @@ import { theme } from '../../../theme';
 export interface ILeekDetailStyles {
   container: React.CSSProperties;
   header: React.CSSProperties;
-  leekImage: React.CSSProperties;
   name: React.CSSProperties;
   level: React.CSSProperties;
   elo: React.CSSProperties;
@@ -31,11 +30,6 @@ export const leekDetailStyles: ILeekDetailStyles = {
     marginBottom: theme.spacing.md,
     paddingBottom: theme.spacing.md,
     borderBottom: `1px solid ${theme.colors.border.primary}`,
-  },
-  leekImage: {
-    width: '80px',
-    height: '80px',
-    objectFit: 'contain',
   },
   name: {
     fontSize: '18px',

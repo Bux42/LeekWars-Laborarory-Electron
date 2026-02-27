@@ -13,6 +13,12 @@ import {
 } from '../../../../../services/farmers/farmers';
 import FarmerPicker from '../../../../components/farmer/farmer-picker/FarmerPicker';
 import FarmerList from '../../../../components/farmer/farmer-list/FarmerList';
+import {
+  useGetFarmerPoolRunGetByPoolIdId,
+  useGetFarmerPoolRunIdStartStartAFarmerPoolRun,
+  usePostFarmerPoolRunIdStart,
+} from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
+import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
 
 function PoolFarmerDetail() {
   const navigate = useNavigate();
@@ -25,6 +31,12 @@ function PoolFarmerDetail() {
   } = useGetFarmerPoolsId(poolId);
 
   const {
+    data: runsData,
+    isLoading: runsLoading,
+    error: runsError,
+  } = useGetFarmerPoolRunGetByPoolIdId(poolId || '');
+
+  const {
     data: farmers,
     isLoading: isLoadingFarmers,
     error: farmersError,
@@ -32,12 +44,20 @@ function PoolFarmerDetail() {
 
   const { mutate: addFarmerToPool } = usePostFarmerPoolsIdAddFarmer();
 
+  const startMutation = usePostFarmerPoolRunIdStart();
+
   console.log('pool', pool);
   console.log('poolId', poolId);
 
-  const handleStartPool = () => {
-    // Implement start pool logic here
-    console.log('Start pool:', pool?.id);
+  const handleStartPool = async () => {
+    try {
+      const result = await startMutation.mutateAsync({ id: poolId });
+      if (result.id) {
+        navigate(`/pools/farmer/${poolId}/runs/${result.id}`);
+      }
+    } catch (err) {
+      console.error('Failed to start pool duel:', err);
+    }
   };
 
   if (isLoadingPool || isLoadingFarmers) {
@@ -75,7 +95,7 @@ function PoolFarmerDetail() {
 
   return (
     <BasePoolWrapper pool={pool.basePool} onStart={handleStartPool}>
-      {/* {runsData?.runs?.length > 0 && (
+      {runsData?.runs?.length > 0 && (
         <>
           <Button onClick={() => navigate(`/pools/farmer/${poolId}/runs`)}>
             View {runsData?.runs?.length} Runs
@@ -90,7 +110,7 @@ function PoolFarmerDetail() {
             View last run
           </Button>
         </>
-      )} */}
+      )}
       <FarmerPicker
         label="Add farmer to pool"
         selectedFarmerIds={selectedFarmersIds}

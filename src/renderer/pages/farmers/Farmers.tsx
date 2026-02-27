@@ -21,6 +21,8 @@ function Farmers() {
     return <p>Error loading farmers: {farmersError.message}</p>;
   }
 
+  console.log('Farmers data:', farmersData);
+
   return (
     <>
       <div style={styles.header}>

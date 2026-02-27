@@ -19,6 +19,8 @@ import PageOutlet from './layout/page-outlet/PageOutlet';
 import PoolFarmer from './pages/pools/farmer/PoolFarmer';
 import FarmerPoolCreation from './pages/pools/farmer/create/FarmerPoolCreation';
 import PoolFarmerDetail from './pages/pools/farmer/details/PoolFarmerDetail';
+import PoolRunsFarmer from './pages/pools/farmer/PoolRunsFarmer';
+import PoolRunFarmerDetail from './pages/pools/farmer/details/PoolRunFarmerDetail';
 
 export default function App() {
   return (
@@ -47,6 +49,10 @@ export default function App() {
                   <Route path="create" element={<FarmerPoolCreation />} />
                   <Route path=":poolId">
                     <Route index element={<PoolFarmerDetail />} />
+                    <Route path="runs">
+                      <Route index element={<PoolRunsFarmer />} />
+                      <Route path=":runId" element={<PoolRunFarmerDetail />} />
+                    </Route>
                   </Route>
                 </Route>
               </Route>

@@ -45,7 +45,9 @@ function PoolRunList({ runs, onViewRun }: IPoolRunListProps) {
             </div>
             <span style={styles.details}>
               Duration: {getDuration(run.startDate, run.endDate)}
-              {run.interrupted && ' • Interrupted'}
+              {run.interrupted && (
+                <> • Interrupted ({getTimeAgo(run.endDate)})</>
+              )}
               {!run.running && !run.interrupted && (
                 <> • Completed ({getTimeAgo(run.endDate)})</>
               )}

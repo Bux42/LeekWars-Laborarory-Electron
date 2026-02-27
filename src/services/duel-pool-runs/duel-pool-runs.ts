@@ -21,6 +21,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  BasePoolStopResponse,
   DuelPoolRunResponse,
   ListDuelPoolRunResponse,
 } from '../leekwarsToolsAPI.schemas';
@@ -569,6 +570,85 @@ export const usePostDuelPoolRunIdStart = <TError = void, TContext = unknown>(
 > => {
   return useMutation(
     getPostDuelPoolRunIdStartMutationOptions(options),
+    queryClient,
+  );
+};
+/**
+ * Stops a duel pool run, which will stop all ongoing fights and prevent new fights from being generated.
+ * @summary Stop a duel pool run
+ */
+export const postDuelPoolRunIdStop = (id: string, signal?: AbortSignal) => {
+  return apiClient<BasePoolStopResponse>({
+    url: `/duel-pool-run/${id}/stop`,
+    method: 'POST',
+    signal,
+  });
+};
+
+export const getPostDuelPoolRunIdStopMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postDuelPoolRunIdStop>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postDuelPoolRunIdStop>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const mutationKey = ['postDuelPoolRunIdStop'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postDuelPoolRunIdStop>>,
+    { id: string }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return postDuelPoolRunIdStop(id);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostDuelPoolRunIdStopMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postDuelPoolRunIdStop>>
+>;
+
+export type PostDuelPoolRunIdStopMutationError = void;
+
+/**
+ * @summary Stop a duel pool run
+ */
+export const usePostDuelPoolRunIdStop = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postDuelPoolRunIdStop>>,
+      TError,
+      { id: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postDuelPoolRunIdStop>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  return useMutation(
+    getPostDuelPoolRunIdStopMutationOptions(options),
     queryClient,
   );
 };

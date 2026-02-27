@@ -3,7 +3,11 @@ import { Tabs } from 'antd';
 import { usePoolRunDuelId } from '../../../../../hooks/pool-runs/duel/usePoolRunDuelId';
 import Spinner from '../../../../components/shared/spinner/Spinner';
 import { poolsStyles as styles } from '../../Pools.styles';
-import { useGetDuelPoolRunId } from '../../../../../services/duel-pool-runs/duel-pool-runs';
+import {
+  postDuelPoolRunIdStop,
+  useGetDuelPoolRunId,
+  usePostDuelPoolRunIdStop,
+} from '../../../../../services/duel-pool-runs/duel-pool-runs';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
 import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
@@ -19,10 +23,6 @@ function PoolRunDuelDetail() {
   // const stopMutation = useStopPoolDuel();
   const [processedFights, setProcessedFights] = useState(0);
 
-  if (!runId) {
-    return <p style={styles.errorText}>Invalid run ID</p>;
-  }
-
   // First we fetch to see if it exists and its status
   // const startQuery = usePoolRunDuel(runId || '');
 
@@ -31,6 +31,8 @@ function PoolRunDuelDetail() {
     isLoading: poolDuelIsLoading,
     error: poolDuelError,
   } = useGetDuelPoolRunId(runId);
+
+  const stopMutation = usePostDuelPoolRunIdStop();
 
   const {
     data: fightCountData,
@@ -86,10 +88,25 @@ function PoolRunDuelDetail() {
   //   datetime: point.timestamp,
   // }));
 
+  const onStopDuelPoolRun = async () => {
+    if (poolDuelData?.id) {
+      try {
+        const result = await stopMutation.mutateAsync({ id: poolDuelData.id });
+        console.log('Stop result:', result);
+      } catch (err) {
+        console.error('Failed to stop duel pool run:', err);
+      }
+    }
+  };
+
   const leekSortedByElo = useMemo(
     () => [...(poolDuelData?.leeks || [])].sort((a, b) => b.elo - a.elo),
     [poolDuelData?.leeks],
   );
+
+  if (!runId) {
+    return <p style={styles.errorText}>Invalid run ID</p>;
+  }
 
   if (poolDuelIsLoading) {
     return <Spinner label="Loading run details..." />;
@@ -106,7 +123,7 @@ function PoolRunDuelDetail() {
       </div>
       <BasePoolRunWrapper
         run={poolDuelData as IPoolRunBase}
-        onStop={() => console.log('Stop run')}
+        onStop={onStopDuelPoolRun}
       >
         <Tabs
           defaultActiveKey="1"

@@ -41,6 +41,24 @@ export interface ListAIResponse {
   ais: EntityAIResponse[];
 }
 
+export interface BasePoolStopResponse {
+  success: boolean;
+}
+
+export interface PoolFightDuelResponse {
+  id: string;
+  poolRunId: string;
+  seed: number;
+  date: number;
+  leek1Id: string;
+  leek2Id: string;
+  winnerLeekId?: string;
+}
+
+export interface GetDuelFightsByPoolRunIdResponse {
+  fights: PoolFightDuelResponse[];
+}
+
 export interface AddLeekToDuelPoolRequest {
   leekId?: string;
 }
@@ -172,6 +190,20 @@ export interface GetAllFarmersResponse {
   farmers: FarmerResponse[];
 }
 
+export interface PoolFightFarmerResponse {
+  id: string;
+  poolRunId: string;
+  seed: number;
+  date: number;
+  farmer1Id: string;
+  farmer2Id: string;
+  winnerFarmerId?: string;
+}
+
+export interface GetFarmerFightsByPoolRunIdResponse {
+  fights: PoolFightFarmerResponse[];
+}
+
 export interface AddFarmerToPoolRequest {
   farmerId?: string;
 }
@@ -191,6 +223,28 @@ export interface GetAllFarmerPoolsResponse {
   farmerPools: FarmerPoolResponse[];
 }
 
+export interface PoolFarmerResponse {
+  id: string;
+  name: string;
+  leeks: PoolLeekResponse[];
+  elo: number;
+}
+
+export interface FarmerPoolRunResponse {
+  id: string;
+  interrupted: boolean;
+  running: boolean;
+  basePool: BasePoolResponse;
+  startDate: number;
+  endDate: number;
+  farmerPoolId: string;
+  farmers: PoolFarmerResponse[];
+}
+
+export interface ListFarmerPoolRunResponse {
+  runs: FarmerPoolRunResponse[];
+}
+
 export interface GenerateFightRequest {
   fightId: string;
 }
@@ -201,20 +255,6 @@ export interface GenerateFightResponse {
 
 export interface GetCountByPoolRunIdResponse {
   count: number;
-}
-
-export interface PoolFightDuelResponse {
-  id: string;
-  poolRunId: string;
-  seed: number;
-  date: number;
-  leek1Id: string;
-  leek2Id: string;
-  winnerLeekId?: string;
-}
-
-export interface GetFightsByPoolRunIdResponse {
-  fights: PoolFightDuelResponse[];
 }
 
 export interface BrowseDirectoryRequest {

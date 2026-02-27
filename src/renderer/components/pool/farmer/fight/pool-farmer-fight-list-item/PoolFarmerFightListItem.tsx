@@ -1,34 +1,34 @@
-import { useMemo, useState } from 'react';
-import { Col, Row, Spin, Typography, message } from 'antd';
+import { useState, useMemo } from 'react';
 import { EyeOutlined } from '@ant-design/icons';
-import { IPoolDuelFightListItemProps } from './PoolDuelFightListItem.types';
-import { poolDuelFightListItemStyles as styles } from './PoolDuelFightListItem.styles';
-import { getTimeAgo } from '../../../../../utils/DateUtils';
-import { usePostFightGenerate } from '../../../../../../services/fights/fights';
-import LeekImage from '../../../../leek/leek-image/LeekImage';
+import { Row, Col, Typography, Spin, message } from 'antd';
 import { LeekResponse } from '../../../../../../services/leekwarsToolsAPI.schemas';
+import { getTimeAgo } from '../../../../../utils/DateUtils';
+import LeekImage from '../../../../leek/leek-image/LeekImage';
+import { IPoolFarmerFightListItemProps } from './PoolFarmerFightListItem.types';
+import { poolFarmerFightListItemStyles as styles } from './PoolFarmerListItem.styles';
+import { usePostFightGenerate } from '../../../../../../services/fights/fights';
 
-function PoolDuelFightListItem({
+function PoolFarmerFightListItem({
   fight,
-  leek1,
-  leek2,
-}: IPoolDuelFightListItemProps) {
+  farmer1,
+  farmer2,
+}: IPoolFarmerFightListItemProps) {
   const [generatingFight, setGeneratingFight] = useState<boolean>(false);
 
   const draw = useMemo(() => {
-    if (!fight.winnerLeekId) {
+    if (!fight.winnerFarmerId) {
       return true;
     }
     return false;
-  }, [fight.winnerLeekId]);
+  }, [fight.winnerFarmerId]);
 
   const { mutate: generateFight } = usePostFightGenerate();
 
-  const getFightColor = (leekId: string): 'win' | 'lose' | 'draw' => {
+  const getFightColor = (farmerId: string): 'win' | 'lose' | 'draw' => {
     if (draw) {
       return 'draw';
     }
-    return fight.winnerLeekId === leekId ? 'win' : 'lose';
+    return fight.winnerFarmerId === farmerId ? 'win' : 'lose';
   };
 
   const handleGenerateFight = () => {
@@ -61,16 +61,12 @@ function PoolDuelFightListItem({
   return (
     <Row gutter={16} style={styles.row}>
       <Col span={8} style={styles.column}>
-        <div style={styles.leekContainer(getFightColor(leek1.id))}>
+        <div style={styles.farmerContainer(getFightColor(farmer1.id))}>
           <div style={styles.leekContent}>
-            <LeekImage
-              leek={leek1 as unknown as LeekResponse}
-              showTooltip
-              height={30}
-              width={30}
-            />
-            <Typography.Text style={styles.leekName(getFightColor(leek1.id))}>
-              {leek1.name}
+            <Typography.Text
+              style={styles.farmerName(getFightColor(farmer1.id))}
+            >
+              {farmer1.name}
             </Typography.Text>
           </div>
         </div>
@@ -83,17 +79,19 @@ function PoolDuelFightListItem({
       </Col>
 
       <Col span={8} style={styles.column}>
-        <div style={styles.leekContainer(getFightColor(leek2.id))}>
+        <div style={styles.farmerContainer(getFightColor(farmer2.id))}>
           <div style={styles.leekContent}>
             <LeekImage
-              leek={leek2 as unknown as LeekResponse}
+              leek={farmer2 as unknown as LeekResponse}
               showTooltip
               height={30}
               width={30}
             />
 
-            <Typography.Text style={styles.leekName(getFightColor(leek2.id))}>
-              {leek2.name}
+            <Typography.Text
+              style={styles.farmerName(getFightColor(farmer2.id))}
+            >
+              {farmer2.name}
             </Typography.Text>
           </div>
         </div>
@@ -120,4 +118,4 @@ function PoolDuelFightListItem({
   );
 }
 
-export default PoolDuelFightListItem;
+export default PoolFarmerFightListItem;

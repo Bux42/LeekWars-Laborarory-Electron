@@ -8,7 +8,7 @@ export interface ILeekListStyles {
   tbody: React.CSSProperties;
   tr: React.CSSProperties;
   td: React.CSSProperties;
-  leekImage: React.CSSProperties;
+  leekImageTd: React.CSSProperties;
   talentIcon: React.CSSProperties;
   sortIndicator: React.CSSProperties;
   actionsCell: React.CSSProperties;
@@ -49,11 +49,10 @@ export const leekListStyles: ILeekListStyles = {
     padding: theme.spacing.md,
     color: theme.colors.text.primary,
   },
-  leekImage: {
-    width: 40,
-    height: 40,
-    objectFit: 'contain',
-    borderRadius: theme.borderRadius.sm,
+  leekImageTd: {
+    padding: theme.spacing.md,
+    width: '20px',
+    height: '20px',
   },
   talentIcon: {
     width: 16,

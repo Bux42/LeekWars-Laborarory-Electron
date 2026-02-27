@@ -88,6 +88,8 @@ function FarmerCard({ farmer }: IFarmerCardProps) {
     }
   };
 
+  console.log('farmer response', farmerResponse);
+
   return (
     <div style={styles.container}>
       <h2>{farmerResponse.name}</h2>

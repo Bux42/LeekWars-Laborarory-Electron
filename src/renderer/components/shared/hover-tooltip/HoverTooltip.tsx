@@ -5,7 +5,13 @@ import { IHoverTooltipProps } from './HoverTooltip.types';
 
 type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
 
-function HoverTooltip({ children, tooltip, delay = 100 }: IHoverTooltipProps) {
+function HoverTooltip({
+  children,
+  tooltip,
+  delay = 100,
+  height,
+  width,
+}: IHoverTooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
   const [position, setPosition] = useState<TooltipPosition>('bottom');
@@ -129,7 +135,7 @@ function HoverTooltip({ children, tooltip, delay = 100 }: IHoverTooltipProps) {
     <>
       <div
         ref={containerRef}
-        style={styles.container}
+        style={styles.container(height, width)}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >

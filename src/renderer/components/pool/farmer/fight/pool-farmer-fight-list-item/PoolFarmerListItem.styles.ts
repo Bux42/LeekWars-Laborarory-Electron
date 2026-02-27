@@ -3,12 +3,12 @@ import { theme } from '../../../../../theme';
 
 export type FightColor = 'win' | 'lose' | 'draw';
 
-export interface IPoolDuelFightListItemStyles {
+export interface IPoolFarmerFightListItemStyles {
   row: CSSProperties;
   column: CSSProperties;
   leekContent: CSSProperties;
-  leekName: (color: FightColor) => CSSProperties;
-  leekContainer: (color: FightColor) => CSSProperties;
+  farmerName: (color: FightColor) => CSSProperties;
+  farmerContainer: (color: FightColor) => CSSProperties;
   resultContainer: CSSProperties;
   dateText: CSSProperties;
   actionContainer: CSSProperties;
@@ -16,7 +16,7 @@ export interface IPoolDuelFightListItemStyles {
   spin: CSSProperties;
 }
 
-export const poolDuelFightListItemStyles: IPoolDuelFightListItemStyles = {
+export const poolFarmerFightListItemStyles: IPoolFarmerFightListItemStyles = {
   row: {
     width: '100%',
     alignItems: 'center',
@@ -30,7 +30,7 @@ export const poolDuelFightListItemStyles: IPoolDuelFightListItemStyles = {
     alignItems: 'center',
     gap: theme.spacing.sm,
   },
-  leekName: (color: FightColor) => ({
+  farmerName: (color: FightColor) => ({
     color:
       color === 'win'
         ? theme.colors.accent.success
@@ -39,7 +39,7 @@ export const poolDuelFightListItemStyles: IPoolDuelFightListItemStyles = {
           : theme.colors.text.secondary,
     fontFamily: theme.fonts.primary,
   }),
-  leekContainer: (color: FightColor) => ({
+  farmerContainer: (color: FightColor) => ({
     display: 'flex',
     alignItems: 'center',
     color:
