@@ -1,18 +1,10 @@
-import React, { useMemo } from 'react';
-import { poolDuelCardStyles as styles } from './PoolDuelCard.styles';
 import { useNavigate } from 'react-router-dom';
-import { useLeeks } from '../../../../../hooks/leeks/useLeeks';
-import { useRemoveLeekFromPool } from '../../../../../hooks/pools/duel/useRemoveLeekFromPool';
-import { usePoolRunDuelsByPoolId } from '../../../../../hooks/pool-runs/duel/usePoolRunDuelsByPoolId';
+import { poolDuelCardStyles as styles } from './PoolDuelCard.styles';
 import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
-import { useAddLeekToPool } from '../../../../../hooks/pools/duel/useAddLeekToPool';
 import { ILeek } from '../../../../../services/leekwars-laboratory/types/leek/Leek.types';
-import { IPoolDuel } from '../../../../../services/leekwars-laboratory/types/pool/categories/PoolDuel.types';
 import LeekList from '../../../leek/leek-list/LeekList';
 import LeekPicker from '../../../leek/leek-picker/LeekPicker';
 import { IDropdownItem } from '../../../shared/dropdown/Dropdown.types';
-import Button from '../../../shared/button/Button';
-import Spinner from '../../../shared/spinner/Spinner';
 import { DuelPoolResponse } from '../../../../../services/leekwarsToolsAPI.schemas';
 import { useGetLeeksAll } from '../../../../../services/leeks/leeks';
 import {

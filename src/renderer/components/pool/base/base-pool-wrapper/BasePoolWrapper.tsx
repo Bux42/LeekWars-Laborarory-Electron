@@ -1,10 +1,10 @@
 import React from 'react';
 import { basePoolWrapperStyles as styles } from './BasePoolWrapper.styles';
 import { IBasePoolWrapperProps } from './BasePoolWrapper.types';
-import Toggle from '../../shared/toggle/Toggle';
-import Input from '../../shared/input/Input';
-import Button from '../../shared/button/Button';
-import Spinner from '../../shared/spinner/Spinner';
+import Toggle from '../../../shared/toggle/Toggle';
+import Input from '../../../shared/input/Input';
+import Button from '../../../shared/button/Button';
+import Spinner from '../../../shared/spinner/Spinner';
 import {
   usePostBasePoolsIdSetDeterministic,
   usePostBasePoolsIdSetEnabled,
@@ -12,7 +12,7 @@ import {
   usePostBasePoolsIdSetFightLimitEnabled,
   usePostBasePoolsIdSetResetElo,
   usePostBasePoolsIdSetStartSeed,
-} from '../../../../services/base-pools/base-pools';
+} from '../../../../../services/base-pools/base-pools';
 
 function BasePoolWrapper({ pool, children, onStart }: IBasePoolWrapperProps) {
   const [loading, setLoading] = React.useState(false);

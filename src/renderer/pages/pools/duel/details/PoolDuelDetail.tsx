@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { usePoolDuelId } from '../../../../../hooks/pools/duel/usePoolDuelId';
 import { poolsStyles as styles } from '../../Pools.styles';
-import BasePoolWrapper from '../../../../components/pool/base-pool-wrapper/BasePoolWrapper';
 import Spinner from '../../../../components/shared/spinner/Spinner';
 import PoolDuelCard from '../../../../components/pool/duel/pool-duel-card/PoolDuelCard';
 import { useGetDuelPoolsId } from '../../../../../services/duel-pools/duel-pools';
@@ -10,6 +9,7 @@ import {
   usePostDuelPoolRunIdStart,
 } from '../../../../../services/duel-pool-runs/duel-pool-runs';
 import Button from '../../../../components/shared/button/Button';
+import BasePoolWrapper from '../../../../components/pool/base/base-pool-wrapper/BasePoolWrapper';
 
 function PoolDuelDetail() {
   const navigate = useNavigate();

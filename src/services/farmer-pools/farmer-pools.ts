@@ -258,3 +258,160 @@ export const usePostFarmerPoolsCreate = <TError = void, TContext = unknown>(
     queryClient,
   );
 };
+/**
+ * Returns a farmer pool by its ID.
+ * @summary Get a farmer pool by ID
+ */
+export const getFarmerPoolsId = (id: string, signal?: AbortSignal) => {
+  return apiClient<FarmerPoolResponse>({
+    url: `/farmer-pools/${id}`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetFarmerPoolsIdQueryKey = (id: string) => {
+  return [`/farmer-pools/${id}`] as const;
+};
+
+export const getGetFarmerPoolsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFarmerPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolsId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetFarmerPoolsIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getFarmerPoolsId>>
+  > = ({ signal }) => getFarmerPoolsId(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFarmerPoolsId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetFarmerPoolsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFarmerPoolsId>>
+>;
+export type GetFarmerPoolsIdQueryError = void;
+
+export function useGetFarmerPoolsId<
+  TData = Awaited<ReturnType<typeof getFarmerPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolsId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFarmerPoolsId>>,
+          TError,
+          Awaited<ReturnType<typeof getFarmerPoolsId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFarmerPoolsId<
+  TData = Awaited<ReturnType<typeof getFarmerPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolsId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFarmerPoolsId>>,
+          TError,
+          Awaited<ReturnType<typeof getFarmerPoolsId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFarmerPoolsId<
+  TData = Awaited<ReturnType<typeof getFarmerPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolsId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get a farmer pool by ID
+ */
+
+export function useGetFarmerPoolsId<
+  TData = Awaited<ReturnType<typeof getFarmerPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolsId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetFarmerPoolsIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
