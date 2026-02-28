@@ -4,26 +4,18 @@
  * Leekwars Tools API
  * OpenAPI spec version: 4.2.0
  */
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
-  MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
-  UseMutationOptions,
-  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
-
-import type {
-  GenerateFightRequest,
-  GenerateFightResponse,
-} from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
 
@@ -343,85 +335,3 @@ export function useGetApiFightGetId<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
-
-/**
- * Generates a fight based on the provided fight ID. The fight ID should correspond to an existing fight in the system.
- * @summary Generate a fight
- */
-export const postFightGenerate = (
-  generateFightRequest: GenerateFightRequest,
-  signal?: AbortSignal,
-) => {
-  return apiClient<GenerateFightResponse>({
-    url: `/fight/generate`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: generateFightRequest,
-    signal,
-  });
-};
-
-export const getPostFightGenerateMutationOptions = <
-  TError = void,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postFightGenerate>>,
-    TError,
-    { data: GenerateFightRequest },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postFightGenerate>>,
-  TError,
-  { data: GenerateFightRequest },
-  TContext
-> => {
-  const mutationKey = ['postFightGenerate'];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      'mutationKey' in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postFightGenerate>>,
-    { data: GenerateFightRequest }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return postFightGenerate(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type PostFightGenerateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postFightGenerate>>
->;
-export type PostFightGenerateMutationBody = GenerateFightRequest;
-export type PostFightGenerateMutationError = void;
-
-/**
- * @summary Generate a fight
- */
-export const usePostFightGenerate = <TError = void, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postFightGenerate>>,
-      TError,
-      { data: GenerateFightRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof postFightGenerate>>,
-  TError,
-  { data: GenerateFightRequest },
-  TContext
-> => {
-  return useMutation(getPostFightGenerateMutationOptions(options), queryClient);
-};

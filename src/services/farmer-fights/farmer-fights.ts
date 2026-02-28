@@ -4,20 +4,25 @@
  * Leekwars Tools API
  * OpenAPI spec version: 4.2.0
  */
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
 
 import type {
+  GenerateFightRequest,
+  GenerateFightResponse,
   GetCountByPoolRunIdResponse,
   GetFarmerFightsByPoolRunIdResponse,
 } from '../leekwarsToolsAPI.schemas';
@@ -25,36 +30,116 @@ import type {
 import { apiClient } from '.././lib/api-client';
 
 /**
+ * Generates a fight based on the provided fight ID. The fight ID should correspond to an existing fight in the system.
+ * @summary Generate a fight
+ */
+export const postFightFarmerGenerate = (
+  generateFightRequest: GenerateFightRequest,
+  signal?: AbortSignal,
+) => {
+  return apiClient<GenerateFightResponse>({
+    url: `/fight/farmer/generate`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: generateFightRequest,
+    signal,
+  });
+};
+
+export const getPostFightFarmerGenerateMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postFightFarmerGenerate>>,
+    TError,
+    { data: GenerateFightRequest },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postFightFarmerGenerate>>,
+  TError,
+  { data: GenerateFightRequest },
+  TContext
+> => {
+  const mutationKey = ['postFightFarmerGenerate'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postFightFarmerGenerate>>,
+    { data: GenerateFightRequest }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postFightFarmerGenerate(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostFightFarmerGenerateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postFightFarmerGenerate>>
+>;
+export type PostFightFarmerGenerateMutationBody = GenerateFightRequest;
+export type PostFightFarmerGenerateMutationError = void;
+
+/**
+ * @summary Generate a fight
+ */
+export const usePostFightFarmerGenerate = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postFightFarmerGenerate>>,
+      TError,
+      { data: GenerateFightRequest },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postFightFarmerGenerate>>,
+  TError,
+  { data: GenerateFightRequest },
+  TContext
+> => {
+  return useMutation(
+    getPostFightFarmerGenerateMutationOptions(options),
+    queryClient,
+  );
+};
+/**
  * Retrieves a list of fights associated with a specific pool run ID.
  * @summary Get fights by pool run ID
  */
-export const getApiFightFarmerGetByPoolRunIdIdOffsetLimit = (
+export const getFightFarmerGetByPoolRunIdIdOffsetLimit = (
   id: string,
   offset: string,
   limit: string,
   signal?: AbortSignal,
 ) => {
   return apiClient<GetFarmerFightsByPoolRunIdResponse>({
-    url: `/api/fight/farmer/get-by-pool-run-id/${id}/${offset}/${limit}`,
+    url: `/fight/farmer/get-by-pool-run-id/${id}/${offset}/${limit}`,
     method: 'GET',
     signal,
   });
 };
 
-export const getGetApiFightFarmerGetByPoolRunIdIdOffsetLimitQueryKey = (
+export const getGetFightFarmerGetByPoolRunIdIdOffsetLimitQueryKey = (
   id: string,
   offset: string,
   limit: string,
 ) => {
-  return [
-    `/api/fight/farmer/get-by-pool-run-id/${id}/${offset}/${limit}`,
-  ] as const;
+  return [`/fight/farmer/get-by-pool-run-id/${id}/${offset}/${limit}`] as const;
 };
 
-export const getGetApiFightFarmerGetByPoolRunIdIdOffsetLimitQueryOptions = <
-  TData = Awaited<
-    ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-  >,
+export const getGetFightFarmerGetByPoolRunIdIdOffsetLimitQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
   TError = void,
 >(
   id: string,
@@ -63,9 +148,7 @@ export const getGetApiFightFarmerGetByPoolRunIdIdOffsetLimitQueryOptions = <
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<
-          ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-        >,
+        Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
@@ -76,12 +159,12 @@ export const getGetApiFightFarmerGetByPoolRunIdIdOffsetLimitQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getGetApiFightFarmerGetByPoolRunIdIdOffsetLimitQueryKey(id, offset, limit);
+    getGetFightFarmerGetByPoolRunIdIdOffsetLimitQueryKey(id, offset, limit);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>>
+    Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>
   > = ({ signal }) =>
-    getApiFightFarmerGetByPoolRunIdIdOffsetLimit(id, offset, limit, signal);
+    getFightFarmerGetByPoolRunIdIdOffsetLimit(id, offset, limit, signal);
 
   return {
     queryKey,
@@ -89,22 +172,19 @@ export const getGetApiFightFarmerGetByPoolRunIdIdOffsetLimitQueryOptions = <
     enabled: !!(id && offset && limit),
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>>,
+    Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetApiFightFarmerGetByPoolRunIdIdOffsetLimitQueryResult =
-  NonNullable<
-    Awaited<ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>>
-  >;
-export type GetApiFightFarmerGetByPoolRunIdIdOffsetLimitQueryError = void;
+export type GetFightFarmerGetByPoolRunIdIdOffsetLimitQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>
+>;
+export type GetFightFarmerGetByPoolRunIdIdOffsetLimitQueryError = void;
 
-export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
-  TData = Awaited<
-    ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-  >,
+export function useGetFightFarmerGetByPoolRunIdIdOffsetLimit<
+  TData = Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
   TError = void,
 >(
   id: string,
@@ -113,22 +193,16 @@ export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<
-          ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-        >,
+        Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<
-            ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-          >,
+          Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
           TError,
-          Awaited<
-            ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-          >
+          Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>
         >,
         'initialData'
       >;
@@ -137,10 +211,8 @@ export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
-  TData = Awaited<
-    ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-  >,
+export function useGetFightFarmerGetByPoolRunIdIdOffsetLimit<
+  TData = Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
   TError = void,
 >(
   id: string,
@@ -149,22 +221,16 @@ export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<
-          ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-        >,
+        Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<
-            ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-          >,
+          Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
           TError,
-          Awaited<
-            ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-          >
+          Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>
         >,
         'initialData'
       >;
@@ -173,10 +239,8 @@ export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
-  TData = Awaited<
-    ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-  >,
+export function useGetFightFarmerGetByPoolRunIdIdOffsetLimit<
+  TData = Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
   TError = void,
 >(
   id: string,
@@ -185,9 +249,7 @@ export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<
-          ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-        >,
+        Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
@@ -201,10 +263,8 @@ export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
  * @summary Get fights by pool run ID
  */
 
-export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
-  TData = Awaited<
-    ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-  >,
+export function useGetFightFarmerGetByPoolRunIdIdOffsetLimit<
+  TData = Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
   TError = void,
 >(
   id: string,
@@ -213,9 +273,7 @@ export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<
-          ReturnType<typeof getApiFightFarmerGetByPoolRunIdIdOffsetLimit>
-        >,
+        Awaited<ReturnType<typeof getFightFarmerGetByPoolRunIdIdOffsetLimit>>,
         TError,
         TData
       >
@@ -225,13 +283,12 @@ export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions =
-    getGetApiFightFarmerGetByPoolRunIdIdOffsetLimitQueryOptions(
-      id,
-      offset,
-      limit,
-      options,
-    );
+  const queryOptions = getGetFightFarmerGetByPoolRunIdIdOffsetLimitQueryOptions(
+    id,
+    offset,
+    limit,
+    options,
+  );
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
@@ -245,32 +302,30 @@ export function useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit<
  * Retrieves the count of fights associated with a specific pool run ID.
  * @summary Get fight count by pool run ID
  */
-export const getApiFightFarmerGetCountByPoolRunIdId = (
+export const getFightFarmerGetCountByPoolRunIdId = (
   id: string,
   signal?: AbortSignal,
 ) => {
   return apiClient<GetCountByPoolRunIdResponse>({
-    url: `/api/fight/farmer/get-count-by-pool-run-id/${id}`,
+    url: `/fight/farmer/get-count-by-pool-run-id/${id}`,
     method: 'GET',
     signal,
   });
 };
 
-export const getGetApiFightFarmerGetCountByPoolRunIdIdQueryKey = (
-  id: string,
-) => {
-  return [`/api/fight/farmer/get-count-by-pool-run-id/${id}`] as const;
+export const getGetFightFarmerGetCountByPoolRunIdIdQueryKey = (id: string) => {
+  return [`/fight/farmer/get-count-by-pool-run-id/${id}`] as const;
 };
 
-export const getGetApiFightFarmerGetCountByPoolRunIdIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+export const getGetFightFarmerGetCountByPoolRunIdIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
   TError = void,
 >(
   id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
         TError,
         TData
       >
@@ -281,11 +336,11 @@ export const getGetApiFightFarmerGetCountByPoolRunIdIdQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getGetApiFightFarmerGetCountByPoolRunIdIdQueryKey(id);
+    getGetFightFarmerGetCountByPoolRunIdIdQueryKey(id);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>
-  > = ({ signal }) => getApiFightFarmerGetCountByPoolRunIdId(id, signal);
+    Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>
+  > = ({ signal }) => getFightFarmerGetCountByPoolRunIdId(id, signal);
 
   return {
     queryKey,
@@ -293,35 +348,35 @@ export const getGetApiFightFarmerGetCountByPoolRunIdIdQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+    Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type GetApiFightFarmerGetCountByPoolRunIdIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>
+export type GetFightFarmerGetCountByPoolRunIdIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>
 >;
-export type GetApiFightFarmerGetCountByPoolRunIdIdQueryError = void;
+export type GetFightFarmerGetCountByPoolRunIdIdQueryError = void;
 
-export function useGetApiFightFarmerGetCountByPoolRunIdId<
-  TData = Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+export function useGetFightFarmerGetCountByPoolRunIdId<
+  TData = Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
   TError = void,
 >(
   id: string,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+          Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
           TError,
-          Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>
+          Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>
         >,
         'initialData'
       >;
@@ -330,24 +385,24 @@ export function useGetApiFightFarmerGetCountByPoolRunIdId<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetApiFightFarmerGetCountByPoolRunIdId<
-  TData = Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+export function useGetFightFarmerGetCountByPoolRunIdId<
+  TData = Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
   TError = void,
 >(
   id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+          Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
           TError,
-          Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>
+          Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>
         >,
         'initialData'
       >;
@@ -356,15 +411,15 @@ export function useGetApiFightFarmerGetCountByPoolRunIdId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useGetApiFightFarmerGetCountByPoolRunIdId<
-  TData = Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+export function useGetFightFarmerGetCountByPoolRunIdId<
+  TData = Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
   TError = void,
 >(
   id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
         TError,
         TData
       >
@@ -378,15 +433,15 @@ export function useGetApiFightFarmerGetCountByPoolRunIdId<
  * @summary Get fight count by pool run ID
  */
 
-export function useGetApiFightFarmerGetCountByPoolRunIdId<
-  TData = Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+export function useGetFightFarmerGetCountByPoolRunIdId<
+  TData = Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
   TError = void,
 >(
   id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof getApiFightFarmerGetCountByPoolRunIdId>>,
+        Awaited<ReturnType<typeof getFightFarmerGetCountByPoolRunIdId>>,
         TError,
         TData
       >
@@ -396,7 +451,7 @@ export function useGetApiFightFarmerGetCountByPoolRunIdId<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetApiFightFarmerGetCountByPoolRunIdIdQueryOptions(
+  const queryOptions = getGetFightFarmerGetCountByPoolRunIdIdQueryOptions(
     id,
     options,
   );

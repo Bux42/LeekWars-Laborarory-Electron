@@ -1,10 +1,9 @@
-import { use, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Tabs } from 'antd';
 import { usePoolRunDuelId } from '../../../../../hooks/pool-runs/duel/usePoolRunDuelId';
 import Spinner from '../../../../components/shared/spinner/Spinner';
 import { poolsStyles as styles } from '../../Pools.styles';
 import {
-  postDuelPoolRunIdStop,
   useGetDuelPoolRunId,
   usePostDuelPoolRunIdStop,
 } from '../../../../../services/duel-pool-runs/duel-pool-runs';
@@ -12,9 +11,8 @@ import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-w
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
 import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
 import ProgressBar from '../../../../components/shared/progress-bar/ProgressBar';
-import LeekDetail from '../../../../components/leek/leek-detail/LeekDetail';
 import PoolDuelLeek from '../../../../components/pool/duel/pool-duel-leek/PoolDuelLeek';
-import { useGetApiFightDuelGetCountByPoolRunIdId } from '../../../../../services/duel-fights/duel-fights';
+import { useGetFightDuelGetCountByPoolRunIdId } from '../../../../../services/duel-fights/duel-fights';
 import PoolDuelFightList from '../../../../components/pool/duel/fight/pool-duel-fight-list/PoolDuelFightList';
 import { useWs } from '../../../../../services/websocket/useWs';
 
@@ -38,7 +36,7 @@ function PoolRunDuelDetail() {
     data: fightCountData,
     isLoading: fightCountLoading,
     error: fightCountError,
-  } = useGetApiFightDuelGetCountByPoolRunIdId(runId);
+  } = useGetFightDuelGetCountByPoolRunIdId(runId);
 
   useEffect(() => {
     if (fightCountData) {

@@ -7,7 +7,7 @@ import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-w
 import { poolsStyles as styles } from '../../Pools.styles';
 import ProgressBar from '../../../../components/shared/progress-bar/ProgressBar';
 import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
-import { useGetApiFightFarmerGetCountByPoolRunIdId } from '../../../../../services/farmer-fights/farmer-fights';
+import { useGetFightFarmerGetCountByPoolRunIdId } from '../../../../../services/farmer-fights/farmer-fights';
 import { useWs } from '../../../../../services/websocket/useWs';
 import PoolFarmerFarmer from '../../../../components/pool/farmer/pool-farmer-farmer/PoolFarmerFarmer';
 import PoolFarmerFightList from '../../../../components/pool/farmer/fight/pool-farmer-fight-list/PoolFarmerFightList';
@@ -31,7 +31,7 @@ function PoolRunFarmerDetail() {
     data: fightCountData,
     isLoading: fightCountLoading,
     error: fightCountError,
-  } = useGetApiFightFarmerGetCountByPoolRunIdId(poolRunId);
+  } = useGetFightFarmerGetCountByPoolRunIdId(poolRunId);
 
   useEffect(() => {
     if (fightCountData) {

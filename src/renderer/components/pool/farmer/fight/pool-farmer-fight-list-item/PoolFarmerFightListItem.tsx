@@ -6,7 +6,7 @@ import { getTimeAgo } from '../../../../../utils/DateUtils';
 import LeekImage from '../../../../leek/leek-image/LeekImage';
 import { IPoolFarmerFightListItemProps } from './PoolFarmerFightListItem.types';
 import { poolFarmerFightListItemStyles as styles } from './PoolFarmerListItem.styles';
-import { usePostFightGenerate } from '../../../../../../services/fights/fights';
+import { usePostFightFarmerGenerate } from '../../../../../../services/farmer-fights/farmer-fights';
 
 function PoolFarmerFightListItem({
   fight,
@@ -22,7 +22,7 @@ function PoolFarmerFightListItem({
     return false;
   }, [fight.winnerFarmerId]);
 
-  const { mutate: generateFight } = usePostFightGenerate();
+  const { mutate: generateFight } = usePostFightFarmerGenerate();
 
   const getFightColor = (farmerId: string): 'win' | 'lose' | 'draw' => {
     if (draw) {

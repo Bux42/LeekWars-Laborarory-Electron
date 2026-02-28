@@ -4,9 +4,9 @@ import { EyeOutlined } from '@ant-design/icons';
 import { IPoolDuelFightListItemProps } from './PoolDuelFightListItem.types';
 import { poolDuelFightListItemStyles as styles } from './PoolDuelFightListItem.styles';
 import { getTimeAgo } from '../../../../../utils/DateUtils';
-import { usePostFightGenerate } from '../../../../../../services/fights/fights';
 import LeekImage from '../../../../leek/leek-image/LeekImage';
 import { LeekResponse } from '../../../../../../services/leekwarsToolsAPI.schemas';
+import { usePostFightDuelGenerate } from '../../../../../../services/duel-fights/duel-fights';
 
 function PoolDuelFightListItem({
   fight,
@@ -22,7 +22,7 @@ function PoolDuelFightListItem({
     return false;
   }, [fight.winnerLeekId]);
 
-  const { mutate: generateFight } = usePostFightGenerate();
+  const { mutate: generateFight } = usePostFightDuelGenerate();
 
   const getFightColor = (leekId: string): 'win' | 'lose' | 'draw' => {
     if (draw) {

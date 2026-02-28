@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Alert, Col, Empty, List, Row, Skeleton, Typography } from 'antd';
 import { theme } from '../../../../../theme';
 import {
-  useGetApiFightDuelGetByPoolRunIdIdOffsetLimit,
-  useGetApiFightDuelGetCountByPoolRunIdId,
+  useGetFightDuelGetByPoolRunIdIdOffsetLimit,
+  useGetFightDuelGetCountByPoolRunIdId,
 } from '../../../../../../services/duel-fights/duel-fights';
 import PoolDuelFightListItem from '../pool-duel-fight-list-item/PoolDuelFightListItem';
 import { IPoolDuelFightListProps } from './PoolDuelFightList.types';
@@ -12,13 +12,12 @@ function PoolDuelFightList({ poolDuelId, leeks }: IPoolDuelFightListProps) {
   const [offset, setOffset] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
 
-  const { data, error } = useGetApiFightDuelGetByPoolRunIdIdOffsetLimit(
+  const { data, error } = useGetFightDuelGetByPoolRunIdIdOffsetLimit(
     poolDuelId,
     offset.toString(),
     limit.toString(),
   );
-  const { data: countData } =
-    useGetApiFightDuelGetCountByPoolRunIdId(poolDuelId);
+  const { data: countData } = useGetFightDuelGetCountByPoolRunIdId(poolDuelId);
 
   const total = countData?.count ?? data?.fights.length ?? 0;
   const currentPage = Math.floor(offset / limit) + 1;

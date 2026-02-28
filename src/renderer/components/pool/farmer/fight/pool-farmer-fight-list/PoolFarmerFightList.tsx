@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Alert, Col, Empty, List, Row, Skeleton, Typography } from 'antd';
 import {
-  useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit,
-  useGetApiFightFarmerGetCountByPoolRunIdId,
+  useGetFightFarmerGetByPoolRunIdIdOffsetLimit,
+  useGetFightFarmerGetCountByPoolRunIdId,
 } from '../../../../../../services/farmer-fights/farmer-fights';
 import { IPoolFarmerFightListProps } from './PoolFarmerFightList.types';
 import { theme } from '../../../../../theme';
@@ -15,13 +15,13 @@ function PoolFarmerFightList({
   const [offset, setOffset] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
 
-  const { data, error } = useGetApiFightFarmerGetByPoolRunIdIdOffsetLimit(
+  const { data, error } = useGetFightFarmerGetByPoolRunIdIdOffsetLimit(
     poolFarmerId,
     offset.toString(),
     limit.toString(),
   );
   const { data: countData } =
-    useGetApiFightFarmerGetCountByPoolRunIdId(poolFarmerId);
+    useGetFightFarmerGetCountByPoolRunIdId(poolFarmerId);
 
   const total = countData?.count ?? data?.fights.length ?? 0;
   const currentPage = Math.floor(offset / limit) + 1;
