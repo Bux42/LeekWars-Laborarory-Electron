@@ -1,12 +1,12 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "4.6.0",
-  "description": "A foundation for scalable desktop apps",
+  "name": "leekwars-laboratory-electron",
+  "version": "0.0.1",
+  "description": "The front end of the LeekWars Laboratory, built with Electron and React.",
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "Bux42",
+    "email": "bux42@outlook.com",
+    "url": "https://github.com/Bux42/LeekWars-Laborarory-Electron"
   },
   "main": "./dist/main/main.js",
   "scripts": {
