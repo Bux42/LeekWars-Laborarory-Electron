@@ -2,12 +2,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { leeksStyles as styles } from './Leeks.styles';
 import { theme } from '../../theme';
-import { useDeleteLeek } from '../../../hooks/leeks/useDeleteLeek';
 import LeekList from '../../components/leek/leek-list/LeekList';
 import Button from '../../components/shared/button/Button';
 import { IDropdownItem } from '../../components/shared/dropdown/Dropdown.types';
 import { LeekResponse } from '../../../services/leekwarsToolsAPI.schemas';
-import { useGetLeeksAll } from '../../../services/leeks/leeks';
+import {
+  useDeleteLeeksDeleteLeekId,
+  useGetLeeksAll,
+} from '../../../services/leeks/leeks';
 
 function Leeks() {
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ function Leeks() {
   });
 
   const leeks = data?.leeks ?? [];
-  const deleteLeekMutation = useDeleteLeek();
+  const deleteLeekMutation = useDeleteLeeksDeleteLeekId();
 
   const handleEdit = (leek: LeekResponse) => {
     console.log('Edit leek:', leek.name);
@@ -43,7 +45,7 @@ function Leeks() {
       window.confirm(`Are you sure you want to delete leek "${leek.name}"?`)
     ) {
       try {
-        await deleteLeekMutation.mutateAsync(leek.id);
+        await deleteLeekMutation.mutateAsync({ leekId: leek.id });
       } catch (err) {
         console.error('Failed to delete leek:', err);
       }

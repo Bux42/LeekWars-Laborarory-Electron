@@ -23,6 +23,7 @@ import type {
 import type {
   AddLeekRequest,
   AddLeekResponse,
+  FarmerResponse,
   GetAllLeeksResponse,
 } from '../leekwarsToolsAPI.schemas';
 
@@ -234,3 +235,86 @@ export function useGetLeeksAll<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Removes a leek from the system.
+ * @summary Remove a leek
+ */
+export const deleteLeeksDeleteLeekId = (
+  leekId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<FarmerResponse>({
+    url: `/leeks/delete/${leekId}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeleteLeeksDeleteLeekIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteLeeksDeleteLeekId>>,
+    TError,
+    { leekId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteLeeksDeleteLeekId>>,
+  TError,
+  { leekId: string },
+  TContext
+> => {
+  const mutationKey = ['deleteLeeksDeleteLeekId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteLeeksDeleteLeekId>>,
+    { leekId: string }
+  > = (props) => {
+    const { leekId } = props ?? {};
+
+    return deleteLeeksDeleteLeekId(leekId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteLeeksDeleteLeekIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteLeeksDeleteLeekId>>
+>;
+
+export type DeleteLeeksDeleteLeekIdMutationError = void;
+
+/**
+ * @summary Remove a leek
+ */
+export const useDeleteLeeksDeleteLeekId = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteLeeksDeleteLeekId>>,
+      TError,
+      { leekId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteLeeksDeleteLeekId>>,
+  TError,
+  { leekId: string },
+  TContext
+> => {
+  return useMutation(
+    getDeleteLeeksDeleteLeekIdMutationOptions(options),
+    queryClient,
+  );
+};
