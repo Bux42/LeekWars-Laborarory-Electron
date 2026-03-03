@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { useNavigate } from 'react-router-dom';
 import {
   LeekResponse,
   PoolLeekResponse,
@@ -16,6 +17,8 @@ function toLeekResponse(poolLeek: PoolLeekResponse): LeekResponse {
 }
 
 function PoolRunDuelLeekList({ poolLeeks }: IPoolRunDuelLeekListProps) {
+  const navigate = useNavigate();
+
   const columns: ColumnsType<PoolLeekResponse> = [
     {
       title: 'Avatar',
@@ -38,6 +41,23 @@ function PoolRunDuelLeekList({ poolLeeks }: IPoolRunDuelLeekListProps) {
       key: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
       render: (name: string) => <span style={styles.name}>{name}</span>,
+    },
+    {
+      title: 'AI',
+      key: 'ai',
+      sorter: (a, b) => (a.ai?.name ?? '').localeCompare(b.ai?.name ?? ''),
+      render: (_, leek) =>
+        leek.ai ? (
+          <button
+            type="button"
+            style={styles.hashLink}
+            onClick={() => navigate(`/ai/${leek.ai?.id}`)}
+          >
+            {leek.ai?.name}
+          </button>
+        ) : (
+          <span style={styles.emptyAiText}>No AI</span>
+        ),
     },
     {
       title: 'Level',

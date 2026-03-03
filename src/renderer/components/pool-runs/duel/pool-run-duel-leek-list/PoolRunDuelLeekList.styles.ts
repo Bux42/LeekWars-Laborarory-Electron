@@ -5,6 +5,8 @@ export interface IPoolRunDuelLeekListStyles {
   avatarCell: React.CSSProperties;
   name: React.CSSProperties;
   value: React.CSSProperties;
+  hashLink: React.CSSProperties;
+  emptyAiText: React.CSSProperties;
 }
 
 export const poolRunDuelLeekListStyles: IPoolRunDuelLeekListStyles = {
@@ -26,6 +28,19 @@ export const poolRunDuelLeekListStyles: IPoolRunDuelLeekListStyles = {
   },
   value: {
     color: theme.colors.text.secondary,
+    fontFamily: theme.fonts.primary,
+  },
+  hashLink: {
+    border: 'none',
+    backgroundColor: 'transparent',
+    color: theme.colors.accent.primary,
+    cursor: 'pointer',
+    textDecoration: 'underline',
+    fontFamily: theme.fonts.primary,
+    padding: 0,
+  },
+  emptyAiText: {
+    color: theme.colors.text.tertiary,
     fontFamily: theme.fonts.primary,
   },
 };
