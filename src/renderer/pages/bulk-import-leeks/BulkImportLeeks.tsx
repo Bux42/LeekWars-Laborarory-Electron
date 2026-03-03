@@ -10,6 +10,7 @@ import { WEAPONS_IDS_TO_NAMES } from '../../constants/leekwars/Weapons';
 import { getImage } from '../../utils/ImageLoader';
 import Button from '../../components/shared/button/Button';
 import { usePostLeeksAdd } from '../../../services/leeks/leeks';
+import LeekAvatarPicker from '../../components/leek/leek-avatar-picker/LeekAvatarPicker';
 
 function BulkImportLeeks() {
   const [error, setError] = useState<string | null>(null);
@@ -19,6 +20,7 @@ function BulkImportLeeks() {
   const [bulkAdding, setBulkAdding] = useState<boolean>(false);
   const [addedCount, setAddedCount] = useState<number>(0);
   const [success, setSuccess] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<string>('leek1_front_green');
 
   const addLeekMutation = usePostLeeksAdd();
 
@@ -76,7 +78,7 @@ function BulkImportLeeks() {
         name: build.fileName,
         build: build.entityBuild,
         aiId: selectedAiId,
-        imageName: 'leek1_front_green', // Default avatar
+        imageName: avatar,
       };
 
       try {
@@ -161,6 +163,16 @@ function BulkImportLeeks() {
               Selected AI ID: {selectedAiId.substring(0, 8)}
             </p>
           )}
+        </div>
+      </div>
+      <div style={styles.section}>
+        <h2>Step 3: Select Leek Avatar</h2>
+        <div style={styles.section}>
+          <LeekAvatarPicker
+            onChange={setAvatar}
+            selectedAvatar={avatar}
+            level={0}
+          />
         </div>
       </div>
 
