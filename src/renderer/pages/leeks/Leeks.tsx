@@ -92,9 +92,17 @@ function Leeks() {
     <>
       <div style={styles.header}>
         <h1>Leeks</h1>
-        <Button onClick={() => navigate('/new-leek')} variant="primary">
-          Add Leek
-        </Button>
+        <div style={styles.actions}>
+          <Button onClick={() => navigate('/new-leek')} variant="primary">
+            Add Leek
+          </Button>
+          <Button
+            onClick={() => navigate('/bulk-import-leeks')}
+            variant="primary"
+          >
+            Add Leeks Bulk
+          </Button>
+        </div>
       </div>
       {leeks.length === 0 ? (
         <p>No leeks found.</p>
