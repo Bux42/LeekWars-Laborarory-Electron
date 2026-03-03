@@ -1,6 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { poolDuelCardStyles as styles } from './PoolDuelCard.styles';
-import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
 import { ILeek } from '../../../../../services/leekwars-laboratory/types/leek/Leek.types';
 import LeekList from '../../../leek/leek-list/LeekList';
 import LeekPicker from '../../../leek/leek-picker/LeekPicker';
@@ -16,9 +15,8 @@ interface IPoolDuelCardProps {
   pool: DuelPoolResponse;
 }
 
-function PoolDuelCard({ pool }: IPoolDuelCardProps) {
-  const navigate = useNavigate();
-  // const { data: allLeeks = [], isLoading, error } = useLeeks();
+function PoolDuelCard({ pool: poolProp }: IPoolDuelCardProps) {
+  const [pool, setPool] = useState<DuelPoolResponse>(poolProp);
 
   const {
     data: allLeeks,
@@ -33,18 +31,6 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
   const addLeekMutation = usePostDuelPoolsIdAddLeek();
   const removeLeekMutation = usePostDuelPoolsIdRemoveLeek();
 
-  // First we fetch to see if any run is active
-  // const initialQuery = usePoolRunDuelsByPoolId(pool.id);
-
-  // If at least one run is active, we poll
-  // const hasActiveRuns = initialQuery.data?.some((run) => run.running) ?? false;
-  // const { data: runs = [] } = usePoolRunDuelsByPoolId(
-  //   pool.id,
-  //   hasActiveRuns ? 1000 : undefined,
-  // );
-  // const removeLeekMutation = useRemoveLeekFromPool();
-  // const addLeekMutation = useAddLeekToPool();
-
   const handleAddLeek = async (leekId: string) => {
     try {
       await addLeekMutation.mutateAsync({
@@ -53,24 +39,17 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
           leekId,
         },
       });
+      setPool((prevPool) => ({
+        ...prevPool,
+        leeks: [
+          ...prevPool.leeks,
+          allLeeks?.leeks.find((leek) => leek.id === leekId)!,
+        ],
+      }));
     } catch (err) {
       console.error('Failed to add leek to pool:', err);
     }
   };
-
-  // const activeRunsCount = useMemo(
-  //   () => runs.filter((run) => run.running).length,
-  //   [runs],
-  // );
-
-  // const lastRun = useMemo(() => {
-  //   if (runs.length === 0) return null;
-  //   return [...runs].sort((a, b) => b.startTime - a.startTime)[0];
-  // }, [runs]);
-
-  // const poolLeeks = useMemo(() => {
-  //   return allLeeks.filter((leek) => pool.leeks.includes(leek.id));
-  // }, [allLeeks, pool.leeks]);
 
   const handleRemoveLeek = async (leek: ILeek) => {
     if (
@@ -85,6 +64,10 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
             leekId: leek.id,
           },
         });
+        setPool((prevPool) => ({
+          ...prevPool,
+          leeks: prevPool.leeks.filter((l) => l.id !== leek.id),
+        }));
       } catch (err) {
         console.error('Failed to remove leek from pool:', err);
       }
@@ -107,7 +90,9 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
     return (
       <p style={styles.errorText}>
         Error loading leeks:{' '}
-        {error instanceof Error ? error.message : 'Unknown error'}
+        {(error as any) instanceof Error
+          ? (error as any).message
+          : 'Unknown error'}
       </p>
     );
   }
@@ -120,40 +105,6 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
         selectedLeekIds={pool.leeks?.map((leek) => leek.id) || []}
         onLeekSelect={handleAddLeek}
       />
-      {/* {runs.length > 0 && (
-        <div style={styles.runsSummary}>
-          <div style={styles.runsInfo}>
-            <span style={styles.details}>
-              Runs for this pool: <strong>{runs.length}</strong>
-            </span>
-            {activeRunsCount > 0 && (
-              <Spinner
-                size="small"
-                label={`${activeRunsCount} active`}
-                direction="row"
-              />
-            )}
-          </div>
-          <div style={styles.runsActions}>
-            {lastRun && (
-              <Button
-                onClick={() => {
-                  navigate(`/pools/duel/${pool.id}/runs/${lastRun.id}`);
-                }}
-                variant="primary"
-              >
-                View last run
-              </Button>
-            )}
-            <Button
-              onClick={() => navigate(`/pools/duel/${pool.id}/runs`)}
-              variant="secondary"
-            >
-              View all runs
-            </Button>
-          </div>
-        </div>
-      )} */}
 
       <h3 style={styles.title}>Leeks in Pool ({pool.leeks.length})</h3>
       {pool.leeks.length > 0 ? (
