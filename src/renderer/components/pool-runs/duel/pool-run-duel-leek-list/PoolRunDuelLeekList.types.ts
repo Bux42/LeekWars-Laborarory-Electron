@@ -1,0 +1,5 @@
+import { PoolLeekResponse } from '../../../../../services/leekwarsToolsAPI.schemas';
+
+export interface IPoolRunDuelLeekListProps {
+  poolLeeks: PoolLeekResponse[];
+}

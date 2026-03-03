@@ -15,6 +15,7 @@ import PoolDuelLeek from '../../../../components/pool/duel/pool-duel-leek/PoolDu
 import { useGetFightDuelGetCountByPoolRunIdId } from '../../../../../services/duel-fights/duel-fights';
 import PoolDuelFightList from '../../../../components/pool/duel/fight/pool-duel-fight-list/PoolDuelFightList';
 import { useWs } from '../../../../../services/websocket/useWs';
+import PoolRunDuelLeekList from '../../../../components/pool-runs/duel/pool-run-duel-leek-list/PoolRunDuelLeekList';
 
 function PoolRunDuelDetail() {
   const runId = usePoolRunDuelId();
@@ -142,13 +143,7 @@ function PoolRunDuelDetail() {
             {
               key: 'leeks',
               label: 'Leeks',
-              children: (
-                <>
-                  {leekSortedByElo.map((leek) => (
-                    <PoolDuelLeek key={leek.id} leek={leek} />
-                  ))}
-                </>
-              ),
+              children: <PoolRunDuelLeekList poolLeeks={leekSortedByElo} />,
             },
             {
               key: 'charts',
