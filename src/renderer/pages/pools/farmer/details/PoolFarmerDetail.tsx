@@ -19,6 +19,7 @@ import {
   usePostFarmerPoolRunIdStart,
 } from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
 import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
+import { useState } from 'react';
 
 function PoolFarmerDetail() {
   const navigate = useNavigate();
@@ -29,6 +30,18 @@ function PoolFarmerDetail() {
     isLoading: isLoadingPool,
     error: poolError,
   } = useGetFarmerPoolsId(poolId);
+
+  const [fightLimit, setFightLimit] = useState<number | undefined>(
+    pool?.basePool.fightLimitEnabled ? pool.basePool.fightLimit : undefined,
+  );
+
+  const onFightLimitChange = (enabled: boolean, limit?: number) => {
+    if (!poolId) {
+      return;
+    }
+
+    setFightLimit(enabled ? limit : undefined);
+  };
 
   const {
     data: runsData,
@@ -94,7 +107,11 @@ function PoolFarmerDetail() {
   };
 
   return (
-    <BasePoolWrapper pool={pool.basePool} onStart={handleStartPool}>
+    <BasePoolWrapper
+      pool={pool.basePool}
+      onStart={handleStartPool}
+      totalCombinations={farmers?.farmers.length || 0}
+    >
       {runsData?.runs?.length > 0 && (
         <>
           <Button onClick={() => navigate(`/pools/farmer/${poolId}/runs`)}>

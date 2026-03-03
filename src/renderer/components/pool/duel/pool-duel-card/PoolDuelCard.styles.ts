@@ -11,11 +11,6 @@ export const poolDuelCardStyles = {
     marginBottom: theme.spacing.sm,
     color: theme.colors.text.secondary,
   },
-  statsContainer: {
-    fontSize: '0.85rem',
-    color: theme.colors.text.tertiary,
-    marginBottom: theme.spacing.sm,
-  },
   details: {
     fontSize: '0.85rem',
     color: theme.colors.text.secondary,

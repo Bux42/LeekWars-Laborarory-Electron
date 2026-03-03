@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { basePoolWrapperStyles as styles } from './BasePoolWrapper.styles';
 import { IBasePoolWrapperProps } from './BasePoolWrapper.types';
 import Toggle from '../../../shared/toggle/Toggle';
@@ -13,10 +13,20 @@ import {
   usePostBasePoolsIdSetResetElo,
   usePostBasePoolsIdSetStartSeed,
 } from '../../../../../services/base-pools/base-pools';
+import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
 
-function BasePoolWrapper({ pool, children, onStart }: IBasePoolWrapperProps) {
+function BasePoolWrapper({
+  pool,
+  totalCombinations,
+  children,
+  onStart,
+}: IBasePoolWrapperProps) {
   const [loading, setLoading] = React.useState(false);
   const [currentPool, setCurrentPool] = React.useState(pool);
+
+  const [fightLimit, setFightLimit] = useState<number | undefined>(
+    pool.fightLimitEnabled ? pool.fightLimit : undefined,
+  );
 
   const setDeterministicMutation = usePostBasePoolsIdSetDeterministic();
   const setEnabledMutation = usePostBasePoolsIdSetEnabled();
@@ -93,6 +103,7 @@ function BasePoolWrapper({ pool, children, onStart }: IBasePoolWrapperProps) {
       id: poolId,
       data: { value },
     });
+    setFightLimit(value ? currentPool.fightLimit : undefined);
     setCurrentPool(updatedPool);
   };
 
@@ -106,6 +117,7 @@ function BasePoolWrapper({ pool, children, onStart }: IBasePoolWrapperProps) {
       id: poolId,
       data: { value },
     });
+    setFightLimit(value);
     setCurrentPool(updatedPool);
   };
 
@@ -121,6 +133,17 @@ function BasePoolWrapper({ pool, children, onStart }: IBasePoolWrapperProps) {
     });
     setCurrentPool(updatedPool);
   };
+
+  const { totalFights } = usePoolFightEstimation(totalCombinations, fightLimit);
+
+  console.log(
+    'totalCombinations',
+    totalCombinations,
+    'fightLimit',
+    fightLimit,
+    'totalFights',
+    totalFights,
+  );
 
   return (
     <div style={styles.container}>
@@ -199,6 +222,15 @@ function BasePoolWrapper({ pool, children, onStart }: IBasePoolWrapperProps) {
           </div>
         )}
       </div>
+      {totalCombinations > 0 && (
+        <div style={styles.estimationContainer}>
+          <span style={styles.label}>Total estimated fights</span>
+          <span style={styles.value}>
+            {totalFights} ({totalCombinations} combinations x{' '}
+            {currentPool.fightLimitEnabled ? currentPool.fightLimit : 1} fights)
+          </span>
+        </div>
+      )}
 
       {children && <div style={styles.childrenContainer}>{children}</div>}
     </div>

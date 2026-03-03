@@ -58,11 +58,6 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
     }
   };
 
-  const { totalScenarios, totalFights } = usePoolFightEstimation(
-    pool.leeks.length,
-    pool.basePool?.fightLimit,
-  );
-
   // const activeRunsCount = useMemo(
   //   () => runs.filter((run) => run.running).length,
   //   [runs],
@@ -119,10 +114,6 @@ function PoolDuelCard({ pool }: IPoolDuelCardProps) {
 
   return (
     <div style={styles.container}>
-      <div style={styles.statsContainer}>
-        Total estimated fights: {totalFights} ({totalScenarios} duel
-        combinations x {pool.basePool.fightLimit || 1} fights)
-      </div>
       <LeekPicker
         label="Add Leek to Pool"
         availableLeeks={allLeeks?.leeks || []}

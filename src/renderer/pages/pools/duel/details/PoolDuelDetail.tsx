@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePoolDuelId } from '../../../../../hooks/pools/duel/usePoolDuelId';
 import { poolsStyles as styles } from '../../Pools.styles';
@@ -16,6 +17,18 @@ function PoolDuelDetail() {
   const poolId = usePoolDuelId();
 
   const { data: pool, isLoading, error } = useGetDuelPoolsId(poolId!);
+
+  const [fightLimit, setFightLimit] = useState<number | undefined>(
+    pool?.basePool.fightLimitEnabled ? pool.basePool.fightLimit : undefined,
+  );
+
+  const onFightLimitChange = (enabled: boolean, limit?: number) => {
+    if (!poolId) {
+      return;
+    }
+
+    setFightLimit(enabled ? limit : undefined);
+  };
 
   const {
     data: runsData,
@@ -53,7 +66,11 @@ function PoolDuelDetail() {
   }
 
   return (
-    <BasePoolWrapper pool={pool.basePool} onStart={handleStartPool}>
+    <BasePoolWrapper
+      pool={pool.basePool}
+      onStart={handleStartPool}
+      totalCombinations={pool.leeks.length}
+    >
       {runsData?.runs?.length > 0 && (
         <>
           <Button onClick={() => navigate(`/pools/duel/${poolId}/runs`)}>

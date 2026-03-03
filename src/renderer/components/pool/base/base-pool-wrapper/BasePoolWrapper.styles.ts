@@ -54,4 +54,14 @@ export const basePoolWrapperStyles = {
     paddingTop: theme.spacing.md,
     borderTop: `1px solid ${theme.colors.border.secondary}`,
   },
+  estimationContainer: {
+    marginTop: theme.spacing.sm,
+    padding: theme.spacing.sm,
+    backgroundColor: theme.colors.background.tertiary,
+    borderRadius: theme.borderRadius.sm,
+    border: `1px solid ${theme.colors.border.primary}`,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '4px',
+  },
 };
