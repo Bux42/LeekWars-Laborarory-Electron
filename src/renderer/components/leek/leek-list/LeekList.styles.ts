@@ -1,79 +1,92 @@
 import { theme } from '../../../theme';
 
 export interface ILeekListStyles {
-  table: React.CSSProperties;
-  thead: React.CSSProperties;
-  th: React.CSSProperties;
-  thSortable: React.CSSProperties;
-  tbody: React.CSSProperties;
-  tr: React.CSSProperties;
-  td: React.CSSProperties;
-  leekImageTd: React.CSSProperties;
-  talentIcon: React.CSSProperties;
+  container: React.CSSProperties;
+  headerRow: React.CSSProperties;
+  headerCell: React.CSSProperties;
+  sortableHeaderCell: React.CSSProperties;
+  listItem: React.CSSProperties;
+  itemRow: React.CSSProperties;
+  leekImageCell: React.CSSProperties;
+  valueText: React.CSSProperties;
+  emptyAiText: React.CSSProperties;
   sortIndicator: React.CSSProperties;
   actionsCell: React.CSSProperties;
   hashLink: React.CSSProperties;
 }
 
 export const leekListStyles: ILeekListStyles = {
-  table: {
+  container: {
     width: '100%',
-    borderCollapse: 'collapse',
     marginTop: theme.spacing.lg,
     backgroundColor: theme.colors.background.secondary,
     borderRadius: theme.borderRadius.md,
+    border: `1px solid ${theme.colors.border.primary}`,
   },
-  thead: {
-    backgroundColor: theme.colors.background.elevated,
+  headerRow: {
+    width: '100%',
   },
-  th: {
-    padding: theme.spacing.md,
-    textAlign: 'left',
-    fontWeight: 600,
-    borderBottom: `2px solid ${theme.colors.border.primary}`,
+  headerCell: {
     color: theme.colors.text.primary,
+    fontWeight: 600,
+    fontFamily: theme.fonts.primary,
+    fontSize: '0.9rem',
   },
-  thSortable: {
+  sortableHeaderCell: {
+    width: '100%',
+    border: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
+    fontWeight: 600,
+    color: theme.colors.text.primary,
+    backgroundColor: theme.colors.background.elevated,
+    fontFamily: theme.fonts.primary,
+    textAlign: 'left',
     cursor: 'pointer',
+    borderRadius: theme.borderRadius.sm,
     userSelect: 'none',
     transition: 'background-color 0.2s ease',
   },
-  tbody: {
+  listItem: {
     backgroundColor: theme.colors.background.secondary,
-  },
-  tr: {
     borderBottom: `1px solid ${theme.colors.border.primary}`,
     transition: 'background-color 0.2s ease',
+    padding: `${theme.spacing.sm}px ${theme.spacing.md}px`,
   },
-  td: {
-    padding: theme.spacing.md,
+  itemRow: {
+    width: '100%',
+  },
+  leekImageCell: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  valueText: {
     color: theme.colors.text.primary,
+    fontFamily: theme.fonts.primary,
+    fontSize: '0.9rem',
   },
-  leekImageTd: {
-    padding: theme.spacing.md,
-    width: '20px',
-    height: '20px',
-  },
-  talentIcon: {
-    width: 16,
-    height: 16,
-    marginRight: theme.spacing.xs,
-    verticalAlign: 'middle',
+  emptyAiText: {
+    color: theme.colors.text.tertiary,
+    fontFamily: theme.fonts.primary,
   },
   sortIndicator: {
     marginLeft: theme.spacing.xs,
     fontSize: 12,
   },
   actionsCell: {
-    padding: theme.spacing.md,
-    color: theme.colors.text.primary,
-    width: '60px',
+    color: theme.colors.text.secondary,
     textAlign: 'center',
   },
   hashLink: {
+    border: 'none',
+    backgroundColor: 'transparent',
     color: theme.colors.accent.primary,
     cursor: 'pointer',
     textDecoration: 'underline',
     fontSize: '0.9rem',
+    fontFamily: theme.fonts.primary,
+    padding: 0,
   },
 };

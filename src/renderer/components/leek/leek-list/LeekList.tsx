@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Col, List, Row, Typography } from 'antd';
 import { leekListStyles as styles } from './LeekList.styles';
 import { ILeekListProps, SortField, SortDirection } from './LeekList.types';
 import { LeekResponse } from '../../../../services/leekwarsToolsAPI.schemas';
@@ -59,8 +60,8 @@ function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
   };
 
   const getThStyle = (field: SortField) => ({
-    ...styles.th,
-    ...styles.thSortable,
+    ...styles.headerCell,
+    ...styles.sortableHeaderCell,
     backgroundColor:
       sortField === field
         ? theme.colors.background.tertiary
@@ -68,32 +69,65 @@ function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
   });
 
   return (
-    <table style={styles.table}>
-      <thead style={styles.thead}>
-        <tr>
-          <th style={styles.th}>Image</th>
-          <th style={getThStyle('name')} onClick={() => handleSort('name')}>
-            Name
-            <span style={styles.sortIndicator}>{getSortIndicator('name')}</span>
-          </th>
-          <th style={getThStyle('level')} onClick={() => handleSort('level')}>
-            Level
-            <span style={styles.sortIndicator}>
-              {getSortIndicator('level')}
-            </span>
-          </th>
-          <th style={getThStyle('ai')} onClick={() => handleSort('ai')}>
-            AI
-            <span style={styles.sortIndicator}>{getSortIndicator('ai')}</span>
-          </th>
-          {getDropdownItems && <th style={styles.th}>Actions</th>}
-        </tr>
-      </thead>
-      <tbody style={styles.tbody}>
-        {sortedLeeks.map((leek, index) => (
-          <tr
+    <div style={styles.container}>
+      <List
+        bordered
+        dataSource={sortedLeeks}
+        locale={{ emptyText: 'No leeks found.' }}
+        header={
+          <Row style={styles.headerRow} gutter={12} align="middle">
+            <Col flex="56px">
+              <Typography.Text style={styles.headerCell}>Image</Typography.Text>
+            </Col>
+            <Col flex="2">
+              <button
+                type="button"
+                style={getThStyle('name')}
+                onClick={() => handleSort('name')}
+              >
+                Name
+                <span style={styles.sortIndicator}>
+                  {getSortIndicator('name')}
+                </span>
+              </button>
+            </Col>
+            <Col flex="120px">
+              <button
+                type="button"
+                style={getThStyle('level')}
+                onClick={() => handleSort('level')}
+              >
+                Level
+                <span style={styles.sortIndicator}>
+                  {getSortIndicator('level')}
+                </span>
+              </button>
+            </Col>
+            <Col flex="2">
+              <button
+                type="button"
+                style={getThStyle('ai')}
+                onClick={() => handleSort('ai')}
+              >
+                AI
+                <span style={styles.sortIndicator}>
+                  {getSortIndicator('ai')}
+                </span>
+              </button>
+            </Col>
+            {getDropdownItems && (
+              <Col flex="80px">
+                <Typography.Text style={styles.headerCell}>
+                  Actions
+                </Typography.Text>
+              </Col>
+            )}
+          </Row>
+        }
+        renderItem={(leek, index) => (
+          <List.Item
             key={leek.id ?? `${leek.name ?? 'leek'}-${index}`}
-            style={styles.tr}
+            style={styles.listItem}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor =
                 theme.colors.background.tertiary;
@@ -103,37 +137,51 @@ function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
                 theme.colors.background.secondary;
             }}
           >
-            <td style={styles.leekImageTd}>
-              <LeekImage leek={leek} showTooltip height={40} width={40} />
-            </td>
-            <td style={styles.td}>{leek.name ?? 'Unnamed Leek'}</td>
-            <td style={styles.td}>{leek.build?.level ?? '-'}</td>
-            <td style={styles.td}>
-              {leek.ai ? (
-                <button
-                  type="button"
-                  style={styles.hashLink}
-                  onClick={() => navigate(`/ai/${leek.ai?.id}`)}
-                >
-                  {leek.ai?.name}
-                </button>
-              ) : (
-                <span style={{ color: theme.colors.text.tertiary }}>No AI</span>
+            <Row style={styles.itemRow} gutter={12} align="middle">
+              <Col flex="56px">
+                <div style={styles.leekImageCell}>
+                  <LeekImage leek={leek} showTooltip height={40} width={40} />
+                </div>
+              </Col>
+              <Col flex="2">
+                <Typography.Text style={styles.valueText}>
+                  {leek.name ?? 'Unnamed Leek'}
+                </Typography.Text>
+              </Col>
+              <Col flex="120px">
+                <Typography.Text style={styles.valueText}>
+                  {leek.build?.level ?? '-'}
+                </Typography.Text>
+              </Col>
+              <Col flex="2">
+                {leek.ai ? (
+                  <button
+                    type="button"
+                    style={styles.hashLink}
+                    onClick={() => navigate(`/ai/${leek.ai?.id}`)}
+                  >
+                    {leek.ai?.name}
+                  </button>
+                ) : (
+                  <Typography.Text style={styles.emptyAiText}>
+                    No AI
+                  </Typography.Text>
+                )}
+              </Col>
+              {getDropdownItems && (
+                <Col flex="80px" style={styles.actionsCell}>
+                  <Dropdown
+                    items={getDropdownItems(leek)}
+                    isOpen={openDropdown === (leek.id ?? '')}
+                    onToggle={() => toggleDropdown(leek.id ?? '')}
+                  />
+                </Col>
               )}
-            </td>
-            {getDropdownItems && (
-              <td style={styles.actionsCell}>
-                <Dropdown
-                  items={getDropdownItems(leek)}
-                  isOpen={openDropdown === (leek.id ?? '')}
-                  onToggle={() => toggleDropdown(leek.id ?? '')}
-                />
-              </td>
-            )}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+            </Row>
+          </List.Item>
+        )}
+      />
+    </div>
   );
 }
 
