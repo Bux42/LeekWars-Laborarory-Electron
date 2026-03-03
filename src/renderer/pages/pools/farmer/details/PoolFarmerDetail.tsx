@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useGetFarmerPoolsId,
@@ -6,20 +7,13 @@ import {
 import BasePoolWrapper from '../../../../components/pool/base/base-pool-wrapper/BasePoolWrapper';
 import Button from '../../../../components/shared/button/Button';
 import { usePoolFarmerId } from '../../../../../hooks/pools/farmer/usePoolFarmerId';
-import PoolFarmerCard from '../../../../components/pool/farmer/pool-farmer-card/PoolFarmerCard';
-import {
-  useGetFarmersAll,
-  usePostFarmersFarmerIdAddLeekLeekId,
-} from '../../../../../services/farmers/farmers';
+import { useGetFarmersAll } from '../../../../../services/farmers/farmers';
 import FarmerPicker from '../../../../components/farmer/farmer-picker/FarmerPicker';
 import FarmerList from '../../../../components/farmer/farmer-list/FarmerList';
 import {
   useGetFarmerPoolRunGetByPoolIdId,
-  useGetFarmerPoolRunIdStartStartAFarmerPoolRun,
   usePostFarmerPoolRunIdStart,
 } from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
-import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
-import { useState } from 'react';
 
 function PoolFarmerDetail() {
   const navigate = useNavigate();
@@ -30,18 +24,6 @@ function PoolFarmerDetail() {
     isLoading: isLoadingPool,
     error: poolError,
   } = useGetFarmerPoolsId(poolId);
-
-  const [fightLimit, setFightLimit] = useState<number | undefined>(
-    pool?.basePool.fightLimitEnabled ? pool.basePool.fightLimit : undefined,
-  );
-
-  const onFightLimitChange = (enabled: boolean, limit?: number) => {
-    if (!poolId) {
-      return;
-    }
-
-    setFightLimit(enabled ? limit : undefined);
-  };
 
   const {
     data: runsData,
@@ -58,9 +40,6 @@ function PoolFarmerDetail() {
   const { mutate: addFarmerToPool } = usePostFarmerPoolsIdAddFarmer();
 
   const startMutation = usePostFarmerPoolRunIdStart();
-
-  console.log('pool', pool);
-  console.log('poolId', poolId);
 
   const handleStartPool = async () => {
     try {
