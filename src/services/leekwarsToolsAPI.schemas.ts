@@ -257,6 +257,17 @@ export interface GetCountByPoolRunIdResponse {
   count: number;
 }
 
+export interface PoolFightRatioResponse {
+  wins: number;
+  losses: number;
+  draws: number;
+  ownerId?: string;
+}
+
+export interface PoolFightRatioListResponse {
+  ratios?: PoolFightRatioResponse[];
+}
+
 export interface BrowseDirectoryRequest {
   directoryPath: string;
 }

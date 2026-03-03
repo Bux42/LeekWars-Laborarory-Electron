@@ -25,6 +25,8 @@ import type {
   GenerateFightResponse,
   GetCountByPoolRunIdResponse,
   GetDuelFightsByPoolRunIdResponse,
+  PoolFightRatioListResponse,
+  PoolFightRatioResponse,
 } from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
@@ -452,6 +454,351 @@ export function useGetFightDuelGetCountByPoolRunIdId<
 } {
   const queryOptions = getGetFightDuelGetCountByPoolRunIdIdQueryOptions(
     id,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Retrieves the fight ratios for all leeks in a specific pool run.
+ * @summary Get all leek ratios by pool run ID
+ */
+export const getFightDuelLeekRatioPoolRunIdAll = (
+  poolRunId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<PoolFightRatioListResponse>({
+    url: `/fight/duel/leek-ratio/${poolRunId}/all`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetFightDuelLeekRatioPoolRunIdAllQueryKey = (
+  poolRunId: string,
+) => {
+  return [`/fight/duel/leek-ratio/${poolRunId}/all`] as const;
+};
+
+export const getGetFightDuelLeekRatioPoolRunIdAllQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetFightDuelLeekRatioPoolRunIdAllQueryKey(poolRunId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>
+  > = ({ signal }) => getFightDuelLeekRatioPoolRunIdAll(poolRunId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!poolRunId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetFightDuelLeekRatioPoolRunIdAllQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>
+>;
+export type GetFightDuelLeekRatioPoolRunIdAllQueryError = void;
+
+export function useGetFightDuelLeekRatioPoolRunIdAll<
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+          TError,
+          Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFightDuelLeekRatioPoolRunIdAll<
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+          TError,
+          Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFightDuelLeekRatioPoolRunIdAll<
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get all leek ratios by pool run ID
+ */
+
+export function useGetFightDuelLeekRatioPoolRunIdAll<
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdAll>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetFightDuelLeekRatioPoolRunIdAllQueryOptions(
+    poolRunId,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Retrieves the fight ratio for a specific leek in a specific pool run.
+ * @summary Get leek ratio by pool run ID and leek ID
+ */
+export const getFightDuelLeekRatioPoolRunIdLeekId = (
+  poolRunId: string,
+  leekId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<PoolFightRatioResponse>({
+    url: `/fight/duel/leek-ratio/${poolRunId}/${leekId}`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetFightDuelLeekRatioPoolRunIdLeekIdQueryKey = (
+  poolRunId: string,
+  leekId: string,
+) => {
+  return [`/fight/duel/leek-ratio/${poolRunId}/${leekId}`] as const;
+};
+
+export const getGetFightDuelLeekRatioPoolRunIdLeekIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  leekId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetFightDuelLeekRatioPoolRunIdLeekIdQueryKey(poolRunId, leekId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>
+  > = ({ signal }) =>
+    getFightDuelLeekRatioPoolRunIdLeekId(poolRunId, leekId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!(poolRunId && leekId),
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetFightDuelLeekRatioPoolRunIdLeekIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>
+>;
+export type GetFightDuelLeekRatioPoolRunIdLeekIdQueryError = void;
+
+export function useGetFightDuelLeekRatioPoolRunIdLeekId<
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  leekId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+          TError,
+          Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFightDuelLeekRatioPoolRunIdLeekId<
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  leekId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+          TError,
+          Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFightDuelLeekRatioPoolRunIdLeekId<
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  leekId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get leek ratio by pool run ID and leek ID
+ */
+
+export function useGetFightDuelLeekRatioPoolRunIdLeekId<
+  TData = Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  leekId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelLeekRatioPoolRunIdLeekId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetFightDuelLeekRatioPoolRunIdLeekIdQueryOptions(
+    poolRunId,
+    leekId,
     options,
   );
 

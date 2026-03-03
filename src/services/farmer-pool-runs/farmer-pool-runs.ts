@@ -21,6 +21,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  BasePoolStopResponse,
   FarmerPoolRunResponse,
   ListFarmerPoolRunResponse,
 } from '../leekwarsToolsAPI.schemas';
@@ -426,6 +427,85 @@ export const usePostFarmerPoolRunIdStart = <TError = void, TContext = unknown>(
 > => {
   return useMutation(
     getPostFarmerPoolRunIdStartMutationOptions(options),
+    queryClient,
+  );
+};
+/**
+ * Stops a farmer pool run, which will stop all ongoing fights and prevent new fights from being generated.
+ * @summary Stop a farmer pool run
+ */
+export const postFarmerPoolRunIdStop = (id: string, signal?: AbortSignal) => {
+  return apiClient<BasePoolStopResponse>({
+    url: `/farmer-pool-run/${id}/stop`,
+    method: 'POST',
+    signal,
+  });
+};
+
+export const getPostFarmerPoolRunIdStopMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postFarmerPoolRunIdStop>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postFarmerPoolRunIdStop>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const mutationKey = ['postFarmerPoolRunIdStop'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postFarmerPoolRunIdStop>>,
+    { id: string }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return postFarmerPoolRunIdStop(id);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostFarmerPoolRunIdStopMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postFarmerPoolRunIdStop>>
+>;
+
+export type PostFarmerPoolRunIdStopMutationError = void;
+
+/**
+ * @summary Stop a farmer pool run
+ */
+export const usePostFarmerPoolRunIdStop = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postFarmerPoolRunIdStop>>,
+      TError,
+      { id: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postFarmerPoolRunIdStop>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  return useMutation(
+    getPostFarmerPoolRunIdStopMutationOptions(options),
     queryClient,
   );
 };

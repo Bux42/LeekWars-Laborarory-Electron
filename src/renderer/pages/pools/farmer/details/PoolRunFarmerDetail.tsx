@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Tabs } from 'antd';
 import { usePoolRunFarmerId } from '../../../../../hooks/pool-runs/farmer/usePoolRunFarmerId';
-import { useGetFarmerPoolRunId } from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
+import {
+  useGetFarmerPoolRunId,
+  usePostFarmerPoolRunIdStop,
+} from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
 import { poolsStyles as styles } from '../../Pools.styles';
@@ -16,15 +19,25 @@ function PoolRunFarmerDetail() {
   const poolRunId = usePoolRunFarmerId();
   const [processedFights, setProcessedFights] = useState(0);
 
+  const stopMutation = usePostFarmerPoolRunIdStop();
+
   const {
     data: poolFarmerData,
     isLoading,
     error,
   } = useGetFarmerPoolRunId(poolRunId);
 
-  const onStopFarmerPoolRun = () => {
-    // Implement stop pool run logic here
-    console.log('Stop pool run:', poolRunId);
+  const onStopFarmerPoolRun = async () => {
+    if (poolFarmerData?.id) {
+      try {
+        const result = await stopMutation.mutateAsync({
+          id: poolFarmerData.id,
+        });
+        console.log('Stop result:', result);
+      } catch (err) {
+        console.error('Failed to stop farmer pool run:', err);
+      }
+    }
   };
 
   const {
