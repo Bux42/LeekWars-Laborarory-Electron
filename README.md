@@ -12,6 +12,8 @@ Clone the project
 git clone https://github.com/Bux42/LeekWars-Laborarory-Electron
 ```
 
+Create a .env file in the root project directory and configure it (see .env.example)
+
 Install npm packages, and run
 
 ```
