@@ -43,7 +43,7 @@ function PoolDuelFightListItem({
         onSuccess: () => {
           const fightUrl = new URL(
             `fight/${fight.id}`,
-            process.env.VUE_FRONT_END_URL || 'http://localhost:8080/',
+            process.env.VUE_FRONT_END_URL || 'http://localhost:4173/',
           ).toString();
 
           window.open(fightUrl, '_blank');

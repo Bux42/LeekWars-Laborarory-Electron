@@ -10,3 +10,5 @@ Implement notifications for when a pool run has finished? (it can take a long ti
 ## Automatic release
 
 On github, I should be able to generate new releases, with a generated installer for the users to use directly
+
+## Fix leek hover popup hidden when overflow
