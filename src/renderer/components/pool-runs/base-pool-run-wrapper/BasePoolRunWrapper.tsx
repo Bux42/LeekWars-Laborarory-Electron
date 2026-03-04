@@ -4,13 +4,25 @@ import { IBasePoolRunWrapperProps } from './BasePoolRunWrapper.types';
 import Spinner from '../../shared/spinner/Spinner';
 import Button from '../../shared/button/Button';
 import { formatDate, getDuration } from '../../../utils/DateUtils';
+import ProgressBar from '../../shared/progress-bar/ProgressBar';
+import { usePoolFightEstimation } from '../../../../hooks/pools/duel/usePoolFightEstimation';
+import { usePoolRunEta } from '../../../../hooks/pool-runs/eta/usePoolRunEta';
 
 function BasePoolRunWrapper({
   run,
   children,
+  combinationsCount,
+  processedFights,
   onStop,
 }: IBasePoolRunWrapperProps) {
   const [stopping, setStopping] = React.useState(false);
+
+  const { totalFights } = usePoolFightEstimation(
+    combinationsCount,
+    run.basePool?.fightLimit || 0,
+  );
+
+  const etaString = usePoolRunEta(processedFights, totalFights, run.startDate);
 
   const handleStop = async () => {
     if (onStop) {
@@ -72,6 +84,13 @@ function BasePoolRunWrapper({
           <span style={styles.value}>
             {run.running ? 'Active execution' : 'Finished'}
           </span>
+        </div>
+        <div style={styles.infoItemFullWidth}>
+          <ProgressBar
+            label={`Fight Progress ${etaString}`}
+            value={processedFights}
+            max={totalFights}
+          />
         </div>
       </div>
 

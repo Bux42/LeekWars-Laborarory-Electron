@@ -52,6 +52,9 @@ export const basePoolRunWrapperStyles = {
     flexDirection: 'column' as const,
     gap: '4px',
   },
+  infoItemFullWidth: {
+    gridColumn: '1 / -1',
+  },
   label: {
     fontSize: '0.75rem',
     color: theme.colors.text.tertiary,

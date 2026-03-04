@@ -84,6 +84,8 @@ function PoolRunDuelDetail() {
         <h2 style={styles.sectionTitle}>Run Details</h2>
       </div>
       <BasePoolRunWrapper
+        combinationsCount={poolDuelData.leeks.length}
+        processedFights={processedFights}
         run={poolDuelData as IPoolRunBase}
         onStop={onStopDuelPoolRun}
       >
@@ -93,15 +95,7 @@ function PoolRunDuelDetail() {
             {
               key: 'global',
               label: 'Global',
-              children: (
-                <div style={{ marginBottom: '24px' }}>
-                  <ProgressBar
-                    label="Fight Progress"
-                    value={processedFights}
-                    max={totalFights}
-                  />
-                </div>
-              ),
+              children: <>Global</>,
             },
             {
               key: 'leeks',

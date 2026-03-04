@@ -80,6 +80,8 @@ function PoolRunFarmerDetail() {
         <h2 style={styles.sectionTitle}>Run Details</h2>
       </div>
       <BasePoolRunWrapper
+        combinationsCount={poolFarmerData.farmers.length}
+        processedFights={processedFights}
         run={poolFarmerData as IPoolRunBase}
         onStop={onStopFarmerPoolRun}
       >
@@ -89,15 +91,7 @@ function PoolRunFarmerDetail() {
             {
               key: 'global',
               label: 'Global',
-              children: (
-                <div style={{ marginBottom: '24px' }}>
-                  <ProgressBar
-                    label="Fight Progress"
-                    value={processedFights}
-                    max={totalFights}
-                  />
-                </div>
-              ),
+              children: <>Global</>,
             },
             {
               key: 'farmers',
