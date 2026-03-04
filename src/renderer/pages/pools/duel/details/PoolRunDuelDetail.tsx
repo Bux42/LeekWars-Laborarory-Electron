@@ -14,16 +14,12 @@ import ProgressBar from '../../../../components/shared/progress-bar/ProgressBar'
 import PoolDuelLeek from '../../../../components/pool/duel/pool-duel-leek/PoolDuelLeek';
 import { useGetFightDuelGetCountByPoolRunIdId } from '../../../../../services/duel-fights/duel-fights';
 import PoolDuelFightList from '../../../../components/pool/duel/fight/pool-duel-fight-list/PoolDuelFightList';
-import { useWs } from '../../../../../services/websocket/useWs';
 import PoolRunDuelLeekList from '../../../../components/pool-runs/duel/pool-run-duel-leek-list/PoolRunDuelLeekList';
+import { usePoolDuelFightCountWs } from '../../../../../hooks/fights/duel/usePoolDuelFightCountWs';
 
 function PoolRunDuelDetail() {
   const runId = usePoolRunDuelId();
-  // const stopMutation = useStopPoolDuel();
   const [processedFights, setProcessedFights] = useState(0);
-
-  // First we fetch to see if it exists and its status
-  // const startQuery = usePoolRunDuel(runId || '');
 
   const {
     data: poolDuelData,
@@ -45,47 +41,14 @@ function PoolRunDuelDetail() {
     }
   }, [fightCountData]);
 
-  useWs('DUEL_POOL_FIGHT_COUNT', (payload) => {
-    console.log(payload.count); // fully typed
+  usePoolDuelFightCountWs(runId || '', (count) => {
+    setProcessedFights(count);
   });
-
-  // const handleStop = async () => {
-  //   if (run?.id) {
-  //     try {
-  //       await stopMutation.mutateAsync({ id: run.id });
-  //     } catch (err) {
-  //       console.error('Failed to stop pool:', err);
-  //     }
-  //   }
-  // };
-
-  // // If it's running, we poll every second
-  // const isRunning = startQuery.data?.running ?? false;
-  // const {
-  //   data: run,
-  //   isLoading,
-  //   error,
-  // } = usePoolRunDuel(runId || '', isRunning ? 1000 : undefined);
 
   const { totalFights } = usePoolFightEstimation(
     poolDuelData?.leeks.length || 0,
     poolDuelData?.basePool.fightLimit,
   );
-
-  // const { data: processedFights = 0 } = usePoolFightDuelCountByPoolRunId(
-  //   runId || '',
-  //   isRunning ? 1000 : undefined,
-  // );
-
-  // const { data: eloData } = useEloProgression(
-  //   runId || '',
-  //   isRunning ? 5000 : undefined, // Poll every 5s for the chart
-  // );
-
-  // const chartData = (eloData?.eloProgression || []).map((point) => ({
-  //   ...point,
-  //   datetime: point.timestamp,
-  // }));
 
   const onStopDuelPoolRun = async () => {
     if (poolDuelData?.id) {
@@ -168,17 +131,6 @@ function PoolRunDuelDetail() {
             },
           ]}
         />
-
-        {/*  {chartData.length > 0 && (
-          <div style={{ marginBottom: '24px' }}>
-            <TalentChart
-              data={chartData}
-              title="Talent Progression"
-              height={350}
-            />
-          </div>
-        )}
- */}
       </BasePoolRunWrapper>
     </>
   );

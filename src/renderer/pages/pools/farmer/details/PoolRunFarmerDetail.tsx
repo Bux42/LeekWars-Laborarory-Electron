@@ -11,9 +11,9 @@ import { poolsStyles as styles } from '../../Pools.styles';
 import ProgressBar from '../../../../components/shared/progress-bar/ProgressBar';
 import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
 import { useGetFightFarmerGetCountByPoolRunIdId } from '../../../../../services/farmer-fights/farmer-fights';
-import { useWs } from '../../../../../services/websocket/useWs';
 import PoolFarmerFarmer from '../../../../components/pool/farmer/pool-farmer-farmer/PoolFarmerFarmer';
 import PoolFarmerFightList from '../../../../components/pool/farmer/fight/pool-farmer-fight-list/PoolFarmerFightList';
+import { usePoolFarmerFightCountWs } from '../../../../../hooks/fights/farmer/usePoolFarmerFightCountWs';
 
 function PoolRunFarmerDetail() {
   const poolRunId = usePoolRunFarmerId();
@@ -52,8 +52,8 @@ function PoolRunFarmerDetail() {
     }
   }, [fightCountData]);
 
-  useWs('FARMER_POOL_FIGHT_COUNT', (payload) => {
-    console.log(payload.count); // fully typed
+  usePoolFarmerFightCountWs(poolRunId || '', (count) => {
+    setProcessedFights(count);
   });
 
   const { totalFights } = usePoolFightEstimation(
@@ -133,17 +133,6 @@ function PoolRunFarmerDetail() {
             },
           ]}
         />
-
-        {/*  {chartData.length > 0 && (
-          <div style={{ marginBottom: '24px' }}>
-            <TalentChart
-              data={chartData}
-              title="Talent Progression"
-              height={350}
-            />
-          </div>
-        )}
- */}
       </BasePoolRunWrapper>
     </>
   );

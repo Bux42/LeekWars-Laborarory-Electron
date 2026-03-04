@@ -1,20 +1,17 @@
 import { useEffect } from 'react';
 import { wsService } from './WebsocketService';
-import { ServerEventMap, ServerEventType } from './Websocket.constants';
 
-export function useWs<T extends ServerEventType>(
-  type: T,
-  handler: (payload: ServerEventMap[T]) => void,
+export function useWs<TPayload = unknown>(
+  route: string = '',
+  handler: (payload: TPayload) => void,
 ) {
   useEffect(() => {
-    wsService.connect();
+    wsService.connect(route);
 
-    const unsubscribe = wsService.subscribe((event) => {
-      if (event.type === type) {
-        handler(event.payload as ServerEventMap[T]);
-      }
+    const unsubscribe = wsService.subscribe(route, (payload) => {
+      handler(payload as TPayload);
     });
 
     return unsubscribe;
-  }, [type, handler]);
+  }, [handler, route]);
 }
