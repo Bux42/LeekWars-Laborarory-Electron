@@ -16,6 +16,7 @@ import type {
   CheckPathRequest,
   CheckPathResponse,
   GetTopLevelResponse,
+  GitInfosResponse,
   StatusPorcelainResponse,
 } from '../leekwarsToolsAPI.schemas';
 
@@ -101,6 +102,87 @@ export const usePostGitCheckPath = <TError = void, TContext = unknown>(
   TContext
 > => {
   return useMutation(getPostGitCheckPathMutationOptions(options), queryClient);
+};
+/**
+ * Returns git informations (repo url, branch, commit hash) of a Git repository.
+ * @summary Get Git infos from directory
+ */
+export const postGitGetInfos = (
+  checkPathRequest: CheckPathRequest,
+  signal?: AbortSignal,
+) => {
+  return apiClient<GitInfosResponse>({
+    url: `/git/get-infos`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: checkPathRequest,
+    signal,
+  });
+};
+
+export const getPostGitGetInfosMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postGitGetInfos>>,
+    TError,
+    { data: CheckPathRequest },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postGitGetInfos>>,
+  TError,
+  { data: CheckPathRequest },
+  TContext
+> => {
+  const mutationKey = ['postGitGetInfos'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postGitGetInfos>>,
+    { data: CheckPathRequest }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postGitGetInfos(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostGitGetInfosMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postGitGetInfos>>
+>;
+export type PostGitGetInfosMutationBody = CheckPathRequest;
+export type PostGitGetInfosMutationError = void;
+
+/**
+ * @summary Get Git infos from directory
+ */
+export const usePostGitGetInfos = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postGitGetInfos>>,
+      TError,
+      { data: CheckPathRequest },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postGitGetInfos>>,
+  TError,
+  { data: CheckPathRequest },
+  TContext
+> => {
+  return useMutation(getPostGitGetInfosMutationOptions(options), queryClient);
 };
 /**
  * Returns the top-level directory of a Git repository.

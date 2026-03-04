@@ -9,6 +9,9 @@ import { IFileListItem } from '../../../../services/FileService/requests/FileLis
 import { usePostAiAdd, usePostAiAnalyze } from '../../../../services/ai/ai';
 import CheckGit from '../../../components/git/check-git/CheckGit';
 import StatusPorcelain from '../../../components/git/status-porcelain/StatusPorcelain';
+import { usePostGitGetInfos } from '../../../../services/git/git';
+import GitInfos from '../../../components/leekscript-ai/git-infos/GitInfos';
+import { GitInfosResponse } from '../../../../services/leekwarsToolsAPI.schemas';
 
 function CreateAI() {
   const navigate = useNavigate();
@@ -26,9 +29,12 @@ function CreateAI() {
   } | null>(null);
   const [validGit, setValidGit] = useState<boolean | null>(null);
   const [validPorcelain, setValidPorcelain] = useState<boolean | null>(null);
+  const [gitInfos, setGitInfos] = useState<GitInfosResponse | null>(null);
 
   const analyzeMutation = usePostAiAnalyze();
   const addAiMutation = usePostAiAdd();
+
+  const gitInfosMutation = usePostGitGetInfos();
 
   // Auto-fill name from file name
   useEffect(() => {
@@ -40,15 +46,6 @@ function CreateAI() {
       setName(fileNameWithoutExtension);
     }
   }, [selectedFile, name]);
-
-  const onSelectedFileChange = (file: IFileListItem | null) => {
-    setSelectedFile(file);
-    setName('');
-    setAnalyzeError(null);
-    setCreateError(null);
-    setExistingId(null);
-    setAnalysisResult(null);
-  };
 
   const analyzeAIFile = useCallback(async (filePath: string) => {
     setAnalyzeError(null);
@@ -69,16 +66,39 @@ function CreateAI() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleAnalyze = useCallback(() => {
-    if (selectedFile) {
-      analyzeAIFile(selectedFile.path);
+  const getGitInfos = useCallback(async (filePath: string) => {
+    try {
+      const infos = await gitInfosMutation.mutateAsync({
+        data: { filePath },
+      });
+      setGitInfos(infos);
+    } catch (err) {
+      console.error('Failed to get Git infos:', err);
     }
-  }, [analyzeAIFile, selectedFile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  useEffect(() => {
-    if (!selectedFile) return;
-    handleAnalyze();
-  }, [handleAnalyze, selectedFile]);
+  const processAiFile = async (filePath?: string) => {
+    setName('');
+    setAnalyzeError(null);
+    setCreateError(null);
+    setExistingId(null);
+    setAnalysisResult(null);
+    setValidGit(null);
+    setValidPorcelain(null);
+    setGitInfos(null);
+
+    if (filePath) {
+      await getGitInfos(filePath);
+      await analyzeAIFile(filePath);
+    }
+  };
+
+  const onSelectedFileChange = async (file: IFileListItem | null) => {
+    setSelectedFile(file);
+
+    await processAiFile(file?.path);
+  };
 
   const handleCreate = async () => {
     if (!selectedFile || !name) {
@@ -138,7 +158,7 @@ function CreateAI() {
         )}
         <div style={styles.actions}>
           <Button
-            onClick={handleAnalyze}
+            onClick={() => processAiFile(selectedFile?.path)}
             variant="secondary"
             disabled={!selectedFile || isAnalyzing}
           >
@@ -164,13 +184,14 @@ function CreateAI() {
             />
           </>
         )}
+        {gitInfos && <GitInfos gitInfos={gitInfos} />}
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Step 3: AI Details</h2>
         <div style={styles.form}>
           <div style={styles.inputGroup}>
-            <label style={styles.label}>AI Name</label>
+            <div style={styles.label}>AI Name</div>
             <Input
               value={name}
               onChange={setName}
@@ -178,7 +199,7 @@ function CreateAI() {
             />
           </div>
           <div style={styles.inputGroup}>
-            <label style={styles.label}>Description (Optional)</label>
+            <div style={styles.label}>Description (Optional)</div>
             <Input
               value={description}
               onChange={setDescription}
