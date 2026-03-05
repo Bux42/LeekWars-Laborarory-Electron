@@ -139,7 +139,7 @@ function PoolFarmerDetail() {
     <BasePoolWrapper
       pool={pool.basePool}
       onStart={handleStartPool}
-      totalCombinations={farmers?.farmers.length || 0}
+      totalCombinations={selectedFarmersIds.length || 0}
     >
       {runsData?.runs?.length > 0 && (
         <>

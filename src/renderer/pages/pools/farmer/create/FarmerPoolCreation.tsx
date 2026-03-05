@@ -145,7 +145,11 @@ function FarmerPoolCreation() {
         {error && <p style={styles.error}>{error}</p>}
 
         <div style={styles.actions}>
-          <Button variant="primary" disabled={isSubmitting} type="submit">
+          <Button
+            variant="primary"
+            disabled={isSubmitting || selectedFarmerIds.length < 2}
+            type="submit"
+          >
             {isSubmitting ? 'Creating...' : 'Create Pool'}
           </Button>
         </div>
