@@ -2,29 +2,19 @@ import React from 'react';
 import { theme } from '../../../theme';
 import { farmerPickerStyles as styles } from './FarmerPicker.styles';
 import { IFarmerPickerProps } from './FarmerPicker.types';
-import { useGetFarmersAll } from '../../../../services/farmers/farmers';
 
 function FarmerPicker({
   label,
+  availableFarmers,
   selectedFarmerIds,
   onFarmerSelect,
 }: IFarmerPickerProps) {
-  const {
-    data: farmersData,
-    isLoading: farmersLoading,
-    error: farmersError,
-  } = useGetFarmersAll({
-    query: {
-      queryKey: ['farmers'],
-    },
-  });
-
   const filteredFarmers =
-    farmersData?.farmers.filter(
+    availableFarmers.filter(
       (farmer) => !selectedFarmerIds.includes(farmer.id),
     ) ?? [];
 
-  if (farmersLoading) {
+  if (!availableFarmers) {
     return (
       <div style={styles.container}>
         <div style={styles.title}>{label}</div>
@@ -33,7 +23,7 @@ function FarmerPicker({
     );
   }
 
-  if (farmersError) {
+  if (!availableFarmers.length) {
     return (
       <div style={styles.container}>
         <div style={styles.title}>{label}</div>

@@ -15,12 +15,6 @@ function LeekPicker({
     (leek) => !selectedLeekIds.includes(leek.id),
   );
 
-  console.log('LeekPicker render', {
-    availableLeeks,
-    selectedLeekIds,
-    filteredLeeks,
-  });
-
   return (
     <div style={styles.container}>
       <div style={styles.title}>{label}</div>

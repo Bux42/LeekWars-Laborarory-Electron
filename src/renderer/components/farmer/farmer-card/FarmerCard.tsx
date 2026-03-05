@@ -15,7 +15,12 @@ import LeekPicker from '../../leek/leek-picker/LeekPicker';
 import { useGetLeeksAll } from '../../../../services/leeks/leeks';
 import { IFarmerCardProps } from './FarmerCard.types';
 
-function FarmerCard({ farmer }: IFarmerCardProps) {
+function FarmerCard({
+  farmer,
+  showAddLeekButton = true,
+  showRemoveFarmerButton = false,
+  onRemoveFarmer,
+}: IFarmerCardProps) {
   const [farmerResponse, setFarmerResponse] = useState<FarmerResponse>(farmer);
   const [isAddingLeek, setIsAddingLeek] = useState(false);
   const [selectedLeekIds, setSelectedLeekIds] = useState<string[]>([]);
@@ -88,14 +93,25 @@ function FarmerCard({ farmer }: IFarmerCardProps) {
     }
   };
 
-  console.log('farmer response', farmerResponse);
+  const handleRemoveFarmer = () => {
+    if (onRemoveFarmer) {
+      onRemoveFarmer(farmerResponse.id);
+    }
+  };
 
   return (
     <div style={styles.container}>
       <h2>{farmerResponse.name}</h2>
-      <Button onClick={() => setIsAddingLeek(!isAddingLeek)}>
-        {isAddingLeek ? 'Cancel' : 'Add Leek'}
-      </Button>
+      {showRemoveFarmerButton && (
+        <Button danger onClick={handleRemoveFarmer}>
+          Remove Farmer
+        </Button>
+      )}
+      {showAddLeekButton && (
+        <Button onClick={() => setIsAddingLeek(!isAddingLeek)}>
+          {isAddingLeek ? 'Cancel' : 'Add Leek'}
+        </Button>
+      )}
       {isAddingLeek && leeksData?.leeks && (
         <LeekPicker
           availableLeeks={leeksData?.leeks}

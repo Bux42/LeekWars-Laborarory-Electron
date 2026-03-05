@@ -136,6 +136,7 @@ function FarmerPoolCreation() {
 
           <FarmerPicker
             label="Add Farmer to Pool"
+            availableFarmers={farmersData?.farmers || []}
             selectedFarmerIds={selectedFarmerIds}
             onFarmerSelect={handleFarmerSelect}
           />

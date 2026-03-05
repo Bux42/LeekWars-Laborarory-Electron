@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  useDeleteFarmerPoolsIdRemoveFarmerFarmerId,
   useGetFarmerPoolsId,
   usePostFarmerPoolsIdAddFarmer,
 } from '../../../../../services/farmer-pools/farmer-pools';
@@ -14,6 +15,7 @@ import {
   useGetFarmerPoolRunGetByPoolIdId,
   usePostFarmerPoolRunIdStart,
 } from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
+import { FarmerPoolResponse } from '../../../../../services/leekwarsToolsAPI.schemas';
 
 function PoolFarmerDetail() {
   const navigate = useNavigate();
@@ -24,6 +26,12 @@ function PoolFarmerDetail() {
     isLoading: isLoadingPool,
     error: poolError,
   } = useGetFarmerPoolsId(poolId);
+
+  const [farmerPool, setFarmerPool] = useState<FarmerPoolResponse | null>(pool);
+  const [isAddingFarmer, setIsAddingFarmer] = useState<boolean>(isLoadingPool);
+  const [farmerPoolError, setFarmerPoolError] = useState<void | null>(
+    poolError,
+  );
 
   const {
     data: runsData,
@@ -37,7 +45,18 @@ function PoolFarmerDetail() {
     error: farmersError,
   } = useGetFarmersAll();
 
+  const [selectedFarmersIds, setSelectedFarmersIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (pool) {
+      setFarmerPool(pool);
+      setSelectedFarmersIds(pool.farmers.map((farmer) => farmer.id));
+    }
+  }, [pool]);
+
   const { mutate: addFarmerToPool } = usePostFarmerPoolsIdAddFarmer();
+  const { mutate: removeFarmerFromPool } =
+    useDeleteFarmerPoolsIdRemoveFarmerFarmerId(); // You would need to implement the actual remove mutation
 
   const startMutation = usePostFarmerPoolRunIdStart();
 
@@ -66,9 +85,7 @@ function PoolFarmerDetail() {
     );
   }
 
-  const selectedFarmersIds = pool.farmers.map((farmer) => farmer.id);
-
-  const onFarmerSelect = (farmerId: string) => {
+  const onAddFarmerToPool = (farmerId: string) => {
     if (selectedFarmersIds.includes(farmerId)) {
       // Farmer is already selected, you can implement remove logic here if needed
       return;
@@ -80,10 +97,43 @@ function PoolFarmerDetail() {
         },
         id: pool.id,
       });
+
+      setSelectedFarmersIds((prev) => [...prev, farmerId]);
+      setFarmerPool((prev) => {
+        if (!prev) return prev;
+        const newFarmer = farmers?.farmers.find((f) => f.id === farmerId);
+        if (!newFarmer) return prev;
+        return {
+          ...prev,
+          farmers: [...prev.farmers, newFarmer],
+        };
+      });
     } catch (err) {
       console.error('Failed to add farmer to pool:', err);
     }
   };
+
+  const onRemoveFarmer = (farmerId: string) => {
+    try {
+      removeFarmerFromPool({
+        id: pool.id,
+        farmerId,
+      });
+
+      setSelectedFarmersIds((prev) => prev.filter((id) => id !== farmerId));
+      setFarmerPool((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          farmers: prev.farmers.filter((f) => f.id !== farmerId),
+        };
+      });
+    } catch (err) {
+      console.error('Failed to remove farmer from pool:', err);
+    }
+  };
+
+  console.log('farmers.farmers', farmers?.farmers);
 
   return (
     <BasePoolWrapper
@@ -107,13 +157,22 @@ function PoolFarmerDetail() {
           </Button>
         </>
       )}
-      <FarmerPicker
-        label="Add farmer to pool"
-        selectedFarmerIds={selectedFarmersIds}
-        onFarmerSelect={onFarmerSelect}
-      />
-      <FarmerList farmers={pool.farmers} />
-      {/* <PoolFarmerCard farmerPool={pool} /> */}
+      {farmers?.farmers.length && (
+        <FarmerPicker
+          label="Add farmer to pool"
+          availableFarmers={farmers.farmers || []}
+          selectedFarmerIds={selectedFarmersIds}
+          onFarmerSelect={onAddFarmerToPool}
+        />
+      )}
+      {farmerPool && (
+        <FarmerList
+          farmers={farmerPool.farmers}
+          showAddLeekButton={false}
+          showRemoveFarmerButton
+          onRemoveFarmer={onRemoveFarmer}
+        />
+      )}
     </BasePoolWrapper>
   );
 }
