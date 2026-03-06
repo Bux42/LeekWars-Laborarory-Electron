@@ -6,7 +6,7 @@ export function usePoolDuelFightCountWs(
   handler: (count: number) => void,
 ) {
   useWs<RunningPoolFightCountEvent>(
-    `/duel-pool-run/${runId}/fight-count`,
+    runId ? `/duel-pool-run/${runId}/fight-count` : '',
     (payload) => {
       handler(payload.count);
     },

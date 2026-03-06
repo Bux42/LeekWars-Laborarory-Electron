@@ -4,30 +4,28 @@ export interface IWebSocketMessage {
 }
 
 class WebSocketService {
-  private socket?: WebSocket;
-  private route?: string;
+  private sockets: Record<string, WebSocket> = {};
   private listeners: Record<string, ((payload: unknown) => void)[]> = {};
 
   connect(route: string = '') {
+    if (!route) {
+      return;
+    }
+
+    const existingSocket = this.sockets[route];
+
     if (
-      this.socket &&
-      this.route === route &&
-      (this.socket.readyState === WebSocket.OPEN ||
-        this.socket.readyState === WebSocket.CONNECTING)
+      existingSocket &&
+      (existingSocket.readyState === WebSocket.OPEN ||
+        existingSocket.readyState === WebSocket.CONNECTING)
     ) {
       return;
     }
 
-    if (this.socket) {
-      this.socket.close();
-      this.socket = undefined;
-    }
+    const socket = new WebSocket(`ws://localhost:7000/ws${route}`);
+    this.sockets[route] = socket;
 
-    this.route = route;
-
-    this.socket = new WebSocket(`ws://localhost:7000/ws${route}`);
-
-    this.socket.onmessage = (event) => {
+    socket.onmessage = (event) => {
       const rawData: unknown = JSON.parse(event.data);
 
       const data: IWebSocketMessage =
@@ -37,20 +35,36 @@ class WebSocketService {
         'payload' in rawData
           ? (rawData as IWebSocketMessage)
           : {
-              route: this.route || '',
+              route,
               payload: rawData,
             };
 
       this.listeners[data.route]?.forEach((listener) => listener(data.payload));
     };
 
-    this.socket.onclose = () => {
-      this.socket = undefined;
-      this.route = undefined;
+    socket.onclose = () => {
+      if (this.sockets[route] === socket) {
+        delete this.sockets[route];
+      }
     };
   }
 
+  private disconnect(route: string) {
+    const socket = this.sockets[route];
+
+    if (!socket) {
+      return;
+    }
+
+    socket.close();
+    delete this.sockets[route];
+  }
+
   subscribe(route: string, listener: (payload: unknown) => void) {
+    if (!route) {
+      return () => {};
+    }
+
     const routeListeners = this.listeners[route] || [];
     this.listeners[route] = [...routeListeners, listener];
 
@@ -61,6 +75,7 @@ class WebSocketService {
 
       if (this.listeners[route]?.length === 0) {
         delete this.listeners[route];
+        this.disconnect(route);
       }
     };
   }
