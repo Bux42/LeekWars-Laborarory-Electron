@@ -1,4 +1,3 @@
-import React from 'react';
 import { entityBuildStyles as styles } from './EntityBuild.styles';
 import { IEntityBuildProps } from './EntityBuild.types';
 import { getTotalStats } from '../../../utils/EntityBuildHelpers';
@@ -6,66 +5,11 @@ import { CHIPS_IDS_TO_NAMES } from '../../../constants/leekwars/Chips';
 import { COMPONENTS_IDS_TO_NAMES } from '../../../constants/leekwars/Components';
 import { WEAPONS_IDS_TO_NAMES } from '../../../constants/leekwars/Weapons';
 import { getImage } from '../../../utils/ImageLoader';
+import EntityStats from '../entity-stats/EntityStats';
 
 function EntityBuild({ entityBuild }: IEntityBuildProps) {
   const { level } = entityBuild;
   const totalStats = getTotalStats(entityBuild);
-
-  const renderStat = (label: string, value: number, icon: string) => (
-    <div style={styles.statRow}>
-      <div style={styles.statLabelContainer}>
-        {icon && (
-          <img src={getImage(icon)} alt={label} style={styles.statIcon} />
-        )}
-        <span style={styles.statLabel}>{label}</span>
-      </div>
-      <span style={styles.statValue}>{value}</span>
-    </div>
-  );
-
-  const renderStats = (title: string) => (
-    <div style={styles.section}>
-      <h3 style={styles.sectionTitle}>{title}</h3>
-      <div style={styles.statsGrid}>
-        {renderStat('Life', totalStats.life, 'leekwars/image/charac/life')}
-        {renderStat(
-          'Strength',
-          totalStats.strength,
-          'leekwars/image/charac/strength',
-        )}
-        {renderStat(
-          'Wisdom',
-          totalStats.wisdom,
-          'leekwars/image/charac/wisdom',
-        )}
-        {renderStat(
-          'Agility',
-          totalStats.agility,
-          'leekwars/image/charac/agility',
-        )}
-        {renderStat(
-          'Resistance',
-          totalStats.resistance,
-          'leekwars/image/charac/resistance',
-        )}
-        {renderStat(
-          'Science',
-          totalStats.science,
-          'leekwars/image/charac/science',
-        )}
-        {renderStat('Magic', totalStats.magic, 'leekwars/image/charac/magic')}
-        {renderStat(
-          'Frequency',
-          totalStats.frequency,
-          'leekwars/image/charac/frequency',
-        )}
-        {renderStat('Cores', totalStats.cores, 'leekwars/image/charac/cores')}
-        {renderStat('RAM', totalStats.ram, 'leekwars/image/charac/ram')}
-        {renderStat('TP', totalStats.tp, 'leekwars/image/charac/tp')}
-        {renderStat('MP', totalStats.mp, 'leekwars/image/charac/mp')}
-      </div>
-    </div>
-  );
 
   return (
     <div style={styles.container}>
@@ -75,7 +19,7 @@ function EntityBuild({ entityBuild }: IEntityBuildProps) {
         </div>
       </div>
 
-      {renderStats('Stats')}
+      <EntityStats totalStats={totalStats} />
 
       <div style={styles.itemsSection}>
         <h3 style={styles.sectionTitle}>Weapons</h3>

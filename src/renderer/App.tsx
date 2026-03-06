@@ -22,6 +22,8 @@ import PoolFarmerDetail from './pages/pools/farmer/details/PoolFarmerDetail';
 import PoolRunsFarmer from './pages/pools/farmer/PoolRunsFarmer';
 import PoolRunFarmerDetail from './pages/pools/farmer/details/PoolRunFarmerDetail';
 import BulkImportLeeks from './pages/bulk-import-leeks/BulkImportLeeks';
+import Turrets from './pages/turrets/Turrets';
+import TurretCreation from './pages/turret-creation/TurretCreation';
 
 export default function App() {
   return (
@@ -61,8 +63,12 @@ export default function App() {
               <Route path="leeks" element={<Leeks />} />
               <Route path="new-leek" element={<LeekCreation />} />
               <Route path="bulk-import-leeks" element={<BulkImportLeeks />} />
+
               <Route path="farmers" element={<Farmers />} />
               <Route path="new-farmer" element={<FarmerCreation />} />
+
+              <Route path="turrets" element={<Turrets />} />
+              <Route path="new-turret" element={<TurretCreation />} />
 
               <Route path="ais">
                 <Route index element={<AIs />} />

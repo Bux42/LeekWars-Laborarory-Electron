@@ -25,6 +25,7 @@ function LeftPanel() {
     },
     { path: '/leeks', label: 'Leeks' },
     { path: '/farmers', label: 'Farmers' },
+    { path: '/turrets', label: 'Turrets' },
     { path: '/ais', label: 'AIs' },
   ];
 
