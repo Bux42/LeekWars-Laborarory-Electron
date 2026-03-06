@@ -1,9 +1,7 @@
 import { useState, useMemo } from 'react';
 import { EyeOutlined } from '@ant-design/icons';
 import { Row, Col, Typography, Spin, message } from 'antd';
-import { LeekResponse } from '../../../../../../services/leekwarsToolsAPI.schemas';
 import { getTimeAgo } from '../../../../../utils/DateUtils';
-import LeekImage from '../../../../leek/leek-image/LeekImage';
 import { IPoolFarmerFightListItemProps } from './PoolFarmerFightListItem.types';
 import { poolFarmerFightListItemStyles as styles } from './PoolFarmerListItem.styles';
 import { usePostFightFarmerGenerate } from '../../../../../../services/farmer-fights/farmer-fights';
@@ -81,13 +79,6 @@ function PoolFarmerFightListItem({
       <Col span={8} style={styles.column}>
         <div style={styles.farmerContainer(getFightColor(farmer2.id))}>
           <div style={styles.leekContent}>
-            <LeekImage
-              leek={farmer2 as unknown as LeekResponse}
-              showTooltip
-              height={30}
-              width={30}
-            />
-
             <Typography.Text
               style={styles.farmerName(getFightColor(farmer2.id))}
             >
