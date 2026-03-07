@@ -1,7 +1,10 @@
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { turretsStyles as styles } from './Turrets.styles';
-import { useGetTurretsAll } from '../../../services/turrets/turrets';
+import {
+  useDeleteTurretsDeleteTurretId,
+  useGetTurretsAll,
+} from '../../../services/turrets/turrets';
 import TurretList from '../../components/turret/turret-list/TurretList';
 import { TurretResponse } from '../../../services/leekwarsToolsAPI.schemas';
 import { IDropdownItem } from '../../components/shared/dropdown/Dropdown.types';
@@ -15,6 +18,8 @@ function Turrets() {
     isError: isErrorTurrets,
   } = useGetTurretsAll();
 
+  const { mutate: deleteTurret } = useDeleteTurretsDeleteTurretId();
+
   const handleEdit = (turret: TurretResponse) => {
     console.log('Edit turret:', turret.name);
   };
@@ -23,8 +28,17 @@ function Turrets() {
     console.log('Duplicate turret:', turret.name);
   };
 
-  const handleDelete = (turret: TurretResponse) => {
-    console.log('Delete turret:', turret.name);
+  const handleDelete = async (turret: TurretResponse) => {
+    if (
+      window.confirm(`Are you sure you want to delete turret "${turret.name}"?`)
+    ) {
+      try {
+        await deleteTurret({ turretId: turret.id });
+      } catch (err) {
+        console.error('Failed to delete turret:', err);
+        alert('Failed to delete turret. Please try again.');
+      }
+    }
   };
 
   const getDropdownItems = (turret: TurretResponse): IDropdownItem[] => [
@@ -42,6 +56,14 @@ function Turrets() {
       variant: 'danger',
     },
   ];
+
+  if (isLoadingTurrets) {
+    return <p>Loading turrets...</p>;
+  }
+
+  if (isErrorTurrets) {
+    return <p>Failed to load turrets. Please try again later.</p>;
+  }
 
   return (
     <>

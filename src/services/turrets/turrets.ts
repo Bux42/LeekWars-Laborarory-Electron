@@ -234,3 +234,89 @@ export function useGetTurretsAll<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Deletes a turret by its ID.
+ * @summary Delete a turret
+ */
+export const deleteTurretsDeleteTurretId = (
+  turretId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<void>({
+    url: `/turrets/delete/${turretId}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeleteTurretsDeleteTurretIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteTurretsDeleteTurretId>>,
+    TError,
+    { turretId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteTurretsDeleteTurretId>>,
+  TError,
+  { turretId: string },
+  TContext
+> => {
+  const mutationKey = ['deleteTurretsDeleteTurretId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteTurretsDeleteTurretId>>,
+    { turretId: string }
+  > = (props) => {
+    const { turretId } = props ?? {};
+
+    return deleteTurretsDeleteTurretId(turretId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteTurretsDeleteTurretIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteTurretsDeleteTurretId>>
+>;
+
+export type DeleteTurretsDeleteTurretIdMutationError = void;
+
+/**
+ * @summary Delete a turret
+ */
+export const useDeleteTurretsDeleteTurretId = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteTurretsDeleteTurretId>>,
+      TError,
+      { turretId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteTurretsDeleteTurretId>>,
+  TError,
+  { turretId: string },
+  TContext
+> => {
+  return useMutation(
+    getDeleteTurretsDeleteTurretIdMutationOptions(options),
+    queryClient,
+  );
+};
