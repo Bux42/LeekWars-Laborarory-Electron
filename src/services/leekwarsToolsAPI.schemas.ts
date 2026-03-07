@@ -377,6 +377,17 @@ export interface GetAllTeamsResponse {
   teams: TeamResponse[];
 }
 
+export interface CreateTeamPoolRequest {
+  teamIds: string[];
+  basePoolRequest: CreateBasePoolRequest;
+}
+
+export interface TeamPoolResponse {
+  id: string;
+  basePool: BasePoolResponse;
+  teams: TeamResponse[];
+}
+
 export interface AddTurretRequest {
   name: string;
   build: EntityBuild;

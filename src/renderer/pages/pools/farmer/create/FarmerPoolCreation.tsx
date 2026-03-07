@@ -7,6 +7,7 @@ import Button from '../../../../components/shared/button/Button';
 import { usePostFarmerPoolsCreate } from '../../../../../services/farmer-pools/farmer-pools';
 import { useGetFarmersAll } from '../../../../../services/farmers/farmers';
 import { CreateBasePoolRequest } from '../../../../../services/leekwarsToolsAPI.schemas';
+import { DEFAULT_BASE_POOL } from '../../../../constants/pools/Pools.constants';
 
 function FarmerPoolCreation() {
   const navigate = useNavigate();
@@ -19,16 +20,9 @@ function FarmerPoolCreation() {
   });
 
   const [basePoolRequest, setBasePoolRequest] = useState<CreateBasePoolRequest>(
-    {
-      deterministic: false,
-      enabled: false,
-      fightLimit: 10,
-      fightLimitEnabled: true,
-      name: '',
-      resetElo: true,
-      startSeed: 1,
-    },
+    { ...DEFAULT_BASE_POOL },
   );
+
   const [selectedFarmerIds, setSelectedFarmerIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [farmerPickerError, setFarmerPickerError] = useState<string | null>(

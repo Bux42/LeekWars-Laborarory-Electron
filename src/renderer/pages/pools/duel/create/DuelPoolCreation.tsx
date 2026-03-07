@@ -13,6 +13,7 @@ import {
   LeekResponse,
 } from '../../../../../services/leekwarsToolsAPI.schemas';
 import BasePoolForm from '../../../../components/pool/base/base-pool-form/BasePoolForm';
+import { DEFAULT_BASE_POOL } from '../../../../constants/pools/Pools.constants';
 
 function DuelPoolCreation() {
   const navigate = useNavigate();
@@ -25,16 +26,9 @@ function DuelPoolCreation() {
   });
 
   const [basePoolRequest, setBasePoolRequest] = useState<CreateBasePoolRequest>(
-    {
-      deterministic: false,
-      enabled: false,
-      fightLimit: 10,
-      fightLimitEnabled: true,
-      name: '',
-      resetElo: true,
-      startSeed: 1,
-    },
+    { ...DEFAULT_BASE_POOL },
   );
+
   const [selectedLeekIds, setSelectedLeekIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [leekPickerError, setLeekPickerError] = useState<string | null>(
