@@ -1,10 +1,13 @@
 import { IEntityStats } from '../../services/leekwars-laboratory/types/entity/stats/EntityStats.types';
 import { EntityBuild } from '../../services/leekwarsToolsAPI.schemas';
-import { getBaseStats } from './LeekWars';
+import { getBaseStats, getEmptyStats } from './LeekWars';
 
-export function getTotalStats(entityBuild: EntityBuild): IEntityStats {
+export function getTotalStats(
+  entityBuild: EntityBuild,
+  includeBaseStats: boolean = true,
+): IEntityStats {
   const { level, investedStats, bonusStats } = entityBuild;
-  const baseStats = getBaseStats(level);
+  const baseStats = includeBaseStats ? getBaseStats(level) : getEmptyStats();
 
   return {
     life: investedStats.life + bonusStats.life + baseStats.life,

@@ -6,6 +6,7 @@ import { getTotalStats } from '../../../utils/EntityBuildHelpers';
 import { WEAPONS_IDS_TO_NAMES } from '../../../constants/leekwars/Weapons';
 import { CHIPS_IDS_TO_NAMES } from '../../../constants/leekwars/Chips';
 import { COMPONENTS_IDS_TO_NAMES } from '../../../constants/leekwars/Components';
+import ChipList from '../../chip/chip-list/ChipList';
 
 function LeekDetail({ leek }: ILeekDetailProps) {
   const totalStats = getTotalStats(leek.build);
@@ -44,17 +45,11 @@ function LeekDetail({ leek }: ILeekDetailProps) {
       <div style={styles.section}>
         <div style={styles.sectionTitle}>Chips</div>
         <div style={styles.equipmentGrid}>
-          {leek.build.selectedChipIds.map((chipId) => (
-            <div key={chipId} style={styles.equipmentItem}>
-              <img
-                src={getImage(
-                  `leekwars/image/chip/${CHIPS_IDS_TO_NAMES[chipId]}`,
-                )}
-                alt={`Chip ${chipId}`}
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              />
-            </div>
-          ))}
+          <ChipList
+            chipIds={leek.build.selectedChipIds}
+            width={32}
+            height={32}
+          />
         </div>
       </div>
 

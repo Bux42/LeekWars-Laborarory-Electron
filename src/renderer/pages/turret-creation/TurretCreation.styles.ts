@@ -2,6 +2,8 @@ import { theme } from '../../theme';
 
 export interface TurretCreationStyles {
   section: React.CSSProperties;
+  successMessage: React.CSSProperties;
+  error: React.CSSProperties;
 }
 
 export const turretCreationStyles: TurretCreationStyles = {
@@ -13,5 +15,13 @@ export const turretCreationStyles: TurretCreationStyles = {
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing.md,
+  },
+  successMessage: {
+    color: '#4BB543',
+    fontWeight: 'bold',
+  },
+  error: {
+    color: '#FF3333',
+    fontWeight: 'bold',
   },
 };

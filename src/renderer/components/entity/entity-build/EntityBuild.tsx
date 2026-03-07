@@ -1,15 +1,18 @@
 import { entityBuildStyles as styles } from './EntityBuild.styles';
 import { IEntityBuildProps } from './EntityBuild.types';
 import { getTotalStats } from '../../../utils/EntityBuildHelpers';
-import { CHIPS_IDS_TO_NAMES } from '../../../constants/leekwars/Chips';
 import { COMPONENTS_IDS_TO_NAMES } from '../../../constants/leekwars/Components';
 import { WEAPONS_IDS_TO_NAMES } from '../../../constants/leekwars/Weapons';
 import { getImage } from '../../../utils/ImageLoader';
 import EntityStats from '../entity-stats/EntityStats';
+import ChipList from '../../chip/chip-list/ChipList';
 
-function EntityBuild({ entityBuild }: IEntityBuildProps) {
+function EntityBuild({
+  entityBuild,
+  includeBaseStats = true,
+}: IEntityBuildProps) {
   const { level } = entityBuild;
-  const totalStats = getTotalStats(entityBuild);
+  const totalStats = getTotalStats(entityBuild, includeBaseStats);
 
   return (
     <div style={styles.container}>
@@ -44,18 +47,7 @@ function EntityBuild({ entityBuild }: IEntityBuildProps) {
       <div style={styles.itemsSection}>
         <h3 style={styles.sectionTitle}>Chips</h3>
         {entityBuild.selectedChipIds.length > 0 ? (
-          <div style={styles.itemsGrid}>
-            {entityBuild.selectedChipIds.map((chipId) => (
-              <img
-                key={chipId}
-                src={getImage(
-                  `leekwars/image/chip/${CHIPS_IDS_TO_NAMES[chipId]}`,
-                )}
-                alt={`Chip ${chipId}`}
-                style={styles.itemImage}
-              />
-            ))}
-          </div>
+          <ChipList chipIds={entityBuild.selectedChipIds} />
         ) : (
           <p style={styles.emptyState}>No chips equipped</p>
         )}

@@ -2,4 +2,5 @@ import { IEntityBuild } from '../../../../services/leekwars-laboratory/types/bui
 
 export interface IEntityBuildProps {
   entityBuild: IEntityBuild;
+  includeBaseStats?: boolean;
 }

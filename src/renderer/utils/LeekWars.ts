@@ -16,3 +16,20 @@ export function getBaseStats(level: number): IEntityStats {
     mp: 3,
   };
 }
+
+export function getEmptyStats(): IEntityStats {
+  return {
+    life: 0,
+    strength: 0,
+    wisdom: 0,
+    agility: 0,
+    resistance: 0,
+    science: 0,
+    magic: 0,
+    frequency: 0,
+    cores: 0,
+    ram: 0,
+    tp: 0,
+    mp: 0,
+  };
+}

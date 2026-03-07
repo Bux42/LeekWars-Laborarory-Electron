@@ -118,7 +118,6 @@ export interface EntityBuild {
   equippedComponentIds: number[];
   bonusStats: EntityStats;
   investedStats: EntityStats;
-  totalStats: EntityStats;
   level: number;
   selectedChipIds: number[];
   selectedWeaponIds: number[];
@@ -344,4 +343,23 @@ export interface UpdatePoolNameRequest {
  */
 export interface GetBasePoolsResponse {
   pools: BasePoolResponse[];
+}
+
+export interface AddTurretRequest {
+  name: string;
+  build: EntityBuild;
+  aiId: string;
+}
+
+export interface TurretResponse {
+  id: string;
+  name: string;
+  build: EntityBuild;
+  ai: EntityAIResponse;
+  creationDate: number;
+  lastUpdateDate: number;
+}
+
+export interface GetAllTurretsResponse {
+  turrets: TurretResponse[];
 }

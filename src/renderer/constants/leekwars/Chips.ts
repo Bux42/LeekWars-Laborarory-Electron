@@ -109,3 +109,5 @@ export const CHIPS_IDS_TO_NAMES: { [key: number]: string } = {
   419: 'divine_protection',
   425: 'exasperation',
 };
+
+export const TURRET_CHIPS_IDS: number[] = [4, 23, 20, 1, 15, 92, 97, 100];
