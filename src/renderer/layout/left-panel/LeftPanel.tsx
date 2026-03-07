@@ -21,11 +21,13 @@ function LeftPanel() {
       children: [
         { path: '/pools/duel', label: 'Duel' },
         { path: '/pools/farmer', label: 'Farmer' },
+        { path: '/pools/team', label: 'Team' },
       ],
     },
     { path: '/leeks', label: 'Leeks' },
     { path: '/farmers', label: 'Farmers' },
     { path: '/turrets', label: 'Turrets' },
+    { path: '/teams', label: 'Teams' },
     { path: '/ais', label: 'AIs' },
   ];
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { leekPickerStyles as styles } from './LeekPicker.styles';
 import { ILeekPickerProps } from './LeekPicker.types';
 import { getImage } from '../../../utils/ImageLoader';
@@ -11,8 +11,9 @@ function LeekPicker({
   onLeekSelect,
 }: ILeekPickerProps) {
   // Filter out leeks that are already selected
-  const filteredLeeks = availableLeeks.filter(
-    (leek) => !selectedLeekIds.includes(leek.id),
+  const filteredLeeks = useMemo(
+    () => availableLeeks.filter((leek) => !selectedLeekIds.includes(leek.id)),
+    [availableLeeks, selectedLeekIds],
   );
 
   return (

@@ -51,6 +51,13 @@ function TurretImage({
 
   const skinName = 'blue';
 
+  console.log('TurretImage render', {
+    level: turret.build.level,
+    pieces,
+    svgWidth,
+    svgHeight,
+  });
+
   if (showTooltip) {
     return (
       <HoverTooltip
@@ -92,7 +99,7 @@ function TurretImage({
             key={index}
             x={(svgWidth - piece.w) / 2}
             y={svgHeight - piece.z}
-            href={getImage(`leekwars/image/turret/${piece.t}`)}
+            href={getImage(`leekwars/image/turret/${piece.t}_${skinName}`)}
           />
         ))}
       </svg>

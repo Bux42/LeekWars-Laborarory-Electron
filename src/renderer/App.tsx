@@ -24,6 +24,10 @@ import PoolRunFarmerDetail from './pages/pools/farmer/details/PoolRunFarmerDetai
 import BulkImportLeeks from './pages/bulk-import-leeks/BulkImportLeeks';
 import Turrets from './pages/turrets/Turrets';
 import TurretCreation from './pages/turret-creation/TurretCreation';
+import PoolTeam from './pages/pools/team/PoolTeam';
+import TeamPoolCreation from './pages/pools/team/create/TeamPoolCreation';
+import Teams from './pages/teams/Teams';
+import TeamCreation from './pages/team-creation/TeamCreation';
 
 export default function App() {
   return (
@@ -58,6 +62,10 @@ export default function App() {
                     </Route>
                   </Route>
                 </Route>
+                <Route path="team">
+                  <Route index element={<PoolTeam />} />
+                  <Route path="create" element={<TeamPoolCreation />} />
+                </Route>
               </Route>
 
               <Route path="leeks" element={<Leeks />} />
@@ -69,6 +77,9 @@ export default function App() {
 
               <Route path="turrets" element={<Turrets />} />
               <Route path="new-turret" element={<TurretCreation />} />
+
+              <Route path="teams" element={<Teams />} />
+              <Route path="new-team" element={<TeamCreation />} />
 
               <Route path="ais">
                 <Route index element={<AIs />} />
