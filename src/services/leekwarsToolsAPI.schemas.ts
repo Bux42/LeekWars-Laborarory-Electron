@@ -345,12 +345,6 @@ export interface GetBasePoolsResponse {
   pools: BasePoolResponse[];
 }
 
-export interface AddTeamRequest {
-  name: string;
-  leekIds: string[];
-  turretId: string;
-}
-
 export interface TurretResponse {
   id: string;
   name: string;
@@ -358,6 +352,20 @@ export interface TurretResponse {
   ai: EntityAIResponse;
   creationDate: number;
   lastUpdateDate: number;
+}
+
+export interface PoolTeamResponse {
+  id?: string;
+  name?: string;
+  leeks?: PoolLeekResponse[];
+  turret?: TurretResponse;
+  elo: number;
+}
+
+export interface AddTeamRequest {
+  name: string;
+  leekIds: string[];
+  turretId: string;
 }
 
 export interface TeamResponse {
@@ -404,7 +412,11 @@ export interface TeamPoolRunResponse {
   startDate: number;
   endDate: number;
   teamPoolId?: string;
-  teams?: TeamPoolResponse[];
+  teams?: PoolTeamResponse[];
+}
+
+export interface ListTeamPoolRunResponse {
+  runs: TeamPoolRunResponse[];
 }
 
 export interface AddTurretRequest {

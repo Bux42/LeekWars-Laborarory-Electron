@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { usePoolTeamId } from '../../../../../hooks/pools/team/usePoolTeamId';
 import {
   useDeleteTeamPoolsIdRemoveTeamTeamId,
@@ -10,9 +11,14 @@ import { TeamPoolResponse } from '../../../../../services/leekwarsToolsAPI.schem
 import TeamPicker from '../../../../components/team/team-picker/TeamPicker';
 import TeamList from '../../../../components/team/team-list/TeamList';
 import { useGetTeamsAll } from '../../../../../services/teams/teams';
-import { usePostTeamPoolRunIdStart } from '../../../../../services/team-pool-runs/team-pool-runs';
+import {
+  useGetTeamPoolRunGetByPoolIdId,
+  usePostTeamPoolRunIdStart,
+} from '../../../../../services/team-pool-runs/team-pool-runs';
+import Button from '../../../../components/shared/button/Button';
 
 function PoolTeamDetail() {
+  const navigate = useNavigate();
   const poolId = usePoolTeamId();
 
   const {
@@ -33,6 +39,12 @@ function PoolTeamDetail() {
   const removeTeamFromPoolMutation = useDeleteTeamPoolsIdRemoveTeamTeamId();
   const addTeamToPoolMutation = usePostTeamPoolsIdAddTeam();
   const startTeamPoolRunMutation = usePostTeamPoolRunIdStart();
+
+  const {
+    data: runsData,
+    isLoading: runsLoading,
+    error: runsError,
+  } = useGetTeamPoolRunGetByPoolIdId(poolId || '');
 
   useEffect(() => {
     if (pool) {
@@ -108,6 +120,20 @@ function PoolTeamDetail() {
       onStart={handleStartPool}
       totalCombinations={selectedTeamsIds.length || 0}
     >
+      {runsData?.runs?.length > 0 && (
+        <>
+          <Button onClick={() => navigate(`/pools/team/${poolId}/runs`)}>
+            View {runsData?.runs?.length} Runs
+          </Button>
+          <Button
+            onClick={() =>
+              navigate(`/pools/team/${poolId}/runs/${runsData?.runs?.[0]?.id}`)
+            }
+          >
+            View last run
+          </Button>
+        </>
+      )}
       {allTeams?.teams.length && (
         <TeamPicker
           label="Add team to pool"

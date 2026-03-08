@@ -29,6 +29,8 @@ import TeamPoolCreation from './pages/pools/team/create/TeamPoolCreation';
 import Teams from './pages/teams/Teams';
 import TeamCreation from './pages/team-creation/TeamCreation';
 import PoolTeamDetail from './pages/pools/team/details/PoolTeamDetail';
+import PoolRunsTeam from './pages/pools/team/PoolRunsTeam';
+import PoolRunTeamDetail from './pages/pools/team/details/PoolRunTeamDetail';
 
 export default function App() {
   return (
@@ -68,10 +70,10 @@ export default function App() {
                   <Route path="create" element={<TeamPoolCreation />} />
                   <Route path=":poolId">
                     <Route index element={<PoolTeamDetail />} />
-                    {/* <Route path="runs">
+                    <Route path="runs">
                       <Route index element={<PoolRunsTeam />} />
                       <Route path=":runId" element={<PoolRunTeamDetail />} />
-                    </Route> */}
+                    </Route>
                   </Route>
                 </Route>
               </Route>

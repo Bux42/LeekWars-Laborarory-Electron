@@ -4,17 +4,348 @@
  * Leekwars Tools API
  * OpenAPI spec version: 4.2.0
  */
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult,
 } from '@tanstack/react-query';
 
-import type { TeamPoolRunResponse } from '../leekwarsToolsAPI.schemas';
+import type {
+  ListTeamPoolRunResponse,
+  TeamPoolRunResponse,
+} from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
+
+/**
+ * Gets the team pool runs associated with a given team pool ID.
+ * @summary Get team pool runs by original pool ID
+ */
+export const getTeamPoolRunGetByPoolIdId = (
+  id: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<ListTeamPoolRunResponse>({
+    url: `/team-pool-run/get-by-pool-id/${id}`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetTeamPoolRunGetByPoolIdIdQueryKey = (id: string) => {
+  return [`/team-pool-run/get-by-pool-id/${id}`] as const;
+};
+
+export const getGetTeamPoolRunGetByPoolIdIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetTeamPoolRunGetByPoolIdIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>
+  > = ({ signal }) => getTeamPoolRunGetByPoolIdId(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetTeamPoolRunGetByPoolIdIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>
+>;
+export type GetTeamPoolRunGetByPoolIdIdQueryError = void;
+
+export function useGetTeamPoolRunGetByPoolIdId<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamPoolRunGetByPoolIdId<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamPoolRunGetByPoolIdId<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get team pool runs by original pool ID
+ */
+
+export function useGetTeamPoolRunGetByPoolIdId<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunGetByPoolIdId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetTeamPoolRunGetByPoolIdIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Gets the team pool run associated with a given ID.
+ * @summary Get team pool run by ID
+ */
+export const getTeamPoolRunId = (id: string, signal?: AbortSignal) => {
+  return apiClient<TeamPoolRunResponse>({
+    url: `/team-pool-run/${id}`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetTeamPoolRunIdQueryKey = (id: string) => {
+  return [`/team-pool-run/${id}`] as const;
+};
+
+export const getGetTeamPoolRunIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTeamPoolRunId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetTeamPoolRunIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getTeamPoolRunId>>
+  > = ({ signal }) => getTeamPoolRunId(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTeamPoolRunId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetTeamPoolRunIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTeamPoolRunId>>
+>;
+export type GetTeamPoolRunIdQueryError = void;
+
+export function useGetTeamPoolRunId<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunId>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamPoolRunId>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamPoolRunId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamPoolRunId<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamPoolRunId>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamPoolRunId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamPoolRunId<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get team pool run by ID
+ */
+
+export function useGetTeamPoolRunId<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetTeamPoolRunIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
 
 /**
  * Starts a team pool run, which will generate fights based on the teams in the pool and the pool's configuration.
