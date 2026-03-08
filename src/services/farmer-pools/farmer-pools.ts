@@ -426,7 +426,7 @@ export const postFarmerPoolsIdAddFarmer = (
   addFarmerToPoolRequest: AddFarmerToPoolRequest,
   signal?: AbortSignal,
 ) => {
-  return apiClient<void>({
+  return apiClient<FarmerPoolResponse>({
     url: `/farmer-pools/${id}/add-farmer`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

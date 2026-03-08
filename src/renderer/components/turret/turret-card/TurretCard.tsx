@@ -3,6 +3,7 @@ import { ITurretCardProps } from './TurretCard.types';
 import { turretCardStyles as styles } from './TurretCard.styles';
 
 function TurretCard({ turret }: ITurretCardProps) {
+  console.log('Rendering TurretCard with turret:', turret);
   return (
     <div style={styles.container}>
       <div style={styles.name}>{turret.name}</div>

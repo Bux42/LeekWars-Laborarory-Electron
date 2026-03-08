@@ -21,6 +21,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AddTeamToPoolRequest,
   CreateTeamPoolRequest,
   GetAllTeamPoolsResponse,
   TeamPoolResponse,
@@ -392,6 +393,91 @@ export function useGetTeamPoolsId<
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
+/**
+ * Adds a team to a team pool by their IDs.
+ * @summary Add a team to a team pool
+ */
+export const postTeamPoolsIdAddTeam = (
+  id: string,
+  addTeamToPoolRequest: AddTeamToPoolRequest,
+  signal?: AbortSignal,
+) => {
+  return apiClient<TeamPoolResponse>({
+    url: `/team-pools/${id}/add-team`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: addTeamToPoolRequest,
+    signal,
+  });
+};
+
+export const getPostTeamPoolsIdAddTeamMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postTeamPoolsIdAddTeam>>,
+    TError,
+    { id: string; data: AddTeamToPoolRequest },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postTeamPoolsIdAddTeam>>,
+  TError,
+  { id: string; data: AddTeamToPoolRequest },
+  TContext
+> => {
+  const mutationKey = ['postTeamPoolsIdAddTeam'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postTeamPoolsIdAddTeam>>,
+    { id: string; data: AddTeamToPoolRequest }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return postTeamPoolsIdAddTeam(id, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostTeamPoolsIdAddTeamMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postTeamPoolsIdAddTeam>>
+>;
+export type PostTeamPoolsIdAddTeamMutationBody = AddTeamToPoolRequest;
+export type PostTeamPoolsIdAddTeamMutationError = void;
+
+/**
+ * @summary Add a team to a team pool
+ */
+export const usePostTeamPoolsIdAddTeam = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postTeamPoolsIdAddTeam>>,
+      TError,
+      { id: string; data: AddTeamToPoolRequest },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postTeamPoolsIdAddTeam>>,
+  TError,
+  { id: string; data: AddTeamToPoolRequest },
+  TContext
+> => {
+  return useMutation(
+    getPostTeamPoolsIdAddTeamMutationOptions(options),
+    queryClient,
+  );
+};
 /**
  * Removes a team from a team pool by their IDs.
  * @summary Remove a team from a team pool

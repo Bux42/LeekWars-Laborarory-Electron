@@ -377,6 +377,10 @@ export interface GetAllTeamsResponse {
   teams: TeamResponse[];
 }
 
+export interface AddTeamToPoolRequest {
+  teamId?: string;
+}
+
 export interface CreateTeamPoolRequest {
   teamIds: string[];
   basePoolRequest: CreateBasePoolRequest;

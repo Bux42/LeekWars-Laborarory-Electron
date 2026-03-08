@@ -3,6 +3,7 @@ import { usePoolTeamId } from '../../../../../hooks/pools/team/usePoolTeamId';
 import {
   useDeleteTeamPoolsIdRemoveTeamTeamId,
   useGetTeamPoolsId,
+  usePostTeamPoolsIdAddTeam,
 } from '../../../../../services/team-pools/team-pools';
 import BasePoolWrapper from '../../../../components/pool/base/base-pool-wrapper/BasePoolWrapper';
 import { TeamPoolResponse } from '../../../../../services/leekwarsToolsAPI.schemas';
@@ -29,6 +30,7 @@ function PoolTeamDetail() {
   const [selectedTeamsIds, setSelectedTeamsIds] = useState<string[]>([]);
 
   const removeTeamFromPoolMutation = useDeleteTeamPoolsIdRemoveTeamTeamId();
+  const addTeamToPoolMutation = usePostTeamPoolsIdAddTeam();
 
   useEffect(() => {
     if (pool) {
@@ -42,9 +44,26 @@ function PoolTeamDetail() {
     console.log('Starting pool with teams:', selectedTeamsIds);
   };
 
-  const onAddTeamToPool = (teamId: string) => {
-    // Implement the logic to add a team to the pool
-    setSelectedTeamsIds((prev) => [...prev, teamId]);
+  const onAddTeamToPool = async (teamId: string) => {
+    try {
+      const response = await addTeamToPoolMutation.mutateAsync({
+        data: { teamId },
+        id: poolId,
+      });
+      console.log('Team added to pool:', response);
+      setSelectedTeamsIds((prev) => [...prev, teamId]);
+      setTeamPool((prev) => {
+        if (!prev) return prev;
+        const newTeam = allTeams?.teams.find((t) => t.id === teamId);
+        if (!newTeam) return prev;
+        return {
+          ...prev,
+          teams: [...prev.teams, newTeam],
+        };
+      });
+    } catch (error) {
+      console.error('Error adding team to pool:', error);
+    }
   };
 
   const onRemoveTeamFromPool = async (teamId: string) => {
@@ -63,6 +82,8 @@ function PoolTeamDetail() {
     }
     // Implement the logic to remove a team from the pool
   };
+
+  console.log('Pool details:', teamPool);
 
   if (isLoadingPool || isLoadingPool) {
     return <p>Loading pool details...</p>;
@@ -92,7 +113,7 @@ function PoolTeamDetail() {
           onTeamSelect={onAddTeamToPool}
         />
       )}
-      {teamPool && (
+      {teamPool && teamPool.teams.length > 0 && (
         <TeamList
           teams={teamPool.teams}
           onRemoveTeam={onRemoveTeamFromPool}
