@@ -136,15 +136,6 @@ function BasePoolWrapper({
 
   const { totalFights } = usePoolFightEstimation(totalCombinations, fightLimit);
 
-  console.log(
-    'totalCombinations',
-    totalCombinations,
-    'fightLimit',
-    fightLimit,
-    'totalFights',
-    totalFights,
-  );
-
   return (
     <div style={styles.container}>
       <div style={styles.header}>

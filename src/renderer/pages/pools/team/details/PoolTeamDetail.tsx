@@ -50,7 +50,6 @@ function PoolTeamDetail() {
         data: { teamId },
         id: poolId,
       });
-      console.log('Team added to pool:', response);
       setSelectedTeamsIds((prev) => [...prev, teamId]);
       setTeamPool((prev) => {
         if (!prev) return prev;
@@ -82,8 +81,6 @@ function PoolTeamDetail() {
     }
     // Implement the logic to remove a team from the pool
   };
-
-  console.log('Pool details:', teamPool);
 
   if (isLoadingPool || isLoadingPool) {
     return <p>Loading pool details...</p>;

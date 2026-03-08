@@ -51,13 +51,6 @@ function TurretImage({
 
   const skinName = 'blue';
 
-  console.log('TurretImage render', {
-    level: turret.build.level,
-    pieces,
-    svgWidth,
-    svgHeight,
-  });
-
   if (showTooltip) {
     return (
       <HoverTooltip
