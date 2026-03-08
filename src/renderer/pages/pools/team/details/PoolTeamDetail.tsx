@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import { usePoolTeamId } from '../../../../../hooks/pools/team/usePoolTeamId';
-import { useGetTeamPoolsId } from '../../../../../services/team-pools/team-pools';
+import {
+  useDeleteTeamPoolsIdRemoveTeamTeamId,
+  useGetTeamPoolsId,
+} from '../../../../../services/team-pools/team-pools';
 import BasePoolWrapper from '../../../../components/pool/base/base-pool-wrapper/BasePoolWrapper';
 import { TeamPoolResponse } from '../../../../../services/leekwarsToolsAPI.schemas';
 import TeamPicker from '../../../../components/team/team-picker/TeamPicker';
 import TeamList from '../../../../components/team/team-list/TeamList';
+import { useGetTeamsAll } from '../../../../../services/teams/teams';
 
 function PoolTeamDetail() {
   const poolId = usePoolTeamId();
@@ -15,8 +19,16 @@ function PoolTeamDetail() {
     error: poolError,
   } = useGetTeamPoolsId(poolId);
 
+  const {
+    data: allTeams,
+    isLoading: isLoadingAllTeams,
+    error: allTeamsError,
+  } = useGetTeamsAll(poolId);
+
   const [teamPool, setTeamPool] = useState<TeamPoolResponse | null>(pool);
   const [selectedTeamsIds, setSelectedTeamsIds] = useState<string[]>([]);
+
+  const removeTeamFromPoolMutation = useDeleteTeamPoolsIdRemoveTeamTeamId();
 
   useEffect(() => {
     if (pool) {
@@ -35,9 +47,21 @@ function PoolTeamDetail() {
     setSelectedTeamsIds((prev) => [...prev, teamId]);
   };
 
-  const onRemoveTeamFromPool = (teamId: string) => {
+  const onRemoveTeamFromPool = async (teamId: string) => {
+    try {
+      await removeTeamFromPoolMutation.mutateAsync({ id: poolId, teamId });
+      setSelectedTeamsIds((prev) => prev.filter((id) => id !== teamId));
+      setTeamPool((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          teams: prev.teams.filter((team) => team.id !== teamId),
+        };
+      });
+    } catch (error) {
+      console.error('Error removing team from pool:', error);
+    }
     // Implement the logic to remove a team from the pool
-    setSelectedTeamsIds((prev) => prev.filter((id) => id !== teamId));
   };
 
   if (isLoadingPool || isLoadingPool) {
@@ -60,10 +84,10 @@ function PoolTeamDetail() {
       onStart={handleStartPool}
       totalCombinations={selectedTeamsIds.length || 0}
     >
-      {teamPool?.teams.length && (
+      {allTeams?.teams.length && (
         <TeamPicker
           label="Add team to pool"
-          availableTeams={teamPool.teams || []}
+          availableTeams={allTeams.teams}
           selectedTeamIds={selectedTeamsIds}
           onTeamSelect={onAddTeamToPool}
         />
