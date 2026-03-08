@@ -388,6 +388,10 @@ export interface TeamPoolResponse {
   teams: TeamResponse[];
 }
 
+export interface GetAllTeamPoolsResponse {
+  teamPools: TeamPoolResponse[];
+}
+
 export interface AddTurretRequest {
   name: string;
   build: EntityBuild;
