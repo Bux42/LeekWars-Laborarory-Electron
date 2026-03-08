@@ -10,6 +10,7 @@ import { TeamPoolResponse } from '../../../../../services/leekwarsToolsAPI.schem
 import TeamPicker from '../../../../components/team/team-picker/TeamPicker';
 import TeamList from '../../../../components/team/team-list/TeamList';
 import { useGetTeamsAll } from '../../../../../services/teams/teams';
+import { usePostTeamPoolRunIdStart } from '../../../../../services/team-pool-runs/team-pool-runs';
 
 function PoolTeamDetail() {
   const poolId = usePoolTeamId();
@@ -31,6 +32,7 @@ function PoolTeamDetail() {
 
   const removeTeamFromPoolMutation = useDeleteTeamPoolsIdRemoveTeamTeamId();
   const addTeamToPoolMutation = usePostTeamPoolsIdAddTeam();
+  const startTeamPoolRunMutation = usePostTeamPoolRunIdStart();
 
   useEffect(() => {
     if (pool) {
@@ -39,9 +41,13 @@ function PoolTeamDetail() {
     }
   }, [pool]);
 
-  const handleStartPool = () => {
-    // Implement the logic to start the pool with the selected teams
-    console.log('Starting pool with teams:', selectedTeamsIds);
+  const handleStartPool = async () => {
+    if (!poolId) return;
+    try {
+      await startTeamPoolRunMutation.mutateAsync({ id: poolId });
+    } catch (error) {
+      console.error('Error starting team pool run:', error);
+    }
   };
 
   const onAddTeamToPool = async (teamId: string) => {

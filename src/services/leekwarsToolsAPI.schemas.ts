@@ -396,6 +396,17 @@ export interface GetAllTeamPoolsResponse {
   teamPools: TeamPoolResponse[];
 }
 
+export interface TeamPoolRunResponse {
+  id: string;
+  interrupted: boolean;
+  running: boolean;
+  basePool: BasePoolResponse;
+  startDate: number;
+  endDate: number;
+  teamPoolId?: string;
+  teams?: TeamPoolResponse[];
+}
+
 export interface AddTurretRequest {
   name: string;
   build: EntityBuild;
