@@ -31,7 +31,7 @@ function PoolTeam() {
         <BasePoolList
           pools={data?.teamPools || []}
           getLabel={(pool) => `${pool.teams.length} teams`}
-          onActionClick={(pool) => navigate(`/pools/team/${pool.id}`)}
+          onViewPoolClick={(pool) => navigate(`/pools/team/${pool.id}`)}
           emptyMessage="No team pools found."
         />
       )}

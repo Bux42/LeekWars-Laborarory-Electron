@@ -6,7 +6,6 @@ import { useGetDuelPoolsAll } from '../../../../services/duel-pools/duel-pools';
 
 function PoolDuel() {
   const navigate = useNavigate();
-  // const { data: pools = [], isLoading, error } = usePoolDuels();
 
   const { data, isLoading, error } = useGetDuelPoolsAll({
     query: {
@@ -32,8 +31,8 @@ function PoolDuel() {
         <BasePoolList
           pools={data?.pools || []}
           getLabel={(pool) => `${pool.leeks.length} leeks`}
-          onActionClick={(pool) => navigate(`/pools/duel/${pool.id}`)}
-          emptyMessage="No pool duels found."
+          onViewPoolClick={(pool) => navigate(`/pools/duel/${pool.id}`)}
+          emptyMessage="No duel pools found."
         />
       )}
     </div>

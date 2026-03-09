@@ -10,7 +10,6 @@ export interface IBasePoolListItem {
 export interface IBasePoolListProps<TPool extends IBasePoolListItem> {
   pools: TPool[];
   getLabel: (pool: TPool) => string;
-  onActionClick: (pool: TPool) => void;
+  onViewPoolClick: (pool: TPool) => void;
   emptyMessage: string;
-  actionText?: string;
 }

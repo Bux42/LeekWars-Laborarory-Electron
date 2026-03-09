@@ -6,9 +6,8 @@ import { IBasePoolListItem, IBasePoolListProps } from './BasePoolList.types';
 function BasePoolList<TPool extends IBasePoolListItem>({
   pools,
   getLabel,
-  onActionClick,
+  onViewPoolClick,
   emptyMessage,
-  actionText = 'View Pool',
 }: IBasePoolListProps<TPool>) {
   return (
     <div style={styles.container}>
@@ -36,8 +35,8 @@ function BasePoolList<TPool extends IBasePoolListItem>({
             </span>
           </div>
           <div style={styles.actions}>
-            <Button onClick={() => onActionClick(pool)} variant="primary">
-              {actionText}
+            <Button onClick={() => onViewPoolClick(pool)} variant="primary">
+              View Pool
             </Button>
           </div>
         </div>
