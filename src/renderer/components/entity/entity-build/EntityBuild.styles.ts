@@ -12,12 +12,7 @@ export interface IEntityBuildStyles {
 
 export const entityBuildStyles: IEntityBuildStyles = {
   container: {
-    display: 'flex',
-    flexDirection: 'column',
     gap: theme.spacing.lg,
-    padding: theme.spacing.md,
-    backgroundColor: theme.colors.background.secondary,
-    borderRadius: theme.borderRadius.md,
   },
   header: {
     display: 'flex',
