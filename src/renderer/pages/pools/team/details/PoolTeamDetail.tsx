@@ -124,7 +124,7 @@ function PoolTeamDetail() {
       {runsInfo && (
         <LastPoolRunsButttons
           poolRunsInfo={runsInfo}
-          poolType="farmer"
+          poolType="team"
           poolId={pool.id}
         />
       )}
