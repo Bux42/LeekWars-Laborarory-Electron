@@ -4,13 +4,13 @@ import { usePoolDuelId } from '../../../../../hooks/pools/duel/usePoolDuelId';
 import { poolsStyles as styles } from '../../Pools.styles';
 import Spinner from '../../../../components/shared/spinner/Spinner';
 import PoolDuelCard from '../../../../components/pool/duel/pool-duel-card/PoolDuelCard';
-import { useGetDuelPoolsId } from '../../../../../services/duel-pools/duel-pools';
 import {
-  useGetDuelPoolRunGetByPoolIdId,
-  usePostDuelPoolRunIdStart,
-} from '../../../../../services/duel-pool-runs/duel-pool-runs';
-import Button from '../../../../components/shared/button/Button';
+  useGetDuelPoolsId,
+  useGetDuelPoolsIdRunsInfo,
+} from '../../../../../services/duel-pools/duel-pools';
+import { usePostDuelPoolRunIdStart } from '../../../../../services/duel-pool-runs/duel-pool-runs';
 import BasePoolWrapper from '../../../../components/pool/base/base-pool-wrapper/BasePoolWrapper';
+import LastPoolRunsButttons from '../../../../components/pool-runs/last-pool-runs-buttons/LastPoolRunsButttons';
 
 function PoolDuelDetail() {
   const navigate = useNavigate();
@@ -18,23 +18,11 @@ function PoolDuelDetail() {
 
   const { data: pool, isLoading, error } = useGetDuelPoolsId(poolId!);
 
-  const [fightLimit, setFightLimit] = useState<number | undefined>(
-    pool?.basePool.fightLimitEnabled ? pool.basePool.fightLimit : undefined,
-  );
-
-  const onFightLimitChange = (enabled: boolean, limit?: number) => {
-    if (!poolId) {
-      return;
-    }
-
-    setFightLimit(enabled ? limit : undefined);
-  };
-
   const {
-    data: runsData,
-    isLoading: runsLoading,
-    error: runsError,
-  } = useGetDuelPoolRunGetByPoolIdId(poolId || '');
+    data: runsInfo,
+    isLoading: runsInfoLoading,
+    error: runsInfoError,
+  } = useGetDuelPoolsIdRunsInfo(poolId || '');
 
   const startMutation = usePostDuelPoolRunIdStart();
 
@@ -71,19 +59,12 @@ function PoolDuelDetail() {
       onStart={handleStartPool}
       totalCombinations={pool.leeks.length}
     >
-      {runsData?.runs?.length > 0 && (
-        <>
-          <Button onClick={() => navigate(`/pools/duel/${poolId}/runs`)}>
-            View {runsData?.runs?.length} Runs
-          </Button>
-          <Button
-            onClick={() =>
-              navigate(`/pools/duel/${poolId}/runs/${runsData?.runs?.[0]?.id}`)
-            }
-          >
-            View last run
-          </Button>
-        </>
+      {runsInfo && (
+        <LastPoolRunsButttons
+          poolRunsInfo={runsInfo}
+          poolType="duel"
+          poolId={pool.id}
+        />
       )}
       <PoolDuelCard pool={pool} />
     </BasePoolWrapper>

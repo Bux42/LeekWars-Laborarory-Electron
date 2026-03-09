@@ -4,6 +4,7 @@ import { usePoolTeamId } from '../../../../../hooks/pools/team/usePoolTeamId';
 import {
   useDeleteTeamPoolsIdRemoveTeamTeamId,
   useGetTeamPoolsId,
+  useGetTeamPoolsIdRunsInfo,
   usePostTeamPoolsIdAddTeam,
 } from '../../../../../services/team-pools/team-pools';
 import BasePoolWrapper from '../../../../components/pool/base/base-pool-wrapper/BasePoolWrapper';
@@ -11,11 +12,8 @@ import { TeamPoolResponse } from '../../../../../services/leekwarsToolsAPI.schem
 import TeamPicker from '../../../../components/team/team-picker/TeamPicker';
 import TeamList from '../../../../components/team/team-list/TeamList';
 import { useGetTeamsAll } from '../../../../../services/teams/teams';
-import {
-  useGetTeamPoolRunGetByPoolIdId,
-  usePostTeamPoolRunIdStart,
-} from '../../../../../services/team-pool-runs/team-pool-runs';
-import Button from '../../../../components/shared/button/Button';
+import { usePostTeamPoolRunIdStart } from '../../../../../services/team-pool-runs/team-pool-runs';
+import LastPoolRunsButttons from '../../../../components/pool-runs/last-pool-runs-buttons/LastPoolRunsButttons';
 
 function PoolTeamDetail() {
   const navigate = useNavigate();
@@ -41,10 +39,10 @@ function PoolTeamDetail() {
   const startTeamPoolRunMutation = usePostTeamPoolRunIdStart();
 
   const {
-    data: runsData,
-    isLoading: runsLoading,
-    error: runsError,
-  } = useGetTeamPoolRunGetByPoolIdId(poolId || '');
+    data: runsInfo,
+    isLoading: runsInfoLoading,
+    error: runsInfoError,
+  } = useGetTeamPoolsIdRunsInfo(poolId || '');
 
   useEffect(() => {
     if (pool) {
@@ -123,19 +121,12 @@ function PoolTeamDetail() {
       onStart={handleStartPool}
       totalCombinations={selectedTeamsIds.length || 0}
     >
-      {runsData?.runs?.length > 0 && (
-        <>
-          <Button onClick={() => navigate(`/pools/team/${poolId}/runs`)}>
-            View {runsData?.runs?.length} Runs
-          </Button>
-          <Button
-            onClick={() =>
-              navigate(`/pools/team/${poolId}/runs/${runsData?.runs?.[0]?.id}`)
-            }
-          >
-            View last run
-          </Button>
-        </>
+      {runsInfo && (
+        <LastPoolRunsButttons
+          poolRunsInfo={runsInfo}
+          poolType="farmer"
+          poolId={pool.id}
+        />
       )}
       {allTeams?.teams.length && (
         <TeamPicker

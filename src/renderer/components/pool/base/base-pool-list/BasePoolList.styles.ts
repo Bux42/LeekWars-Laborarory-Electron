@@ -50,6 +50,7 @@ export const basePoolListStyles: IBasePoolListStyles = {
   actions: {
     display: 'flex',
     alignItems: 'center',
+    gap: theme.spacing.sm,
   },
   emptyText: {
     color: theme.colors.text.tertiary,

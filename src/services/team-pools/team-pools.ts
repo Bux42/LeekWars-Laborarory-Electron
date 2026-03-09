@@ -24,6 +24,7 @@ import type {
   AddTeamToPoolRequest,
   CreateTeamPoolRequest,
   GetAllTeamPoolsResponse,
+  PoolRunsInfoResponse,
   TeamPoolResponse,
 } from '../leekwarsToolsAPI.schemas';
 
@@ -564,3 +565,161 @@ export const useDeleteTeamPoolsIdRemoveTeamTeamId = <
     queryClient,
   );
 };
+/**
+ * Gets runs info from an existing team pool.
+ * @summary Get runs info from a team pool
+ */
+export const getTeamPoolsIdRunsInfo = (id: string, signal?: AbortSignal) => {
+  return apiClient<PoolRunsInfoResponse>({
+    url: `/team-pools/${id}/runs-info`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetTeamPoolsIdRunsInfoQueryKey = (id: string) => {
+  return [`/team-pools/${id}/runs-info`] as const;
+};
+
+export const getGetTeamPoolsIdRunsInfoQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetTeamPoolsIdRunsInfoQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>
+  > = ({ signal }) => getTeamPoolsIdRunsInfo(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetTeamPoolsIdRunsInfoQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>
+>;
+export type GetTeamPoolsIdRunsInfoQueryError = void;
+
+export function useGetTeamPoolsIdRunsInfo<
+  TData = Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamPoolsIdRunsInfo<
+  TData = Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamPoolsIdRunsInfo<
+  TData = Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get runs info from a team pool
+ */
+
+export function useGetTeamPoolsIdRunsInfo<
+  TData = Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetTeamPoolsIdRunsInfoQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}

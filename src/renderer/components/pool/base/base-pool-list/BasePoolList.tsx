@@ -36,7 +36,13 @@ function BasePoolList<TPool extends IBasePoolListItem>({
           </div>
           <div style={styles.actions}>
             <Button onClick={() => onViewPoolClick(pool)} variant="primary">
-              View Pool
+              Last Run
+            </Button>
+            <Button onClick={() => onViewPoolClick(pool)} variant="primary">
+              All Runs (54)
+            </Button>
+            <Button onClick={() => onViewPoolClick(pool)} variant="primary">
+              Pool Details
             </Button>
           </div>
         </div>

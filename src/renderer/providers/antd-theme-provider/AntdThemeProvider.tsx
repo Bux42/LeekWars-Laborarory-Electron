@@ -24,6 +24,9 @@ function AntdThemeProvider({ children }: IAntdThemeProviderProps) {
             inkBarColor: theme.colors.accent.primary,
             titleFontSize: 14,
           },
+          Button: {
+            colorTextDisabled: theme.colors.text.tertiary,
+          },
         },
       }}
     >

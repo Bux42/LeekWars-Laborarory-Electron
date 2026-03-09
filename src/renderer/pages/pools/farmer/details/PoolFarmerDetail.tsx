@@ -3,19 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import {
   useDeleteFarmerPoolsIdRemoveFarmerFarmerId,
   useGetFarmerPoolsId,
+  useGetFarmerPoolsIdRunsInfo,
   usePostFarmerPoolsIdAddFarmer,
 } from '../../../../../services/farmer-pools/farmer-pools';
 import BasePoolWrapper from '../../../../components/pool/base/base-pool-wrapper/BasePoolWrapper';
-import Button from '../../../../components/shared/button/Button';
 import { usePoolFarmerId } from '../../../../../hooks/pools/farmer/usePoolFarmerId';
 import { useGetFarmersAll } from '../../../../../services/farmers/farmers';
 import FarmerPicker from '../../../../components/farmer/farmer-picker/FarmerPicker';
 import FarmerList from '../../../../components/farmer/farmer-list/FarmerList';
-import {
-  useGetFarmerPoolRunGetByPoolIdId,
-  usePostFarmerPoolRunIdStart,
-} from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
+import { usePostFarmerPoolRunIdStart } from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
 import { FarmerPoolResponse } from '../../../../../services/leekwarsToolsAPI.schemas';
+import LastPoolRunsButttons from '../../../../components/pool-runs/last-pool-runs-buttons/LastPoolRunsButttons';
 
 function PoolFarmerDetail() {
   const navigate = useNavigate();
@@ -34,10 +32,10 @@ function PoolFarmerDetail() {
   );
 
   const {
-    data: runsData,
-    isLoading: runsLoading,
-    error: runsError,
-  } = useGetFarmerPoolRunGetByPoolIdId(poolId || '');
+    data: runsInfo,
+    isLoading: runsInfoLoading,
+    error: runsInfoError,
+  } = useGetFarmerPoolsIdRunsInfo(poolId || '');
 
   const {
     data: farmers,
@@ -141,21 +139,12 @@ function PoolFarmerDetail() {
       onStart={handleStartPool}
       totalCombinations={selectedFarmersIds.length || 0}
     >
-      {runsData?.runs?.length > 0 && (
-        <>
-          <Button onClick={() => navigate(`/pools/farmer/${poolId}/runs`)}>
-            View {runsData?.runs?.length} Runs
-          </Button>
-          <Button
-            onClick={() =>
-              navigate(
-                `/pools/farmer/${poolId}/runs/${runsData?.runs?.[0]?.id}`,
-              )
-            }
-          >
-            View last run
-          </Button>
-        </>
+      {runsInfo && (
+        <LastPoolRunsButttons
+          poolRunsInfo={runsInfo}
+          poolType="farmer"
+          poolId={pool.id}
+        />
       )}
       {farmers?.farmers.length && (
         <FarmerPicker

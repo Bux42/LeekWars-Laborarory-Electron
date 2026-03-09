@@ -9,3 +9,5 @@ export const DEFAULT_BASE_POOL: CreateBasePoolRequest = {
   resetElo: true,
   startSeed: 1,
 };
+
+export type PoolType = 'duel' | 'farmer' | 'team';

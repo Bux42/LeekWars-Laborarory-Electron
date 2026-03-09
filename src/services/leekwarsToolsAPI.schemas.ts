@@ -345,6 +345,12 @@ export interface GetBasePoolsResponse {
   pools: BasePoolResponse[];
 }
 
+export interface PoolRunsInfoResponse {
+  runCount: number;
+  lastRunId?: string;
+  lastRunIsRunning: boolean;
+}
+
 export interface TurretResponse {
   id: string;
   name: string;
