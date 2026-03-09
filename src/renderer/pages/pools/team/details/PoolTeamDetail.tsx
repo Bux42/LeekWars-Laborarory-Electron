@@ -56,7 +56,10 @@ function PoolTeamDetail() {
   const handleStartPool = async () => {
     if (!poolId) return;
     try {
-      await startTeamPoolRunMutation.mutateAsync({ id: poolId });
+      const result = await startTeamPoolRunMutation.mutateAsync({ id: poolId });
+      if (result.id) {
+        navigate(`/pools/team/${poolId}/runs/${result.id}`);
+      }
     } catch (error) {
       console.error('Error starting team pool run:', error);
     }

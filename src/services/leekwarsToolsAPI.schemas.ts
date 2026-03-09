@@ -355,10 +355,10 @@ export interface TurretResponse {
 }
 
 export interface PoolTeamResponse {
-  id?: string;
-  name?: string;
-  leeks?: PoolLeekResponse[];
-  turret?: TurretResponse;
+  id: string;
+  name: string;
+  leeks: PoolLeekResponse[];
+  turret: TurretResponse;
   elo: number;
 }
 
@@ -383,6 +383,20 @@ export interface AddTeamResponse {
 
 export interface GetAllTeamsResponse {
   teams: TeamResponse[];
+}
+
+export interface PoolFightTeamResponse {
+  id: string;
+  poolRunId: string;
+  seed: number;
+  date: number;
+  team1Id: string;
+  team2Id: string;
+  winnerTeamId: string;
+}
+
+export interface GetTeamFightsByPoolRunIdResponse {
+  fights: PoolFightTeamResponse[];
 }
 
 export interface AddTeamToPoolRequest {

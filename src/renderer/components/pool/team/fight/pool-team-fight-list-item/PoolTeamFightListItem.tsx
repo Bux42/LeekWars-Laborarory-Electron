@@ -1,0 +1,108 @@
+import { useMemo, useState } from 'react';
+import { Col, Row, Spin, Typography } from 'antd';
+import { EyeOutlined } from '@ant-design/icons';
+import { IPoolTeamFightListItemProps } from './PoolTeamFightListItem.types';
+import { getTimeAgo } from '../../../../../utils/DateUtils';
+import { poolTeamFightListItemStyles as styles } from './PoolTeamFightListItem.styles';
+import { usePostFightTeamGenerate } from '../../../../../../services/team-fights/team-fights';
+
+function PoolTeamFightListItem({
+  fight,
+  team1,
+  team2,
+}: IPoolTeamFightListItemProps) {
+  const [generatingFight, setGeneratingFight] = useState<boolean>(false);
+
+  const draw = useMemo(() => {
+    if (!fight.winnerTeamId) {
+      return true;
+    }
+    return false;
+  }, [fight.winnerTeamId]);
+
+  const { mutate: generateFight } = usePostFightTeamGenerate();
+
+  const getFightColor = (teamId: string): 'win' | 'lose' | 'draw' => {
+    if (draw) {
+      return 'draw';
+    }
+    return fight.winnerTeamId === teamId ? 'win' : 'lose';
+  };
+
+  const handleGenerateFight = () => {
+    setGeneratingFight(true);
+    generateFight(
+      {
+        data: {
+          fightId: fight.id,
+        },
+      },
+      {
+        onSuccess: () => {
+          const fightUrl = new URL(
+            `fight/${fight.id}`,
+            process.env.VUE_FRONT_END_URL || 'http://localhost:4173/',
+          ).toString();
+
+          window.open(fightUrl, '_blank');
+        },
+        onError: () => {
+          message.error('Failed to generate fight.');
+        },
+        onSettled: () => {
+          setGeneratingFight(false);
+        },
+      },
+    );
+  };
+
+  return (
+    <Row gutter={16} style={styles.row}>
+      <Col span={8} style={styles.column}>
+        <div style={styles.teamContainer(getFightColor(team1.id))}>
+          <div style={styles.leekContent}>
+            <Typography.Text style={styles.teamName(getFightColor(team1.id))}>
+              {team1.name}
+            </Typography.Text>
+          </div>
+        </div>
+      </Col>
+
+      <Col span={2} style={styles.column}>
+        <Typography.Text style={styles.resultContainer}>
+          {draw ? 'Draw' : 'VS'}
+        </Typography.Text>
+      </Col>
+
+      <Col span={8} style={styles.column}>
+        <div style={styles.teamContainer(getFightColor(team2.id))}>
+          <div style={styles.leekContent}>
+            <Typography.Text style={styles.teamName(getFightColor(team2.id))}>
+              {team2.name}
+            </Typography.Text>
+          </div>
+        </div>
+      </Col>
+
+      <Col span={4} style={styles.column}>
+        <Typography.Text style={styles.dateText}>
+          {getTimeAgo(fight.date)}
+        </Typography.Text>
+      </Col>
+
+      <Col span={2} style={styles.column}>
+        {generatingFight ? (
+          <div style={styles.spin}>
+            <Spin size="small" />
+          </div>
+        ) : (
+          <div style={styles.actionContainer}>
+            <EyeOutlined style={styles.eyeIcon} onClick={handleGenerateFight} />
+          </div>
+        )}
+      </Col>
+    </Row>
+  );
+}
+
+export default PoolTeamFightListItem;

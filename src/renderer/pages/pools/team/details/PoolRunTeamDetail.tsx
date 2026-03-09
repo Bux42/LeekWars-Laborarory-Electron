@@ -2,10 +2,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { Tabs } from 'antd';
 import { usePoolRunTeamId } from '../../../../../hooks/pool-runs/team/usePoolRunTeamId';
 import { useGetTeamPoolRunId } from '../../../../../services/team-pool-runs/team-pool-runs';
-import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
 import { poolsStyles as styles } from '../../Pools.styles';
+import { useGetFightTeamGetCountByPoolRunIdId } from '../../../../../services/team-fights/team-fights';
+import PoolTeamTeam from '../../../../components/pool/team/pool-team-team/PoolTeamTeam';
+import PoolTeamFightList from '../../../../components/pool/team/fight/pool-team-fight-list/PoolTeamFightList';
+import { usePoolTeamFightCountWs } from '../../../../../hooks/fights/team/usePoolTeamFightCountWs';
 
 function PoolRunTeamDetail() {
   const poolRunId = usePoolRunTeamId();
@@ -19,26 +22,21 @@ function PoolRunTeamDetail() {
     error,
   } = useGetTeamPoolRunId(poolRunId);
 
-  // const {
-  //   data: fightCountData,
-  //   isLoading: fightCountLoading,
-  //   error: fightCountError,
-  // } = useGetFightFarmerGetCountByPoolRunIdId(poolRunId);
+  const {
+    data: fightCountData,
+    isLoading: fightCountLoading,
+    error: fightCountError,
+  } = useGetFightTeamGetCountByPoolRunIdId(poolRunId);
 
-  // useEffect(() => {
-  //   if (fightCountData) {
-  //     setProcessedFights(fightCountData.count);
-  //   }
-  // }, [fightCountData]);
+  useEffect(() => {
+    if (fightCountData) {
+      setProcessedFights(fightCountData.count);
+    }
+  }, [fightCountData]);
 
-  // usePoolTeamFightCountWs(poolRunId || '', (count) => {
-  //   setProcessedFights(count);
-  // });
-
-  const { totalFights } = usePoolFightEstimation(
-    teamPoolRun?.teams.length || 0,
-    teamPoolRun?.basePool.fightLimit,
-  );
+  usePoolTeamFightCountWs(poolRunId || '', (count) => {
+    setProcessedFights(count);
+  });
 
   const teamsSortedByElo = useMemo(() => {
     if (!teamPoolRun || !teamPoolRun.teams) return [];
@@ -77,14 +75,13 @@ function PoolRunTeamDetail() {
               children: <>Global</>,
             },
             {
-              key: 'farmers',
-              label: 'Farmers',
+              key: 'teams',
+              label: 'Teams',
               children: (
                 <>
-                  {/* {farmersSortedByElo.map((farmer) => (
-                    <PoolFarmerFarmer key={farmer.id} farmer={farmer} />
-                  ))} */}
-                  Todo
+                  {teamsSortedByElo.map((team) => (
+                    <PoolTeamTeam key={team.id} team={team} />
+                  ))}
                 </>
               ),
             },
@@ -103,11 +100,10 @@ function PoolRunTeamDetail() {
               key: 'fights',
               label: 'Fights',
               children: (
-                // <PoolFarmerFightList
-                //   farmers={farmersSortedByElo}
-                //   poolFarmerId={poolFarmerData?.id || ''}
-                // />
-                <>Todo</>
+                <PoolTeamFightList
+                  poolTeamId={poolRunId}
+                  teams={teamPoolRun?.teams || []}
+                />
               ),
             },
           ]}
