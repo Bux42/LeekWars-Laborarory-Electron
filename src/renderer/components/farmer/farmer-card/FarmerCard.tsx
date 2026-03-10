@@ -66,14 +66,6 @@ function FarmerCard({
     }
   };
 
-  const getDropdownItems = (leek: LeekResponse): IDropdownItem[] => [
-    {
-      label: 'Remove',
-      onClick: () => handleRemoveFarmerLeek(leek),
-      variant: 'danger',
-    },
-  ];
-
   const onLeekSelect = async (leekId: string) => {
     console.log('Selected leek ID to add to farmer:', leekId);
     try {
@@ -120,10 +112,7 @@ function FarmerCard({
           selectedLeekIds={selectedLeekIds}
         />
       )}
-      <LeekList
-        leeks={farmerResponse.leeks}
-        getDropdownItems={getDropdownItems}
-      />
+      <LeekList leeks={farmerResponse.leeks} />
     </div>
   );
 }

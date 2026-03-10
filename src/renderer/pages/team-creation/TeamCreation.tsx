@@ -78,10 +78,6 @@ function TeamCreation() {
     }
   };
 
-  const getDropdownItems = (leek: LeekResponse): IDropdownItem[] => {
-    return [];
-  };
-
   return (
     <>
       <div style={styles.header}>
@@ -101,7 +97,7 @@ function TeamCreation() {
           label="Select a turret"
         />
         <h2>Select leeks</h2>
-        <LeekList leeks={selectedLeeks} getDropdownItems={getDropdownItems} />
+        <LeekList leeks={selectedLeeks} />
         <LeekPicker
           label="Select at least one leek"
           availableLeeks={allLeeks?.leeks || []}
