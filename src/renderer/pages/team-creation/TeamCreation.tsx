@@ -8,8 +8,9 @@ import Input from '../../components/shared/input/Input';
 import TurretPicker from '../../components/turret/turret-picker/TurretPicker';
 import { useGetTurretsAll } from '../../../services/turrets/turrets';
 import LeekList from '../../components/leek/leek-list/LeekList';
-import { IDropdownItem } from '../../components/shared/dropdown/Dropdown.types';
 import { usePostTeamsAdd } from '../../../services/teams/teams';
+import Spinner from '../../components/shared/spinner/Spinner';
+import { Result } from 'antd';
 
 function TeamCreation() {
   const [teamName, setTeamName] = useState('');
@@ -78,6 +79,14 @@ function TeamCreation() {
     }
   };
 
+  if (isLoading || isLoadingTurrets) {
+    return <Spinner size="small" label="Loading turrets..." />;
+  }
+
+  if (leeksError || isErrorTurrets) {
+    return <Result status="error" title="Could not load turrets or leeks" />;
+  }
+
   return (
     <>
       <div style={styles.header}>
@@ -89,14 +98,14 @@ function TeamCreation() {
         onChange={(value) => setTeamName(value)}
       />
       <div style={styles.section}>
-        <h2>Select turret</h2>
+        <h2>Selected turret</h2>
         <TurretPicker
           availableTurrets={turrets?.turrets || []}
           onTurretSelect={setSelectedTurretId}
           selectedTurretId={selectedTurretId}
           label="Select a turret"
         />
-        <h2>Select leeks</h2>
+        <h2>Selected leeks</h2>
         <LeekList leeks={selectedLeeks} />
         <LeekPicker
           label="Select at least one leek"

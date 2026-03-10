@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import { Result } from 'antd';
 import BasePoolList from '../../../components/pool/base/base-pool-list/BasePoolList';
 import Button from '../../../components/shared/button/Button';
 import { poolsStyles as styles } from '../Pools.styles';
 import { useGetFarmerPoolsAll } from '../../../../services/farmer-pools/farmer-pools';
+import Spinner from '../../../components/shared/spinner/Spinner';
 
 function PoolFarmer() {
   const navigate = useNavigate();
@@ -12,6 +14,14 @@ function PoolFarmer() {
       queryKey: ['farmerPools'],
     },
   });
+
+  if (isLoading) {
+    return <Spinner size="small" label="Loading pools..." />;
+  }
+
+  if (error) {
+    return <Result status="error" title="Error loading farmer pools" />;
+  }
 
   return (
     <div style={styles.section}>
@@ -24,17 +34,12 @@ function PoolFarmer() {
           Add Pool
         </Button>
       </div>
-
-      {isLoading && <p style={styles.loadingText}>Loading pools...</p>}
-      {!!error && <p style={styles.errorText}>Error: Failed to fetch pools</p>}
-      {!isLoading && !error && (
-        <BasePoolList
-          pools={data?.farmerPools || []}
-          getLabel={(pool) => `${pool.farmers.length} farmers`}
-          onViewPoolClick={(pool) => navigate(`/pools/farmer/${pool.id}`)}
-          emptyMessage="No farmer pools found."
-        />
-      )}
+      <BasePoolList
+        pools={data?.farmerPools || []}
+        getLabel={(pool) => `${pool.farmers.length} farmers`}
+        onViewPoolClick={(pool) => navigate(`/pools/farmer/${pool.id}`)}
+        emptyMessage="No farmer pools found."
+      />
     </div>
   );
 }

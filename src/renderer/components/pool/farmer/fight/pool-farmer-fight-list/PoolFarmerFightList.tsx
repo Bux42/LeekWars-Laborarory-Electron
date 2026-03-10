@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, Col, Empty, List, Row, Skeleton, Typography } from 'antd';
+import { Col, Empty, List, Result, Row, Skeleton, Typography } from 'antd';
 import {
   useGetFightFarmerGetByPoolRunIdIdOffsetLimit,
   useGetFightFarmerGetCountByPoolRunIdId,
@@ -7,6 +7,7 @@ import {
 import { IPoolFarmerFightListProps } from './PoolFarmerFightList.types';
 import { theme } from '../../../../../theme';
 import PoolFarmerFightListItem from '../pool-farmer-fight-list-item/PoolFarmerFightListItem';
+import Spinner from '../../../../shared/spinner/Spinner';
 
 function PoolFarmerFightList({
   farmers,
@@ -15,11 +16,12 @@ function PoolFarmerFightList({
   const [offset, setOffset] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
 
-  const { data, error } = useGetFightFarmerGetByPoolRunIdIdOffsetLimit(
-    poolFarmerId,
-    offset.toString(),
-    limit.toString(),
-  );
+  const { data, error, isLoading } =
+    useGetFightFarmerGetByPoolRunIdIdOffsetLimit(
+      poolFarmerId,
+      offset.toString(),
+      limit.toString(),
+    );
   const { data: countData } =
     useGetFightFarmerGetCountByPoolRunIdId(poolFarmerId);
 
@@ -34,9 +36,14 @@ function PoolFarmerFightList({
     setOffset((page - 1) * pageSize);
   }
 
-  if (error) {
-    return <Alert message="Error loading fights." type="error" showIcon />;
+  if (isLoading) {
+    return <Spinner label="Loading fights..." />;
   }
+
+  if (error) {
+    return <Result status="error" title="Error: Failed to fetch fights" />;
+  }
+
   return (
     <List
       bordered

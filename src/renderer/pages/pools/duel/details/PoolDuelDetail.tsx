@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Result } from 'antd';
 import { usePoolDuelId } from '../../../../../hooks/pools/duel/usePoolDuelId';
 import { poolsStyles as styles } from '../../Pools.styles';
 import Spinner from '../../../../components/shared/spinner/Spinner';
@@ -41,16 +41,12 @@ function PoolDuelDetail() {
     }
   };
 
-  if (isLoading) {
-    return <Spinner label="Loading pool details..." />;
+  if (isLoading || runsInfoLoading) {
+    return <Spinner size="small" label="Loading pool details..." />;
   }
 
-  if (error || !pool || !pool.basePool) {
-    return (
-      <p style={styles.errorText}>
-        {error ? 'Error: Failed to fetch pool details' : 'Pool not found'}
-      </p>
-    );
+  if (error || runsInfoError || !pool || !pool.basePool) {
+    return <Result status="error" title="Error loading pool details" />;
   }
 
   return (

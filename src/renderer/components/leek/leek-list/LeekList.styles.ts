@@ -18,7 +18,6 @@ export interface ILeekListStyles {
 export const leekListStyles: ILeekListStyles = {
   container: {
     width: '100%',
-    marginTop: theme.spacing.lg,
     backgroundColor: theme.colors.background.secondary,
     borderRadius: theme.borderRadius.md,
     border: `1px solid ${theme.colors.border.primary}`,

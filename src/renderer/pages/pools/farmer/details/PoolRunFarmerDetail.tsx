@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Tabs } from 'antd';
+import { Result, Tabs } from 'antd';
 import { usePoolRunFarmerId } from '../../../../../hooks/pool-runs/farmer/usePoolRunFarmerId';
 import {
   useGetFarmerPoolRunId,
@@ -12,6 +12,7 @@ import { useGetFightFarmerGetCountByPoolRunIdId } from '../../../../../services/
 import PoolFarmerFarmer from '../../../../components/pool/farmer/pool-farmer-farmer/PoolFarmerFarmer';
 import PoolFarmerFightList from '../../../../components/pool/farmer/fight/pool-farmer-fight-list/PoolFarmerFightList';
 import { usePoolFarmerFightCountWs } from '../../../../../hooks/fights/farmer/usePoolFarmerFightCountWs';
+import Spinner from '../../../../components/shared/spinner/Spinner';
 
 function PoolRunFarmerDetail() {
   const poolRunId = usePoolRunFarmerId();
@@ -59,12 +60,16 @@ function PoolRunFarmerDetail() {
     return [...poolFarmerData.farmers].sort((a, b) => b.elo - a.elo);
   }, [poolFarmerData]);
 
-  if (isLoading) {
-    return <p>Loading pool run details...</p>;
+  if (!poolRunId) {
+    return <Result status="error" title="Invalid run ID" />;
   }
 
-  if (error || !poolFarmerData) {
-    return <p>Error: Failed to fetch pool run details</p>;
+  if (isLoading || fightCountLoading) {
+    return <Spinner label="Loading run details..." />;
+  }
+
+  if (error || fightCountError) {
+    return <Result status="error" title="Error: Failed to fetch run details" />;
   }
 
   return (

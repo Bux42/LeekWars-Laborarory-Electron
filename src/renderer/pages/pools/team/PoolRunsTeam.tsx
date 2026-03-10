@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Result } from 'antd';
 import { usePoolTeamId } from '../../../../hooks/pools/team/usePoolTeamId';
 import { useGetTeamPoolRunGetByPoolIdId } from '../../../../services/team-pool-runs/team-pool-runs';
 import { IPoolRunBase } from '../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
@@ -23,7 +24,7 @@ function PoolRunsTeam() {
   }
 
   if (error) {
-    return <p style={styles.errorText}>Error: Failed to fetch runs</p>;
+    return <Result status="error" title="Failed to fetch runs" />;
   }
 
   return (

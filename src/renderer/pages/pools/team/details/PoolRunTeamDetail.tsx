@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Tabs } from 'antd';
+import { Result, Tabs } from 'antd';
 import { usePoolRunTeamId } from '../../../../../hooks/pool-runs/team/usePoolRunTeamId';
 import { useGetTeamPoolRunId } from '../../../../../services/team-pool-runs/team-pool-runs';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
@@ -10,6 +10,7 @@ import PoolTeamTeam from '../../../../components/pool/team/pool-team-team/PoolTe
 import PoolTeamFightList from '../../../../components/pool/team/fight/pool-team-fight-list/PoolTeamFightList';
 import { usePoolTeamFightCountWs } from '../../../../../hooks/fights/team/usePoolTeamFightCountWs';
 import { poolRunTeamDetailStyles } from './PoolRunTeamDetail.styles';
+import Spinner from '../../../../components/shared/spinner/Spinner';
 
 function PoolRunTeamDetail() {
   const poolRunId = usePoolRunTeamId();
@@ -48,12 +49,16 @@ function PoolRunTeamDetail() {
     // Implement stop functionality if needed
   };
 
-  if (isLoading) {
-    return <p>Loading pool run details...</p>;
+  if (!poolRunId) {
+    return <Result status="error" title="Invalid run ID" />;
   }
 
-  if (error || !teamPoolRun) {
-    return <p>Error: Failed to fetch pool run details</p>;
+  if (isLoading || fightCountLoading) {
+    return <Spinner label="Loading run details..." />;
+  }
+
+  if (error || fightCountError) {
+    return <Result status="error" title="Error: Failed to fetch run details" />;
   }
 
   return (

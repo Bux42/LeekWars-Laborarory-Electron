@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { CreateBasePoolRequest } from '../../../../../services/leekwarsToolsAPI.schemas';
 import { DEFAULT_BASE_POOL } from '../../../../constants/pools/Pools.constants';
@@ -8,6 +9,7 @@ import BasePoolForm from '../../../../components/pool/base/base-pool-form/BasePo
 import TeamPicker from '../../../../components/team/team-picker/TeamPicker';
 import { useGetTeamsAll } from '../../../../../services/teams/teams';
 import { usePostTeamPoolsCreate } from '../../../../../services/team-pools/team-pools';
+import Spinner from '../../../../components/shared/spinner/Spinner';
 
 function TeamPoolCreation() {
   const navigate = useNavigate();
@@ -16,7 +18,6 @@ function TeamPoolCreation() {
   const [teamPickerError, setTeamPickerError] = useState<string | null>(
     'You must select at least 2 teams',
   );
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     data: teamsData,
@@ -95,6 +96,16 @@ function TeamPoolCreation() {
     }
   };
 
+  const isSubmitting = createPoolTeamMutation.isPending;
+
+  if (isLoadingTeams) {
+    return <Spinner size="small" label="Loading teams..." />;
+  }
+
+  if (isErrorTeams) {
+    return <Result status="error" title="Error loading teams" />;
+  }
+
   return (
     <div style={styles.content}>
       <h1 style={styles.title}>Create New Team Pool</h1>
@@ -136,7 +147,7 @@ function TeamPoolCreation() {
           />
         </div>
 
-        {error && <p style={styles.error}>{error}</p>}
+        {error && <Result status="error" title={error} />}
 
         <div style={styles.actions}>
           <Button

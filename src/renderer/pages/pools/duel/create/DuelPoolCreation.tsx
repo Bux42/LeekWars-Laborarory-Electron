@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { duelPoolCreationStyles as styles } from './DuelPoolCreation.styles';
 import LeekPicker from '../../../../components/leek/leek-picker/LeekPicker';
@@ -19,7 +20,11 @@ function DuelPoolCreation() {
   const navigate = useNavigate();
   const createPoolDuelMutation = usePostDuelPoolsCreate();
 
-  const { data, isLoading: leeksLoading } = useGetLeeksAll({
+  const {
+    data,
+    isLoading: leeksLoading,
+    error: leeksError,
+  } = useGetLeeksAll({
     query: {
       queryKey: ['leeks'],
     },
@@ -93,6 +98,14 @@ function DuelPoolCreation() {
 
   const isSubmitting = createPoolDuelMutation.isPending;
 
+  if (leeksLoading) {
+    return <Spinner size="small" label="Loading leeks..." />;
+  }
+
+  if (leeksError) {
+    return <Result status="error" title="Error loading leeks" />;
+  }
+
   return (
     <div style={styles.content}>
       <h1 style={styles.title}>Create New Duel Pool</h1>
@@ -120,16 +133,12 @@ function DuelPoolCreation() {
               />
             )}
           </div>
-          {leeksLoading ? (
-            <Spinner size="small" label="Loading leeks..." />
-          ) : (
-            <LeekPicker
-              label="Add Leek to Pool"
-              availableLeeks={data?.leeks || []}
-              selectedLeekIds={selectedLeekIds}
-              onLeekSelect={handleLeekSelect}
-            />
-          )}
+          <LeekPicker
+            label="Add Leek to Pool"
+            availableLeeks={data?.leeks || []}
+            selectedLeekIds={selectedLeekIds}
+            onLeekSelect={handleLeekSelect}
+          />
         </div>
 
         {error && <p style={styles.error}>{error}</p>}

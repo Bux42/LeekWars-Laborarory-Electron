@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { farmerPoolCreationStyles as styles } from './FarmerPoolCreation.styles';
 import BasePoolForm from '../../../../components/pool/base/base-pool-form/BasePoolForm';
@@ -8,12 +9,17 @@ import { usePostFarmerPoolsCreate } from '../../../../../services/farmer-pools/f
 import { useGetFarmersAll } from '../../../../../services/farmers/farmers';
 import { CreateBasePoolRequest } from '../../../../../services/leekwarsToolsAPI.schemas';
 import { DEFAULT_BASE_POOL } from '../../../../constants/pools/Pools.constants';
+import Spinner from '../../../../components/shared/spinner/Spinner';
 
 function FarmerPoolCreation() {
   const navigate = useNavigate();
   const createPoolFarmerMutation = usePostFarmerPoolsCreate();
 
-  const { data: farmersData } = useGetFarmersAll({
+  const {
+    data: farmersData,
+    isLoading: farmersLoading,
+    error: farmersError,
+  } = useGetFarmersAll({
     query: {
       queryKey: ['farmers'],
     },
@@ -93,6 +99,14 @@ function FarmerPoolCreation() {
 
   const isSubmitting = createPoolFarmerMutation.isPending;
 
+  if (farmersLoading) {
+    return <Spinner size="small" label="Loading farmers..." />;
+  }
+
+  if (farmersError) {
+    return <Result status="error" title="Error loading farmers" />;
+  }
+
   return (
     <div style={styles.content}>
       <h1 style={styles.title}>Create New Farmer Pool</h1>
@@ -135,9 +149,7 @@ function FarmerPoolCreation() {
             onFarmerSelect={handleFarmerSelect}
           />
         </div>
-
-        {error && <p style={styles.error}>{error}</p>}
-
+        {error && <Result status="error" title={error} />}
         <div style={styles.actions}>
           <Button
             variant="primary"

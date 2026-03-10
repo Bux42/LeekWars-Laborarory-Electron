@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, Col, Empty, List, Row, Skeleton, Typography } from 'antd';
+import { Col, Empty, List, Result, Row, Skeleton, Typography } from 'antd';
 import {
   useGetFightTeamGetByPoolRunIdIdOffsetLimit,
   useGetFightTeamGetCountByPoolRunIdId,
@@ -7,12 +7,13 @@ import {
 import { IPoolTeamFightListProps } from './PoolTeamFightList.types';
 import { theme } from '../../../../../theme';
 import PoolTeamFightListItem from '../pool-team-fight-list-item/PoolTeamFightListItem';
+import Spinner from '../../../../shared/spinner/Spinner';
 
 function PoolTeamFightList({ teams, poolTeamId }: IPoolTeamFightListProps) {
   const [offset, setOffset] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
 
-  const { data, error } = useGetFightTeamGetByPoolRunIdIdOffsetLimit(
+  const { data, error, isLoading } = useGetFightTeamGetByPoolRunIdIdOffsetLimit(
     poolTeamId,
     offset.toString(),
     limit.toString(),
@@ -30,8 +31,12 @@ function PoolTeamFightList({ teams, poolTeamId }: IPoolTeamFightListProps) {
     setOffset((page - 1) * pageSize);
   }
 
+  if (isLoading) {
+    return <Spinner label="Loading fights..." />;
+  }
+
   if (error) {
-    return <Alert message="Error loading fights." type="error" showIcon />;
+    return <Result status="error" title="Error: Failed to fetch fights" />;
   }
 
   return (

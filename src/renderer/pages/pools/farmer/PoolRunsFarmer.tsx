@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Result } from 'antd';
 import { usePoolFarmerId } from '../../../../hooks/pools/farmer/usePoolFarmerId';
 import { useGetFarmerPoolRunGetByPoolIdId } from '../../../../services/farmer-pool-runs/farmer-pool-runs';
 import { IPoolRunBase } from '../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
@@ -23,7 +24,7 @@ function PoolRunsFarmer() {
   }
 
   if (error) {
-    return <p style={styles.errorText}>Error: Failed to fetch runs</p>;
+    return <Result status="error" title="Failed to fetch runs" />;
   }
 
   return (

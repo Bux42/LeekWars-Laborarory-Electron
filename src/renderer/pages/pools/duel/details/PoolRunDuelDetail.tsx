@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Tabs } from 'antd';
+import { Result, Tabs } from 'antd';
 import { usePoolRunDuelId } from '../../../../../hooks/pool-runs/duel/usePoolRunDuelId';
 import Spinner from '../../../../components/shared/spinner/Spinner';
 import { poolsStyles as styles } from '../../Pools.styles';
@@ -9,8 +9,6 @@ import {
 } from '../../../../../services/duel-pool-runs/duel-pool-runs';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
-import { usePoolFightEstimation } from '../../../../../hooks/pools/duel/usePoolFightEstimation';
-import ProgressBar from '../../../../components/shared/progress-bar/ProgressBar';
 import PoolDuelLeek from '../../../../components/pool/duel/pool-duel-leek/PoolDuelLeek';
 import { useGetFightDuelGetCountByPoolRunIdId } from '../../../../../services/duel-fights/duel-fights';
 import PoolDuelFightList from '../../../../components/pool/duel/fight/pool-duel-fight-list/PoolDuelFightList';
@@ -45,11 +43,6 @@ function PoolRunDuelDetail() {
     setProcessedFights(count);
   });
 
-  const { totalFights } = usePoolFightEstimation(
-    poolDuelData?.leeks.length || 0,
-    poolDuelData?.basePool.fightLimit,
-  );
-
   const onStopDuelPoolRun = async () => {
     if (poolDuelData?.id) {
       try {
@@ -67,15 +60,15 @@ function PoolRunDuelDetail() {
   );
 
   if (!runId) {
-    return <p style={styles.errorText}>Invalid run ID</p>;
+    return <Result status="error" title="Invalid run ID" />;
   }
 
-  if (poolDuelIsLoading) {
+  if (poolDuelIsLoading || fightCountLoading) {
     return <Spinner label="Loading run details..." />;
   }
 
-  if (poolDuelError) {
-    return <p style={styles.errorText}>Error: Failed to fetch</p>;
+  if (poolDuelError || fightCountError) {
+    return <Result status="error" title="Error: Failed to fetch run details" />;
   }
 
   return (

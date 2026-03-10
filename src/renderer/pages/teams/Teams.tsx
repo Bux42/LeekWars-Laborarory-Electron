@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, Result } from 'antd';
 import { teamsStyles as styles } from './Teams.styles';
 import { useGetTeamsAll } from '../../../services/teams/teams';
 import TeamCard from '../../components/team/team-card/TeamCard';
+import Spinner from '../../components/shared/spinner/Spinner';
 
 function Teams() {
   const navigate = useNavigate();
@@ -14,11 +15,11 @@ function Teams() {
   } = useGetTeamsAll();
 
   if (isTeamsLoading) {
-    return <p>Loading teams...</p>;
+    return <Spinner size="small" label="Loading teams..." />;
   }
 
   if (isTeamsError) {
-    return <p>Failed to load teams. Please try again later.</p>;
+    return <Result status="error" title="Error loading teams" />;
   }
 
   return (
@@ -29,7 +30,10 @@ function Teams() {
       </div>
 
       {teamsData?.teams.length === 0 ? (
-        <p>No teams found.</p>
+        <Result
+          status="info"
+          title="No teams found. Click 'Add Team' to create your first team!"
+        />
       ) : (
         <div style={styles.teamList}>
           {teamsData?.teams.map((team) => (

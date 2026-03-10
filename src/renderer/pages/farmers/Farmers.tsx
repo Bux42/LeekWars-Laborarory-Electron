@@ -1,11 +1,16 @@
-import { Button } from 'antd';
+import { useEffect, useState } from 'react';
+import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { farmersStyles as styles } from './Farmers.styles';
 import { useGetFarmersAll } from '../../../services/farmers/farmers';
 import FarmerCard from '../../components/farmer/farmer-card/FarmerCard';
+import Spinner from '../../components/shared/spinner/Spinner';
+import { FarmerResponse } from '../../../services/leekwarsToolsAPI.schemas';
 
 function Farmers() {
   const navigate = useNavigate();
+
+  const [farmers, setFarmers] = useState<FarmerResponse[]>([]);
 
   const {
     data: farmersData,
@@ -13,15 +18,32 @@ function Farmers() {
     error: farmersError,
   } = useGetFarmersAll();
 
+  useEffect(() => {
+    if (farmersData?.farmers) {
+      setFarmers(farmersData.farmers);
+    }
+  }, [farmersData]);
+
+  const handleRemoveFarmer = (farmerId: string) => {
+    if (
+      window.confirm(
+        'Are you sure you want to remove this farmer? (NOT HOOKED UP TO BACKEND YET)',
+      )
+    ) {
+      // TODO delte farmer hook
+      setFarmers((prevFarmers) =>
+        prevFarmers.filter((farmer) => farmer.id !== farmerId),
+      );
+    }
+  };
+
   if (farmersLoading) {
-    return <p>Loading farmers...</p>;
+    return <Spinner size="small" label="Loading farmers..." />;
   }
 
   if (farmersError) {
-    return <p>Error loading farmers: {farmersError.message}</p>;
+    return <Result status="error" title="Error loading farmers" />;
   }
-
-  console.log('Farmers data:', farmersData);
 
   return (
     <>
@@ -30,12 +52,17 @@ function Farmers() {
         <Button onClick={() => navigate('/new-farmer')}>Add Farmer</Button>
       </div>
 
-      {farmersData?.farmers.length === 0 ? (
-        <p>No farmers found.</p>
+      {farmers.length === 0 ? (
+        <Result status="info" title="No farmers found." />
       ) : (
         <div style={styles.farmerList}>
-          {farmersData?.farmers.map((farmer) => (
-            <FarmerCard key={farmer.id} farmer={farmer} />
+          {farmers.map((farmer) => (
+            <FarmerCard
+              key={farmer.id}
+              farmer={farmer}
+              showRemoveFarmerButton
+              onRemoveFarmer={handleRemoveFarmer}
+            />
           ))}
         </div>
       )}

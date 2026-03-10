@@ -13,6 +13,7 @@ import {
   BrowseDirectoryResponse,
   FileInfo,
 } from '../../../services/leekwarsToolsAPI.schemas';
+import Spinner from '../shared/spinner/Spinner';
 
 function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
   const [browseDirectoryResponse, setBrowseDirectoryResponse] =
@@ -34,7 +35,7 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
     errorMessage || (fileListAllQuery.error ? 'Failed to fetch files' : null);
 
   const handleFileClick = async (file: FileInfo) => {
-    if (file.directory) {
+    if (file.directory && file.name) {
       setErrorMessage(null);
       try {
         const response = await browseFolderMutation.mutateAsync({
@@ -91,11 +92,7 @@ function FileBrowser({ onFileSelect, selectedFile }: IFileBrowserProps) {
   };
 
   if (isLoading) {
-    return (
-      <div style={styles.container}>
-        <p style={styles.loading}>Loading files...</p>
-      </div>
-    );
+    return <Spinner size="small" label="Loading files..." />;
   }
 
   if (error) {

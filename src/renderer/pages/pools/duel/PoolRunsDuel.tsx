@@ -1,4 +1,4 @@
-import React from 'react';
+import { Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { usePoolDuelId } from '../../../../hooks/pools/duel/usePoolDuelId';
 import { poolsStyles as styles } from '../Pools.styles';
@@ -24,7 +24,7 @@ function PoolRunsDuel() {
   }
 
   if (error) {
-    return <p style={styles.errorText}>Error: Failed to fetch runs</p>;
+    return <Result status="error" title="Failed to fetch runs" />;
   }
 
   return (

@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import { Result } from 'antd';
 import { poolsStyles as styles } from '../Pools.styles';
 import BasePoolList from '../../../components/pool/base/base-pool-list/BasePoolList';
 import Button from '../../../components/shared/button/Button';
 import { useGetDuelPoolsAll } from '../../../../services/duel-pools/duel-pools';
+import Spinner from '../../../components/shared/spinner/Spinner';
 
 function PoolDuel() {
   const navigate = useNavigate();
@@ -12,6 +14,14 @@ function PoolDuel() {
       queryKey: ['duelPools'],
     },
   });
+
+  if (isLoading) {
+    return <Spinner size="small" label="Loading pools..." />;
+  }
+
+  if (error) {
+    return <Result status="error" title="Error loading duel pools" />;
+  }
 
   return (
     <div style={styles.section}>
@@ -24,17 +34,12 @@ function PoolDuel() {
           Add Pool
         </Button>
       </div>
-
-      {isLoading && <p style={styles.loadingText}>Loading pools...</p>}
-      {!!error && <p style={styles.errorText}>Error: Failed to fetch pools</p>}
-      {!isLoading && !error && (
-        <BasePoolList
-          pools={data?.pools || []}
-          getLabel={(pool) => `${pool.leeks.length} leeks`}
-          onViewPoolClick={(pool) => navigate(`/pools/duel/${pool.id}`)}
-          emptyMessage="No duel pools found."
-        />
-      )}
+      <BasePoolList
+        pools={data?.pools || []}
+        getLabel={(pool) => `${pool.leeks.length} leeks`}
+        onViewPoolClick={(pool) => navigate(`/pools/duel/${pool.id}`)}
+        emptyMessage="No duel pools found."
+      />
     </div>
   );
 }

@@ -10,6 +10,8 @@ import {
   usePostDuelPoolsIdAddLeek,
   usePostDuelPoolsIdRemoveLeek,
 } from '../../../../../services/duel-pools/duel-pools';
+import LoadingText from '../../../text/loading-text/LoadingText';
+import Spinner from '../../../shared/spinner/Spinner';
 
 interface IPoolDuelCardProps {
   pool: DuelPoolResponse;
@@ -83,7 +85,7 @@ function PoolDuelCard({ pool: poolProp }: IPoolDuelCardProps) {
   ];
 
   if (isLoading) {
-    return <p style={styles.loadingText}>Loading pool leeks...</p>;
+    return <Spinner size="small" label="Loading pool leeks..." />;
   }
 
   if (error) {

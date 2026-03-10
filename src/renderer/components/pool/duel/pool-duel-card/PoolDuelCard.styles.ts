@@ -8,7 +8,6 @@ export const poolDuelCardStyles = {
   },
   title: {
     fontSize: '1rem',
-    marginBottom: theme.spacing.sm,
     color: theme.colors.text.secondary,
   },
   details: {

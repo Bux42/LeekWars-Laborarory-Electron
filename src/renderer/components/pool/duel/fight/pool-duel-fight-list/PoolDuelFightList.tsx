@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, Col, Empty, List, Row, Skeleton, Typography } from 'antd';
+import { Col, Empty, List, Result, Row, Skeleton, Typography } from 'antd';
 import { theme } from '../../../../../theme';
 import {
   useGetFightDuelGetByPoolRunIdIdOffsetLimit,
@@ -7,12 +7,13 @@ import {
 } from '../../../../../../services/duel-fights/duel-fights';
 import PoolDuelFightListItem from '../pool-duel-fight-list-item/PoolDuelFightListItem';
 import { IPoolDuelFightListProps } from './PoolDuelFightList.types';
+import Spinner from '../../../../shared/spinner/Spinner';
 
 function PoolDuelFightList({ poolDuelId, leeks }: IPoolDuelFightListProps) {
   const [offset, setOffset] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
 
-  const { data, error } = useGetFightDuelGetByPoolRunIdIdOffsetLimit(
+  const { data, error, isLoading } = useGetFightDuelGetByPoolRunIdIdOffsetLimit(
     poolDuelId,
     offset.toString(),
     limit.toString(),
@@ -30,8 +31,12 @@ function PoolDuelFightList({ poolDuelId, leeks }: IPoolDuelFightListProps) {
     setOffset((page - 1) * pageSize);
   }
 
+  if (isLoading) {
+    return <Spinner label="Loading fights..." />;
+  }
+
   if (error) {
-    return <Alert message="Error loading fights." type="error" showIcon />;
+    return <Result status="error" title="Error: Failed to fetch fights" />;
   }
 
   return (

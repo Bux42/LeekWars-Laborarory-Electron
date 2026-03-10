@@ -91,6 +91,14 @@ function FarmerCard({
     }
   };
 
+  const getDropdownItems = (leek: LeekResponse): IDropdownItem[] => [
+    {
+      label: 'Remove',
+      onClick: () => handleRemoveFarmerLeek(leek),
+      variant: 'danger',
+    },
+  ];
+
   return (
     <div style={styles.container}>
       <h2>{farmerResponse.name}</h2>
@@ -112,7 +120,10 @@ function FarmerCard({
           selectedLeekIds={selectedLeekIds}
         />
       )}
-      <LeekList leeks={farmerResponse.leeks} />
+      <LeekList
+        leeks={farmerResponse.leeks}
+        getDropdownItems={getDropdownItems}
+      />
     </div>
   );
 }

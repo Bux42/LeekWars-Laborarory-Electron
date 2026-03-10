@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
   useDeleteFarmerPoolsIdRemoveFarmerFarmerId,
@@ -14,6 +15,7 @@ import FarmerList from '../../../../components/farmer/farmer-list/FarmerList';
 import { usePostFarmerPoolRunIdStart } from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
 import { FarmerPoolResponse } from '../../../../../services/leekwarsToolsAPI.schemas';
 import LastPoolRunsButttons from '../../../../components/pool-runs/last-pool-runs-buttons/LastPoolRunsButttons';
+import Spinner from '../../../../components/shared/spinner/Spinner';
 
 function PoolFarmerDetail() {
   const navigate = useNavigate();
@@ -26,10 +28,6 @@ function PoolFarmerDetail() {
   } = useGetFarmerPoolsId(poolId);
 
   const [farmerPool, setFarmerPool] = useState<FarmerPoolResponse | null>(pool);
-  const [isAddingFarmer, setIsAddingFarmer] = useState<boolean>(isLoadingPool);
-  const [farmerPoolError, setFarmerPoolError] = useState<void | null>(
-    poolError,
-  );
 
   const {
     data: runsInfo,
@@ -68,20 +66,6 @@ function PoolFarmerDetail() {
       console.error('Failed to start pool duel:', err);
     }
   };
-
-  if (isLoadingPool || isLoadingFarmers) {
-    return <p>Loading pool details...</p>;
-  }
-
-  if (poolError || farmersError || !pool || !pool.basePool) {
-    return (
-      <p style={{ color: 'red' }}>
-        {poolError || farmersError
-          ? 'Error: Failed to fetch pool details'
-          : 'Pool not found'}
-      </p>
-    );
-  }
 
   const onAddFarmerToPool = (farmerId: string) => {
     if (selectedFarmersIds.includes(farmerId)) {
@@ -131,7 +115,13 @@ function PoolFarmerDetail() {
     }
   };
 
-  console.log('farmers.farmers', farmers?.farmers);
+  if (isLoadingPool || isLoadingFarmers || runsInfoLoading) {
+    return <Spinner label="Loading pool details..." />;
+  }
+
+  if (poolError || farmersError || runsInfoError || !pool || !pool.basePool) {
+    return <Result status="error" title="Error loading pool details" />;
+  }
 
   return (
     <BasePoolWrapper

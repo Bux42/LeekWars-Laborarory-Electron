@@ -1,7 +1,6 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Result } from 'antd';
 import { leeksStyles as styles } from './Leeks.styles';
-import { theme } from '../../theme';
 import LeekList from '../../components/leek/leek-list/LeekList';
 import Button from '../../components/shared/button/Button';
 import { IDropdownItem } from '../../components/shared/dropdown/Dropdown.types';
@@ -10,6 +9,7 @@ import {
   useDeleteLeeksDeleteLeekId,
   useGetLeeksAll,
 } from '../../../services/leeks/leeks';
+import Spinner from '../../components/shared/spinner/Spinner';
 
 function Leeks() {
   const navigate = useNavigate();
@@ -69,23 +69,11 @@ function Leeks() {
   ];
 
   if (loading) {
-    return (
-      <>
-        <h1>Leeks</h1>
-        <p>Loading leeks...</p>
-      </>
-    );
+    return <Spinner size="small" label="Loading leeks..." />;
   }
 
   if (error) {
-    return (
-      <>
-        <h1>Leeks</h1>
-        <p style={{ color: theme.colors.accent.error }}>
-          Error: Failed to fetch leeks
-        </p>
-      </>
-    );
+    return <Result status="error" title="Error loading leeks" />;
   }
 
   return (
@@ -105,7 +93,10 @@ function Leeks() {
         </div>
       </div>
       {leeks.length === 0 ? (
-        <p>No leeks found.</p>
+        <Result
+          status="info"
+          title="No leeks found. Click 'Add Leek' to create your first leek!"
+        />
       ) : (
         <LeekList leeks={leeks} getDropdownItems={getDropdownItems} />
       )}

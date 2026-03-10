@@ -2,6 +2,7 @@ import React from 'react';
 import { theme } from '../../../theme';
 import { farmerPickerStyles as styles } from './FarmerPicker.styles';
 import { IFarmerPickerProps } from './FarmerPicker.types';
+import Spinner from '../../shared/spinner/Spinner';
 
 function FarmerPicker({
   label,
@@ -15,12 +16,7 @@ function FarmerPicker({
     ) ?? [];
 
   if (!availableFarmers) {
-    return (
-      <div style={styles.container}>
-        <div style={styles.title}>{label}</div>
-        <p style={styles.emptyText}>Loading farmers...</p>
-      </div>
-    );
+    return <Spinner size="small" label="Loading farmers..." />;
   }
 
   if (!availableFarmers.length) {

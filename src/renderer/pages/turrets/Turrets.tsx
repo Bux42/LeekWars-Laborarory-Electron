@@ -8,6 +8,7 @@ import {
 import TurretList from '../../components/turret/turret-list/TurretList';
 import { TurretResponse } from '../../../services/leekwarsToolsAPI.schemas';
 import { IDropdownItem } from '../../components/shared/dropdown/Dropdown.types';
+import Spinner from '../../components/shared/spinner/Spinner';
 
 function Turrets() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function Turrets() {
   ];
 
   if (isLoadingTurrets) {
-    return <p>Loading turrets...</p>;
+    return <Spinner size="small" label="Loading turrets..." />;
   }
 
   if (isErrorTurrets) {
