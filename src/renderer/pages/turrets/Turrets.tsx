@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { turretsStyles as styles } from './Turrets.styles';
@@ -13,11 +14,19 @@ import Spinner from '../../components/shared/spinner/Spinner';
 function Turrets() {
   const navigate = useNavigate();
 
+  const [turrets, setTurrets] = useState<TurretResponse[]>([]);
+
   const {
-    data: turrets,
+    data: turretsData,
     isLoading: isLoadingTurrets,
     isError: isErrorTurrets,
   } = useGetTurretsAll();
+
+  useEffect(() => {
+    if (turretsData?.turrets) {
+      setTurrets(turretsData.turrets);
+    }
+  }, [turretsData]);
 
   const { mutate: deleteTurret } = useDeleteTurretsDeleteTurretId();
 
@@ -35,6 +44,9 @@ function Turrets() {
     ) {
       try {
         await deleteTurret({ turretId: turret.id });
+        setTurrets((prevTurrets) =>
+          prevTurrets.filter((t) => t.id !== turret.id),
+        );
       } catch (err) {
         console.error('Failed to delete turret:', err);
         alert('Failed to delete turret. Please try again.');
@@ -74,13 +86,10 @@ function Turrets() {
           <Button onClick={() => navigate('/new-turret')}>Add Turret</Button>
         </div>
       </div>
-      {turrets && turrets.turrets.length === 0 ? (
+      {turrets.length === 0 ? (
         <p>No turrets found.</p>
       ) : (
-        <TurretList
-          turrets={turrets?.turrets ?? []}
-          getDropdownItems={getDropdownItems}
-        />
+        <TurretList turrets={turrets} getDropdownItems={getDropdownItems} />
       )}
     </>
   );
