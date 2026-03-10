@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { ITeamPickerProps } from './TeamPicker.types';
 import LeekImage from '../../leek/leek-image/LeekImage';
 import { teamPickerStyles as styles } from './TeamPicker.styles';
+import TurretImage from '../../turret/turret-image/TurretImage';
 
 function TeamPicker({
   label,
@@ -23,12 +24,19 @@ function TeamPicker({
         <div style={styles.teamsGrid}>
           {filteredTeams.map((team) => (
             <div
+              aria-hidden="true"
               key={team.id}
               style={styles.teamItem}
               onClick={() => onTeamSelect(team.id)}
             >
               <div>{team.name}</div>
               <div>
+                <TurretImage
+                  turret={team.turret}
+                  height={40}
+                  width={40}
+                  showTooltip
+                />
                 {team.leeks.map((leek) => (
                   <LeekImage
                     key={leek.id}
@@ -39,8 +47,6 @@ function TeamPicker({
                   />
                 ))}
               </div>
-              <div>{team.leeks.length} leeks</div>
-              <div>Turret: {team.turret.name}</div>
             </div>
           ))}
         </div>

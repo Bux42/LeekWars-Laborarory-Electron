@@ -1,8 +1,11 @@
+import { theme } from '../../../theme';
+
 export interface TeamListStyles {
   container: React.CSSProperties;
   emptyText: React.CSSProperties;
   teamCard: React.CSSProperties;
   titleAndButtonContainer: React.CSSProperties;
+  teamContainer: React.CSSProperties;
 }
 
 export const teamListStyles: TeamListStyles = {
@@ -26,5 +29,13 @@ export const teamListStyles: TeamListStyles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  teamContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    backgroundColor: theme.colors.background.tertiary,
+    borderRadius: '8px',
+    padding: '16px',
   },
 };

@@ -9,6 +9,7 @@ import { useGetFightTeamGetCountByPoolRunIdId } from '../../../../../services/te
 import PoolTeamTeam from '../../../../components/pool/team/pool-team-team/PoolTeamTeam';
 import PoolTeamFightList from '../../../../components/pool/team/fight/pool-team-fight-list/PoolTeamFightList';
 import { usePoolTeamFightCountWs } from '../../../../../hooks/fights/team/usePoolTeamFightCountWs';
+import { poolRunTeamDetailStyles } from './PoolRunTeamDetail.styles';
 
 function PoolRunTeamDetail() {
   const poolRunId = usePoolRunTeamId();
@@ -78,11 +79,11 @@ function PoolRunTeamDetail() {
               key: 'teams',
               label: 'Teams',
               children: (
-                <>
+                <div style={poolRunTeamDetailStyles.teamListContainer}>
                   {teamsSortedByElo.map((team) => (
                     <PoolTeamTeam key={team.id} team={team} />
                   ))}
-                </>
+                </div>
               ),
             },
             // {

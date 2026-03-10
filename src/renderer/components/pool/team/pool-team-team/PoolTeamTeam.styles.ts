@@ -15,7 +15,10 @@ export const poolTeamTeamStyles: IPoolTeamTeamStyles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
-    marginBottom: '10px',
+    borderRadius: '8px',
+    padding: '16px',
+    gap: '10px',
+    backgroundColor: theme.colors.background.elevated,
   },
   title: {
     marginBottom: '5px',
@@ -34,6 +37,9 @@ export const poolTeamTeamStyles: IPoolTeamTeamStyles = {
     alignItems: 'center',
     gap: '4px',
     marginLeft: 'auto',
+    backgroundColor: theme.colors.background.secondary,
+    padding: '4px 8px',
+    borderRadius: '4px',
   },
   eloIcon: {
     width: '16px',

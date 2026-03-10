@@ -1,3 +1,5 @@
+import { theme } from '../../../theme';
+
 export interface TurretCardStyles {
   container: React.CSSProperties;
   image: React.CSSProperties;
@@ -13,13 +15,12 @@ export const turretCardStyles: TurretCardStyles = {
     alignItems: 'center',
     padding: '16px',
     borderRadius: '8px',
-    border: '1px solid #ccc',
+    border: `1px solid ${theme.colors.background.elevated}`,
     width: '200px',
   },
   image: {
     width: '100%',
     height: 'auto',
-    marginBottom: '12px',
   },
   name: {
     fontSize: '18px',
