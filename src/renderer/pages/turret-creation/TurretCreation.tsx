@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Slider } from 'antd';
 import { IEntityBuild } from '../../../services/leekwars-laboratory/types/builds/EntityBuild.types';
 import Input from '../../components/shared/input/Input';
@@ -13,6 +14,8 @@ import { TURRET_CHIPS_IDS } from '../../constants/leekwars/Chips';
 import { getEmptyStats } from '../../utils/LeekWars';
 
 function TurretCreation() {
+  const navigate = useNavigate();
+
   const [entityBuild, setEntityBuild] = useState<IEntityBuild | null>(null);
   const [level, setLevel] = useState<number>(100);
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +57,7 @@ function TurretCreation() {
           build: entityBuild,
         },
       });
+      navigate('/turrets');
     } catch {
       setError('Failed to create turret. Please try again.');
       return;

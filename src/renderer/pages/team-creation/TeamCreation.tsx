@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Result } from 'antd';
 import { useGetLeeksAll } from '../../../services/leeks/leeks';
 import LeekPicker from '../../components/leek/leek-picker/LeekPicker';
 import Button from '../../components/shared/button/Button';
@@ -10,9 +12,10 @@ import { useGetTurretsAll } from '../../../services/turrets/turrets';
 import LeekList from '../../components/leek/leek-list/LeekList';
 import { usePostTeamsAdd } from '../../../services/teams/teams';
 import Spinner from '../../components/shared/spinner/Spinner';
-import { Result } from 'antd';
 
 function TeamCreation() {
+  const navigate = useNavigate();
+
   const [teamName, setTeamName] = useState('');
   const [selectedLeeks, setSelectedLeeks] = useState<LeekResponse[]>([]);
   const [selectedTurretId, setSelectedTurretId] = useState<string | undefined>(
@@ -73,6 +76,7 @@ function TeamCreation() {
       setTeamName('');
       setSelectedLeeks([]);
       setSelectedTurretId(undefined);
+      navigate('/teams');
     } catch (err) {
       console.error('Failed to create team:', err);
       setError('Failed to create team. Please try again.');

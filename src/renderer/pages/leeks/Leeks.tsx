@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Result } from 'antd';
 import { leeksStyles as styles } from './Leeks.styles';
 import LeekList from '../../components/leek/leek-list/LeekList';
@@ -13,6 +14,9 @@ import Spinner from '../../components/shared/spinner/Spinner';
 
 function Leeks() {
   const navigate = useNavigate();
+
+  const [leeks, setLeeks] = useState<LeekResponse[]>([]);
+
   const {
     data,
     isLoading: loading,
@@ -23,7 +27,13 @@ function Leeks() {
     },
   });
 
-  const leeks = data?.leeks ?? [];
+  useEffect(() => {
+    if (data?.leeks) {
+      setLeeks(data.leeks);
+    }
+  }, [data?.leeks]);
+
+  // const leeks = data?.leeks ?? [];
   const deleteLeekMutation = useDeleteLeeksDeleteLeekId();
 
   const handleEdit = (leek: LeekResponse) => {
@@ -46,6 +56,7 @@ function Leeks() {
     ) {
       try {
         await deleteLeekMutation.mutateAsync({ leekId: leek.id });
+        setLeeks((prevLeeks) => prevLeeks.filter((l) => l.id !== leek.id));
       } catch (err) {
         console.error('Failed to delete leek:', err);
       }

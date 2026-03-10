@@ -234,3 +234,86 @@ export function useGetTeamsAll<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Removes a team from the system.
+ * @summary Remove a team
+ */
+export const deleteTeamsDeleteTeamId = (
+  teamId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<void>({
+    url: `/teams/delete/${teamId}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeleteTeamsDeleteTeamIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteTeamsDeleteTeamId>>,
+    TError,
+    { teamId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteTeamsDeleteTeamId>>,
+  TError,
+  { teamId: string },
+  TContext
+> => {
+  const mutationKey = ['deleteTeamsDeleteTeamId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteTeamsDeleteTeamId>>,
+    { teamId: string }
+  > = (props) => {
+    const { teamId } = props ?? {};
+
+    return deleteTeamsDeleteTeamId(teamId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteTeamsDeleteTeamIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteTeamsDeleteTeamId>>
+>;
+
+export type DeleteTeamsDeleteTeamIdMutationError = void;
+
+/**
+ * @summary Remove a team
+ */
+export const useDeleteTeamsDeleteTeamId = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteTeamsDeleteTeamId>>,
+      TError,
+      { teamId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteTeamsDeleteTeamId>>,
+  TError,
+  { teamId: string },
+  TContext
+> => {
+  return useMutation(
+    getDeleteTeamsDeleteTeamIdMutationOptions(options),
+    queryClient,
+  );
+};
