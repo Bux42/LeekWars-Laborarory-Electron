@@ -237,6 +237,91 @@ export function useGetFarmersAll<
 }
 
 /**
+ * Deletes a farmer.
+ * @summary Delete a farmer
+ */
+export const deleteFarmersDeleteFarmerId = (
+  farmerId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<void>({
+    url: `/farmers/delete/${farmerId}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeleteFarmersDeleteFarmerIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteFarmersDeleteFarmerId>>,
+    TError,
+    { farmerId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteFarmersDeleteFarmerId>>,
+  TError,
+  { farmerId: string },
+  TContext
+> => {
+  const mutationKey = ['deleteFarmersDeleteFarmerId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteFarmersDeleteFarmerId>>,
+    { farmerId: string }
+  > = (props) => {
+    const { farmerId } = props ?? {};
+
+    return deleteFarmersDeleteFarmerId(farmerId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteFarmersDeleteFarmerIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteFarmersDeleteFarmerId>>
+>;
+
+export type DeleteFarmersDeleteFarmerIdMutationError = void;
+
+/**
+ * @summary Delete a farmer
+ */
+export const useDeleteFarmersDeleteFarmerId = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteFarmersDeleteFarmerId>>,
+      TError,
+      { farmerId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteFarmersDeleteFarmerId>>,
+  TError,
+  { farmerId: string },
+  TContext
+> => {
+  return useMutation(
+    getDeleteFarmersDeleteFarmerIdMutationOptions(options),
+    queryClient,
+  );
+};
+/**
  * Adds a leek to a farmer.
  * @summary Add a leek to a farmer
  */

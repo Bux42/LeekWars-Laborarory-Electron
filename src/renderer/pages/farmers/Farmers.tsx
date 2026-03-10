@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { farmersStyles as styles } from './Farmers.styles';
-import { useGetFarmersAll } from '../../../services/farmers/farmers';
+import {
+  useDeleteFarmersDeleteFarmerId,
+  useGetFarmersAll,
+} from '../../../services/farmers/farmers';
 import FarmerCard from '../../components/farmer/farmer-card/FarmerCard';
 import Spinner from '../../components/shared/spinner/Spinner';
 import { FarmerResponse } from '../../../services/leekwarsToolsAPI.schemas';
@@ -18,6 +21,8 @@ function Farmers() {
     error: farmersError,
   } = useGetFarmersAll();
 
+  const deleteFarmerMutation = useDeleteFarmersDeleteFarmerId();
+
   useEffect(() => {
     if (farmersData?.farmers) {
       setFarmers(farmersData.farmers);
@@ -30,10 +35,14 @@ function Farmers() {
         'Are you sure you want to remove this farmer? (NOT HOOKED UP TO BACKEND YET)',
       )
     ) {
-      // TODO delte farmer hook
-      setFarmers((prevFarmers) =>
-        prevFarmers.filter((farmer) => farmer.id !== farmerId),
-      );
+      try {
+        deleteFarmerMutation.mutate({ farmerId });
+        setFarmers((prevFarmers) =>
+          prevFarmers.filter((farmer) => farmer.id !== farmerId),
+        );
+      } catch {
+        alert('Failed to remove farmer. Please try again.');
+      }
     }
   };
 
