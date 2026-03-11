@@ -27,6 +27,7 @@ import type {
   AnalyzeAIResponse,
   EntityAIResponse,
   ListAIResponse,
+  RenameAIRequest,
 } from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
@@ -447,3 +448,86 @@ export function useGetAiId<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Renames a specific AI by ID.
+ * @summary Rename AI
+ */
+export const putAiIdRename = (
+  id: string,
+  renameAIRequest: RenameAIRequest,
+  signal?: AbortSignal,
+) => {
+  return apiClient<EntityAIResponse>({
+    url: `/ai/${id}/rename`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: renameAIRequest,
+    signal,
+  });
+};
+
+export const getPutAiIdRenameMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putAiIdRename>>,
+    TError,
+    { id: string; data: RenameAIRequest },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putAiIdRename>>,
+  TError,
+  { id: string; data: RenameAIRequest },
+  TContext
+> => {
+  const mutationKey = ['putAiIdRename'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putAiIdRename>>,
+    { id: string; data: RenameAIRequest }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return putAiIdRename(id, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PutAiIdRenameMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putAiIdRename>>
+>;
+export type PutAiIdRenameMutationBody = RenameAIRequest;
+export type PutAiIdRenameMutationError = void;
+
+/**
+ * @summary Rename AI
+ */
+export const usePutAiIdRename = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof putAiIdRename>>,
+      TError,
+      { id: string; data: RenameAIRequest },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof putAiIdRename>>,
+  TError,
+  { id: string; data: RenameAIRequest },
+  TContext
+> => {
+  return useMutation(getPutAiIdRenameMutationOptions(options), queryClient);
+};

@@ -21,6 +21,12 @@ const leekscriptAIStyles = {
     fontWeight: 'bold',
     marginBottom: theme.spacing.sm,
   },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: theme.spacing.md,
+  },
   metadataContainer: {
     backgroundColor: theme.colors.background.tertiary,
     padding: theme.spacing.md,

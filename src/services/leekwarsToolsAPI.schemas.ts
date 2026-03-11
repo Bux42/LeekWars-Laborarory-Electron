@@ -14,6 +14,10 @@ export interface AnalyzeAIRequest {
   filePath?: string;
 }
 
+export interface RenameAIRequest {
+  newName: string;
+}
+
 export interface GitInfosResponse {
   repoUrl: string;
   branchName: string;
