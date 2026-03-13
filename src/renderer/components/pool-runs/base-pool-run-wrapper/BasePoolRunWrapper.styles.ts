@@ -69,4 +69,8 @@ export const basePoolRunWrapperStyles = {
     paddingTop: theme.spacing.md,
     borderTop: `1px solid ${theme.colors.border.secondary}`,
   },
+  seedIcon: {
+    width: 16,
+    height: 16,
+  },
 };

@@ -1,6 +1,7 @@
 export interface IBasePoolListBasePool {
   name: string;
   deterministic?: boolean;
+  startSeed?: number;
 }
 
 export interface IBasePoolListItem {

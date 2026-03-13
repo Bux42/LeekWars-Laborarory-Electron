@@ -45,4 +45,8 @@ export const poolRunListStyles = {
     textAlign: 'center' as const,
     padding: theme.spacing.md,
   },
+  seedIcon: {
+    width: 16,
+    height: 16,
+  },
 };

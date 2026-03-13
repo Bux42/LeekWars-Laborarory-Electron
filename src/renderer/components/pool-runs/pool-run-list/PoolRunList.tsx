@@ -5,6 +5,8 @@ import { getDuration, getTimeAgo } from '../../../utils/DateUtils';
 import Button from '../../shared/button/Button';
 import Spinner from '../../shared/spinner/Spinner';
 import { theme } from '../../../theme';
+import HoverTooltip from '../../shared/hover-tooltip/HoverTooltip';
+import SeedIcon from '../../../icons/Seed';
 
 function PoolRunList({ runs, onViewRun }: IPoolRunListProps) {
   // Local state to force re-render for active runs durations
@@ -39,7 +41,16 @@ function PoolRunList({ runs, onViewRun }: IPoolRunListProps) {
           <div style={styles.info}>
             <div style={styles.titleContainer}>
               <span style={styles.poolName}>
-                {run.basePool?.name || 'Unknown Pool'}
+                {run.basePool.name || 'Unknown Pool'}
+                {run.basePool.deterministic && (
+                  <HoverTooltip
+                    tooltip={<div>Start seed: {run.basePool.startSeed}</div>}
+                  >
+                    <div style={styles.seedIcon}>
+                      <SeedIcon />
+                    </div>
+                  </HoverTooltip>
+                )}
               </span>
               {run.running && <Spinner size="small" />}
             </div>

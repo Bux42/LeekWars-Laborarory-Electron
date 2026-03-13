@@ -30,9 +30,11 @@ function BasePoolList<TPool extends IBasePoolListItem>({
         >
           <div style={styles.info}>
             <div style={styles.nameContainer}>
-              <span style={styles.name}>{pool.basePool?.name}</span>
+              <span style={styles.name}>{pool.basePool.name}</span>
               {pool.basePool.deterministic && (
-                <HoverTooltip tooltip={<div>Pool is deterministic</div>}>
+                <HoverTooltip
+                  tooltip={<div>Start seed: {pool.basePool.startSeed}</div>}
+                >
                   <div style={styles.seedIcon}>
                     <SeedIcon />
                   </div>
