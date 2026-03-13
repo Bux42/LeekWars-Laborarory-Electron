@@ -45,15 +45,17 @@ function BasePoolRunWrapper({
       <div style={styles.header}>
         <div style={styles.titleContainer}>
           <h2 style={styles.title}>
-            Run: {run.basePool?.name || 'Unknown Pool'}
+            Run: {run.basePool.name || 'Unknown Pool'}
           </h2>
-          <HoverTooltip
-            tooltip={<div>Start seed: {run.basePool.startSeed}</div>}
-          >
-            <div style={styles.seedIcon}>
-              <SeedIcon />
-            </div>
-          </HoverTooltip>
+          {run.basePool.deterministic && (
+            <HoverTooltip
+              tooltip={<div>Start seed: {run.basePool.startSeed}</div>}
+            >
+              <div style={styles.seedIcon}>
+                <SeedIcon />
+              </div>
+            </HoverTooltip>
+          )}
           <span style={styles.statusBadge(run.running, run.interrupted)}>
             {statusText}
           </span>
