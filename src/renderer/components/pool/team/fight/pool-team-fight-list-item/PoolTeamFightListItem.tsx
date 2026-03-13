@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Col, Row, Spin, Typography } from 'antd';
+import { Col, Row, Spin, Typography, message } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
 import { IPoolTeamFightListItemProps } from './PoolTeamFightListItem.types';
 import { getTimeAgo } from '../../../../../utils/DateUtils';
@@ -92,7 +92,7 @@ function PoolTeamFightListItem({
 
       <Col span={2} style={styles.column}>
         {generatingFight ? (
-          <div style={styles.spin}>
+          <div style={styles.actionContainer}>
             <Spin size="small" />
           </div>
         ) : (

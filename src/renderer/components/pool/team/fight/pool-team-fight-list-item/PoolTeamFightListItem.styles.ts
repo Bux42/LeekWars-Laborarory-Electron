@@ -13,7 +13,6 @@ export interface IPoolTeamFightListItemStyles {
   dateText: CSSProperties;
   actionContainer: CSSProperties;
   eyeIcon: CSSProperties;
-  spin: CSSProperties;
 }
 
 export const poolTeamFightListItemStyles: IPoolTeamFightListItemStyles = {
@@ -60,17 +59,13 @@ export const poolTeamFightListItemStyles: IPoolTeamFightListItemStyles = {
   },
   actionContainer: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
   },
   eyeIcon: {
     color: theme.colors.accent.primary,
     cursor: 'pointer',
     fontSize: 16,
-  },
-  spin: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    width: '100%',
   },
 };

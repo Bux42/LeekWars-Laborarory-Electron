@@ -13,7 +13,6 @@ export interface IPoolFarmerFightListItemStyles {
   dateText: CSSProperties;
   actionContainer: CSSProperties;
   eyeIcon: CSSProperties;
-  spin: CSSProperties;
 }
 
 export const poolFarmerFightListItemStyles: IPoolFarmerFightListItemStyles = {
@@ -60,17 +59,13 @@ export const poolFarmerFightListItemStyles: IPoolFarmerFightListItemStyles = {
   },
   actionContainer: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
   },
   eyeIcon: {
     color: theme.colors.accent.primary,
     cursor: 'pointer',
     fontSize: 16,
-  },
-  spin: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    width: '100%',
   },
 };

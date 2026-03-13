@@ -96,7 +96,7 @@ function PoolFarmerFightListItem({
 
       <Col span={2} style={styles.column}>
         {generatingFight ? (
-          <div style={styles.spin}>
+          <div style={styles.actionContainer}>
             <Spin size="small" />
           </div>
         ) : (
