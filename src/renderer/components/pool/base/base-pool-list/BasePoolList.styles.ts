@@ -10,6 +10,7 @@ export interface IBasePoolListStyles {
   details: React.CSSProperties;
   actions: React.CSSProperties;
   emptyText: React.CSSProperties;
+  seedIcon: React.CSSProperties;
 }
 
 export const basePoolListStyles: IBasePoolListStyles = {
@@ -57,5 +58,10 @@ export const basePoolListStyles: IBasePoolListStyles = {
     fontStyle: 'italic',
     textAlign: 'center',
     padding: theme.spacing.md,
+  },
+  seedIcon: {
+    width: 16,
+    height: 16,
+    color: theme.colors.accent.primary,
   },
 };

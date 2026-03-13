@@ -2,6 +2,8 @@ import Button from '../../../shared/button/Button';
 import { theme } from '../../../../theme';
 import { basePoolListStyles as styles } from './BasePoolList.styles';
 import { IBasePoolListItem, IBasePoolListProps } from './BasePoolList.types';
+import SeedIcon from '../../../../icons/Seed';
+import HoverTooltip from '../../../shared/hover-tooltip/HoverTooltip';
 
 function BasePoolList<TPool extends IBasePoolListItem>({
   pools,
@@ -29,6 +31,13 @@ function BasePoolList<TPool extends IBasePoolListItem>({
           <div style={styles.info}>
             <div style={styles.nameContainer}>
               <span style={styles.name}>{pool.basePool?.name}</span>
+              {pool.basePool.deterministic && (
+                <HoverTooltip tooltip={<div>Pool is deterministic</div>}>
+                  <div style={styles.seedIcon}>
+                    <SeedIcon />
+                  </div>
+                </HoverTooltip>
+              )}
             </div>
             <span style={styles.details}>
               {getLabel(pool)} • Pool ID: {pool.id.substring(0, 8)}...

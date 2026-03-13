@@ -1,5 +1,6 @@
 export interface IBasePoolListBasePool {
   name: string;
+  deterministic?: boolean;
 }
 
 export interface IBasePoolListItem {
