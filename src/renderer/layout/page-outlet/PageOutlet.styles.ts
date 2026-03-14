@@ -10,7 +10,7 @@ export const pageOutletStyles: IPageOutletStyles = {
     flexDirection: 'column',
     width: '100%',
     height: '100%',
-    padding: theme.spacing.lg,
+    padding: theme.spacing.md,
     color: theme.colors.text.primary,
   },
 };
