@@ -7,7 +7,7 @@ import {
 } from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
-import { poolsStyles as styles } from '../../Pools.styles';
+import { poolsStyles as styles } from '../../../pools/Pools.styles';
 import { useGetFightFarmerGetCountByPoolRunIdId } from '../../../../../services/farmer-fights/farmer-fights';
 import PoolFarmerFarmer from '../../../../components/pool/farmer/pool-farmer-farmer/PoolFarmerFarmer';
 import PoolFarmerFightList from '../../../../components/pool/farmer/fight/pool-farmer-fight-list/PoolFarmerFightList';

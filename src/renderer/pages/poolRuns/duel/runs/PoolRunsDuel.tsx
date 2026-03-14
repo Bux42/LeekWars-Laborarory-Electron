@@ -1,11 +1,11 @@
 import { Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { usePoolDuelId } from '../../../../hooks/pools/duel/usePoolDuelId';
-import { poolsStyles as styles } from '../Pools.styles';
-import PoolRunList from '../../../components/pool-runs/pool-run-list/PoolRunList';
-import Spinner from '../../../components/shared/spinner/Spinner';
-import { IPoolRunBase } from '../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
-import { useGetDuelPoolRunGetByPoolIdId } from '../../../../services/duel-pool-runs/duel-pool-runs';
+import { usePoolDuelId } from '../../../../../hooks/pools/duel/usePoolDuelId';
+import { poolsStyles as styles } from '../../../pools/Pools.styles';
+import PoolRunList from '../../../../components/pool-runs/pool-run-list/PoolRunList';
+import Spinner from '../../../../components/shared/spinner/Spinner';
+import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
+import { useGetDuelPoolRunGetByPoolIdId } from '../../../../../services/duel-pool-runs/duel-pool-runs';
 
 function PoolRunsDuel() {
   const navigate = useNavigate();

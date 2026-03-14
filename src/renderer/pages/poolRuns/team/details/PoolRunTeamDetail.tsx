@@ -4,7 +4,7 @@ import { usePoolRunTeamId } from '../../../../../hooks/pool-runs/team/usePoolRun
 import { useGetTeamPoolRunId } from '../../../../../services/team-pool-runs/team-pool-runs';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
-import { poolsStyles as styles } from '../../Pools.styles';
+import { poolsStyles as styles } from '../../../pools/Pools.styles';
 import { useGetFightTeamGetCountByPoolRunIdId } from '../../../../../services/team-fights/team-fights';
 import PoolTeamTeam from '../../../../components/pool/team/pool-team-team/PoolTeamTeam';
 import PoolTeamFightList from '../../../../components/pool/team/fight/pool-team-fight-list/PoolTeamFightList';

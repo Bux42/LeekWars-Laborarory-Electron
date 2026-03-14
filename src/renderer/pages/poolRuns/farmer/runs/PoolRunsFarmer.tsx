@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { Result } from 'antd';
-import { usePoolFarmerId } from '../../../../hooks/pools/farmer/usePoolFarmerId';
-import { useGetFarmerPoolRunGetByPoolIdId } from '../../../../services/farmer-pool-runs/farmer-pool-runs';
-import { IPoolRunBase } from '../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
-import Spinner from '../../../components/shared/spinner/Spinner';
-import PoolRunList from '../../../components/pool-runs/pool-run-list/PoolRunList';
-import { poolsStyles as styles } from '../Pools.styles';
+import { usePoolFarmerId } from '../../../../../hooks/pools/farmer/usePoolFarmerId';
+import { useGetFarmerPoolRunGetByPoolIdId } from '../../../../../services/farmer-pool-runs/farmer-pool-runs';
+import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
+import Spinner from '../../../../components/shared/spinner/Spinner';
+import PoolRunList from '../../../../components/pool-runs/pool-run-list/PoolRunList';
+import { poolsStyles as styles } from '../../../pools/Pools.styles';
 
 function PoolRunsFarmer() {
   const navigate = useNavigate();

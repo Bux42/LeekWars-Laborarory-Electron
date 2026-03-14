@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { Result } from 'antd';
-import { usePoolTeamId } from '../../../../hooks/pools/team/usePoolTeamId';
-import { useGetTeamPoolRunGetByPoolIdId } from '../../../../services/team-pool-runs/team-pool-runs';
-import { IPoolRunBase } from '../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
-import Spinner from '../../../components/shared/spinner/Spinner';
-import { poolsStyles as styles } from '../Pools.styles';
-import PoolRunList from '../../../components/pool-runs/pool-run-list/PoolRunList';
+import { usePoolTeamId } from '../../../../../hooks/pools/team/usePoolTeamId';
+import { useGetTeamPoolRunGetByPoolIdId } from '../../../../../services/team-pool-runs/team-pool-runs';
+import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
+import Spinner from '../../../../components/shared/spinner/Spinner';
+import { poolsStyles as styles } from '../../../pools/Pools.styles';
+import PoolRunList from '../../../../components/pool-runs/pool-run-list/PoolRunList';
 
 function PoolRunsTeam() {
   const navigate = useNavigate();

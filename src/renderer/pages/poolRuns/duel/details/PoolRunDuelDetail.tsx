@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Result, Tabs } from 'antd';
 import { usePoolRunDuelId } from '../../../../../hooks/pool-runs/duel/usePoolRunDuelId';
 import Spinner from '../../../../components/shared/spinner/Spinner';
-import { poolsStyles as styles } from '../../Pools.styles';
+import { poolsStyles as styles } from '../../../pools/Pools.styles';
 import {
   useGetDuelPoolRunId,
   usePostDuelPoolRunIdStop,

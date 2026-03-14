@@ -4,8 +4,7 @@ import Home from './pages/home/Home';
 import Pools from './pages/pools/Pools';
 import PoolDuel from './pages/pools/duel/PoolDuel';
 import PoolDuelDetail from './pages/pools/duel/details/PoolDuelDetail';
-import PoolRunsDuel from './pages/pools/duel/PoolRunsDuel';
-import PoolRunDuelDetail from './pages/pools/duel/details/PoolRunDuelDetail';
+import PoolRunDuelDetail from './pages/poolRuns/duel/details/PoolRunDuelDetail';
 import Leeks from './pages/leeks/Leeks';
 import LeekCreation from './pages/leek-creation/LeekCreation';
 import AIs from './pages/ais/AIs';
@@ -19,8 +18,6 @@ import PageOutlet from './layout/page-outlet/PageOutlet';
 import PoolFarmer from './pages/pools/farmer/PoolFarmer';
 import FarmerPoolCreation from './pages/pools/farmer/create/FarmerPoolCreation';
 import PoolFarmerDetail from './pages/pools/farmer/details/PoolFarmerDetail';
-import PoolRunsFarmer from './pages/pools/farmer/PoolRunsFarmer';
-import PoolRunFarmerDetail from './pages/pools/farmer/details/PoolRunFarmerDetail';
 import BulkImportLeeks from './pages/bulk-import-leeks/BulkImportLeeks';
 import Turrets from './pages/turrets/Turrets';
 import TurretCreation from './pages/turret-creation/TurretCreation';
@@ -29,8 +26,11 @@ import TeamPoolCreation from './pages/pools/team/create/TeamPoolCreation';
 import Teams from './pages/teams/Teams';
 import TeamCreation from './pages/team-creation/TeamCreation';
 import PoolTeamDetail from './pages/pools/team/details/PoolTeamDetail';
-import PoolRunsTeam from './pages/pools/team/PoolRunsTeam';
-import PoolRunTeamDetail from './pages/pools/team/details/PoolRunTeamDetail';
+import PoolRunTeamDetail from './pages/poolRuns/team/details/PoolRunTeamDetail';
+import PoolRunFarmerDetail from './pages/poolRuns/farmer/details/PoolRunFarmerDetail';
+import PoolRunsFarmer from './pages/poolRuns/farmer/runs/PoolRunsFarmer';
+import PoolRunsTeam from './pages/poolRuns/team/runs/PoolRunsTeam';
+import PoolRunsDuel from './pages/poolRuns/duel/runs/PoolRunsDuel';
 
 export default function App() {
   return (
