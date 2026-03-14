@@ -27,9 +27,178 @@ import type {
   GetDuelFightsByPoolRunIdResponse,
   PoolFightRatioListResponse,
   PoolFightRatioResponse,
+  PoolRunFightersRatioResponse,
 } from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
+
+/**
+ * Retrieves the win/loss/draw ratios between fighters in a specific pool run.
+ * @summary Get fighters ratio by pool run ID
+ */
+export const getFightDuelFightersRatioPoolRunId = (
+  poolRunId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<PoolRunFightersRatioResponse>({
+    url: `/fight/duel/fighters-ratio/${poolRunId}`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetFightDuelFightersRatioPoolRunIdQueryKey = (
+  poolRunId: string,
+) => {
+  return [`/fight/duel/fighters-ratio/${poolRunId}`] as const;
+};
+
+export const getGetFightDuelFightersRatioPoolRunIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetFightDuelFightersRatioPoolRunIdQueryKey(poolRunId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>
+  > = ({ signal }) => getFightDuelFightersRatioPoolRunId(poolRunId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!poolRunId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetFightDuelFightersRatioPoolRunIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>
+>;
+export type GetFightDuelFightersRatioPoolRunIdQueryError = void;
+
+export function useGetFightDuelFightersRatioPoolRunId<
+  TData = Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+          TError,
+          Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFightDuelFightersRatioPoolRunId<
+  TData = Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+          TError,
+          Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFightDuelFightersRatioPoolRunId<
+  TData = Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get fighters ratio by pool run ID
+ */
+
+export function useGetFightDuelFightersRatioPoolRunId<
+  TData = Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightDuelFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetFightDuelFightersRatioPoolRunIdQueryOptions(
+    poolRunId,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
 
 /**
  * Generates a fight based on the provided fight ID. The fight ID should correspond to an existing fight in the system.

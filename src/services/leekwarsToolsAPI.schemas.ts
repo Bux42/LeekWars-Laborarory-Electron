@@ -355,6 +355,19 @@ export interface PoolRunsInfoResponse {
   lastRunIsRunning: boolean;
 }
 
+export interface PoolRunFightersRatioNodeResponse {
+  fighter1: string;
+  fighter2: string;
+  wins: number;
+  losses: number;
+  draws: number;
+}
+
+export interface PoolRunFightersRatioResponse {
+  fighters: string[];
+  ratios: PoolRunFightersRatioNodeResponse[];
+}
+
 export interface TurretResponse {
   id: string;
   name: string;
