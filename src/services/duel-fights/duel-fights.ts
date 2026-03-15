@@ -21,13 +21,13 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  DuelPoolLeekMatrixHeatmapResponse,
   GenerateFightRequest,
   GenerateFightResponse,
   GetCountByPoolRunIdResponse,
   GetDuelFightsByPoolRunIdResponse,
   PoolFightRatioListResponse,
   PoolFightRatioResponse,
-  PoolRunFightersRatioResponse,
 } from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
@@ -40,7 +40,7 @@ export const getFightDuelFightersRatioPoolRunId = (
   poolRunId: string,
   signal?: AbortSignal,
 ) => {
-  return apiClient<PoolRunFightersRatioResponse>({
+  return apiClient<DuelPoolLeekMatrixHeatmapResponse>({
     url: `/fight/duel/fighters-ratio/${poolRunId}`,
     method: 'GET',
     signal,

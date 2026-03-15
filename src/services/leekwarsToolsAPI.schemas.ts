@@ -315,6 +315,21 @@ export interface StatusPorcelainResponse {
   items: GitPorcelainItem[];
 }
 
+export interface MatrixHeatmapEntity {
+  id: string;
+  label: string;
+}
+
+export interface MatrixHeatmapPair {
+  from: MatrixHeatmapEntity;
+  to: MatrixHeatmapEntity;
+  value: number;
+}
+
+export interface DuelPoolLeekMatrixHeatmapResponse {
+  pairs: MatrixHeatmapPair[];
+}
+
 export interface AddLeekRequest {
   name?: string;
   build?: EntityBuild;
@@ -353,19 +368,6 @@ export interface PoolRunsInfoResponse {
   runCount: number;
   lastRunId?: string;
   lastRunIsRunning: boolean;
-}
-
-export interface PoolRunFightersRatioNodeResponse {
-  fighter1: string;
-  fighter2: string;
-  wins: number;
-  losses: number;
-  draws: number;
-}
-
-export interface PoolRunFightersRatioResponse {
-  fighters: string[];
-  ratios: PoolRunFightersRatioNodeResponse[];
 }
 
 export interface TurretResponse {

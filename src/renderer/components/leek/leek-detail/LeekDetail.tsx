@@ -1,12 +1,11 @@
-import React from 'react';
 import { leekDetailStyles as styles } from './LeekDetail.styles';
 import { ILeekDetailProps } from './LeekDetail.types';
 import { getImage } from '../../../utils/ImageLoader';
 import { getTotalStats } from '../../../utils/EntityBuildHelpers';
 import { WEAPONS_IDS_TO_NAMES } from '../../../constants/leekwars/Weapons';
-import { CHIPS_IDS_TO_NAMES } from '../../../constants/leekwars/Chips';
 import { COMPONENTS_IDS_TO_NAMES } from '../../../constants/leekwars/Components';
 import ChipList from '../../chip/chip-list/ChipList';
+import LeekImage from '../leek-image/LeekImage';
 
 function LeekDetail({ leek }: ILeekDetailProps) {
   const totalStats = getTotalStats(leek.build);
@@ -14,11 +13,7 @@ function LeekDetail({ leek }: ILeekDetailProps) {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <img
-          src={getImage(`leekwars/image/leek/${leek.imageName}`)}
-          alt={leek.name}
-          style={styles.leekImage}
-        />
+        <LeekImage leek={leek} height={48} width={48} />
         <div>
           <div style={styles.name}>{leek.name}</div>
           <div style={styles.level}>Level {leek.build.level}</div>

@@ -9,14 +9,11 @@ import {
 } from '../../../../../services/duel-pool-runs/duel-pool-runs';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
-import {
-  useGetFightDuelFightersRatioPoolRunId,
-  useGetFightDuelGetCountByPoolRunIdId,
-} from '../../../../../services/duel-fights/duel-fights';
+import { useGetFightDuelGetCountByPoolRunIdId } from '../../../../../services/duel-fights/duel-fights';
 import PoolDuelFightList from '../../../../components/pool/duel/fight/pool-duel-fight-list/PoolDuelFightList';
 import PoolRunDuelLeekList from '../../../../components/pool-runs/duel/pool-run-duel-leek-list/PoolRunDuelLeekList';
 import { usePoolDuelFightCountWs } from '../../../../../hooks/fights/duel/usePoolDuelFightCountWs';
-import ChordDiagram from '../../../../components/charts/chord-diagram/ChordDiagram';
+import DuelMatrixChart from './duel-matrix/DuelMatrixChart';
 
 function PoolRunDuelDetail() {
   const runId = usePoolRunDuelId();
@@ -35,12 +32,6 @@ function PoolRunDuelDetail() {
     isLoading: fightCountLoading,
     error: fightCountError,
   } = useGetFightDuelGetCountByPoolRunIdId(runId);
-
-  const {
-    data: fightersRatioData,
-    isLoading: fightersRatioLoading,
-    error: fightersRatioError,
-  } = useGetFightDuelFightersRatioPoolRunId(runId);
 
   useEffect(() => {
     if (fightCountData) {
@@ -72,7 +63,7 @@ function PoolRunDuelDetail() {
     return <Result status="error" title="Invalid run ID" />;
   }
 
-  if (poolDuelIsLoading || fightCountLoading) {
+  if (poolDuelIsLoading || fightCountLoading || !poolDuelData) {
     return <Spinner label="Loading run details..." />;
   }
 
@@ -107,75 +98,7 @@ function PoolRunDuelDetail() {
             {
               key: 'charts',
               label: 'Charts',
-              children: (
-                <>
-                  Charts
-                  {/* <ChordDiagram
-                    nodes={
-                      fightersRatioData?.fighters.map((x) => ({
-                        name: x.name,
-                        id: x.fighterId,
-                      })) || []
-                    }
-                    links={
-                      fightersRatioData?.ratios.map((x) => ({
-                        source: x.fighter1,
-                        target: x.fighter2,
-                        value: x.ratio,
-                      })) || []
-                    }
-                    title="Ratio of wins"
-                  />
-                  <ChordDiagram
-                    nodes={
-                      fightersRatioData?.fighters.map((x) => ({
-                        name: x.name,
-                        id: x.fighterId,
-                      })) || []
-                    }
-                    links={
-                      fightersRatioData?.ratios.map((x) => ({
-                        source: x.fighter1,
-                        target: x.fighter2,
-                        value: x.wins,
-                      })) || []
-                    }
-                    title="Wins"
-                  />
-                  <ChordDiagram
-                    nodes={
-                      fightersRatioData?.fighters.map((x) => ({
-                        name: x.name,
-                        id: x.fighterId,
-                      })) || []
-                    }
-                    links={
-                      fightersRatioData?.ratios.map((x) => ({
-                        source: x.fighter1,
-                        target: x.fighter2,
-                        value: x.losses,
-                      })) || []
-                    }
-                    title="Losses"
-                  />
-                  <ChordDiagram
-                    nodes={
-                      fightersRatioData?.fighters.map((x) => ({
-                        name: x.name,
-                        id: x.fighterId,
-                      })) || []
-                    }
-                    links={
-                      fightersRatioData?.ratios.map((x) => ({
-                        source: x.fighter1,
-                        target: x.fighter2,
-                        value: x.draws,
-                      })) || []
-                    }
-                    title="Draws"
-                  /> */}
-                </>
-              ),
+              children: <DuelMatrixChart leeks={leekSortedByElo} />,
             },
             {
               key: 'fights',

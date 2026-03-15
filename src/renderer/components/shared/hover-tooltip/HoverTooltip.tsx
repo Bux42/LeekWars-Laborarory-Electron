@@ -135,6 +135,7 @@ function HoverTooltip({
     <>
       <div
         ref={containerRef}
+        className="hoverTootip"
         style={styles.container(height, width)}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
