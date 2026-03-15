@@ -8,6 +8,7 @@ import {
 import LeekImage from '../../../leek/leek-image/LeekImage';
 import { poolRunDuelLeekListStyles as styles } from './PoolRunDuelLeekList.styles';
 import { IPoolRunDuelLeekListProps } from './PoolRunDuelLeekList.types';
+import { getImage } from '../../../../utils/ImageLoader';
 
 function toLeekResponse(poolLeek: PoolLeekResponse): LeekResponse {
   return {
@@ -73,7 +74,16 @@ function PoolRunDuelLeekList({ poolLeeks }: IPoolRunDuelLeekListProps) {
       key: 'elo',
       sorter: (a, b) => (a.elo ?? 0) - (b.elo ?? 0),
       defaultSortOrder: 'descend',
-      render: (elo: number) => <span style={styles.value}>{elo}</span>,
+      render: (elo: number) => (
+        <div style={styles.eloContainer}>
+          <img
+            src={getImage('leekwars/image/talent')}
+            alt="talent"
+            style={styles.eloIcon}
+          />
+          <span style={styles.value}>{elo}</span>
+        </div>
+      ),
     },
   ];
 

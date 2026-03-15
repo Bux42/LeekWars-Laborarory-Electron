@@ -7,6 +7,8 @@ export interface IPoolRunDuelLeekListStyles {
   value: React.CSSProperties;
   hashLink: React.CSSProperties;
   emptyAiText: React.CSSProperties;
+  eloContainer: React.CSSProperties;
+  eloIcon: React.CSSProperties;
 }
 
 export const poolRunDuelLeekListStyles: IPoolRunDuelLeekListStyles = {
@@ -42,5 +44,14 @@ export const poolRunDuelLeekListStyles: IPoolRunDuelLeekListStyles = {
   emptyAiText: {
     color: theme.colors.text.tertiary,
     fontFamily: theme.fonts.primary,
+  },
+  eloContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing.xs,
+  },
+  eloIcon: {
+    width: 16,
+    height: 16,
   },
 };
