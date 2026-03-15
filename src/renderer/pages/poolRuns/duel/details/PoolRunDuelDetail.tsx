@@ -109,10 +109,28 @@ function PoolRunDuelDetail() {
               label: 'Charts',
               children: (
                 <>
+                  Charts
+                  {/* <ChordDiagram
+                    nodes={
+                      fightersRatioData?.fighters.map((x) => ({
+                        name: x.name,
+                        id: x.fighterId,
+                      })) || []
+                    }
+                    links={
+                      fightersRatioData?.ratios.map((x) => ({
+                        source: x.fighter1,
+                        target: x.fighter2,
+                        value: x.ratio,
+                      })) || []
+                    }
+                    title="Ratio of wins"
+                  />
                   <ChordDiagram
                     nodes={
                       fightersRatioData?.fighters.map((x) => ({
-                        name: x,
+                        name: x.name,
+                        id: x.fighterId,
                       })) || []
                     }
                     links={
@@ -127,7 +145,8 @@ function PoolRunDuelDetail() {
                   <ChordDiagram
                     nodes={
                       fightersRatioData?.fighters.map((x) => ({
-                        name: x,
+                        name: x.name,
+                        id: x.fighterId,
                       })) || []
                     }
                     links={
@@ -139,6 +158,22 @@ function PoolRunDuelDetail() {
                     }
                     title="Losses"
                   />
+                  <ChordDiagram
+                    nodes={
+                      fightersRatioData?.fighters.map((x) => ({
+                        name: x.name,
+                        id: x.fighterId,
+                      })) || []
+                    }
+                    links={
+                      fightersRatioData?.ratios.map((x) => ({
+                        source: x.fighter1,
+                        target: x.fighter2,
+                        value: x.draws,
+                      })) || []
+                    }
+                    title="Draws"
+                  /> */}
                 </>
               ),
             },

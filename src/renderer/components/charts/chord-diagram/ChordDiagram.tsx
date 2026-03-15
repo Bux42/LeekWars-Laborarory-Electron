@@ -16,19 +16,24 @@ const CHORD_COLORS: string[] = [
   theme.colors.border.secondary,
 ];
 
+const LABEL_TRANSLATE_OFFSET = 14;
+const LABEL_CHAR_PIXEL_WIDTH = 6;
+const LABEL_MIN_RESERVED_SPACE = 80;
+const LABEL_MAX_VISIBLE_CHARS = 24;
+
 const MOCK_DATA_NODES = [
-  { name: 'Alice' },
-  { name: 'Bob' },
-  { name: 'Charlie' },
-  { name: 'Diana' },
+  { name: 'Alice', id: '1' },
+  { name: 'Bob', id: '2' },
+  { name: 'Charlie', id: '3' },
+  { name: 'Diana', id: '4' },
 ];
 
 const MOCK_DATA_LINKS = [
-  { source: 'Alice', target: 'Bob', value: 5 },
-  { source: 'Bob', target: 'Charlie', value: 3 },
-  { source: 'Charlie', target: 'Alice', value: 2 },
-  { source: 'Alice', target: 'Diana', value: 4 },
-  { source: 'Diana', target: 'Bob', value: 1 },
+  { source: '1', target: '2', value: 5 },
+  { source: '2', target: '3', value: 3 },
+  { source: '3', target: '1', value: 2 },
+  { source: '1', target: '4', value: 4 },
+  { source: '4', target: '2', value: 1 },
 ];
 
 function ChordDiagram({
@@ -49,32 +54,39 @@ function ChordDiagram({
     value: 0,
   });
 
-  const { nodeNames, matrix, hasData } = useMemo(() => {
-    const seenNames = new Set<string>();
-    const uniqueNodeNames: string[] = [];
+  const { nodeIds, nodeLabels, matrix, hasData } = useMemo(() => {
+    const seenNodeIds = new Set<string>();
+    const uniqueNodes: { id: string; name: string }[] = [];
 
     nodes.forEach((node) => {
-      const name = node.name?.trim();
-      if (!name || seenNames.has(name)) {
+      const nodeId = node.id?.trim();
+      if (!nodeId || seenNodeIds.has(nodeId)) {
         return;
       }
 
-      seenNames.add(name);
-      uniqueNodeNames.push(name);
+      seenNodeIds.add(nodeId);
+      uniqueNodes.push({
+        id: nodeId,
+        name: node.name?.trim() || nodeId,
+      });
     });
 
-    const nodeIndexes = new Map<string, number>();
-    uniqueNodeNames.forEach((name, index) => {
-      nodeIndexes.set(name, index);
+    const nodeIndexesById = new Map<string, number>();
+    const nodeIndexesByName = new Map<string, number>();
+    uniqueNodes.forEach((node, index) => {
+      nodeIndexesById.set(node.id, index);
+      nodeIndexesByName.set(node.name, index);
     });
 
-    const nextMatrix = Array.from({ length: uniqueNodeNames.length }, () =>
-      Array.from({ length: uniqueNodeNames.length }, () => 0),
+    const nextMatrix = uniqueNodes.map(() =>
+      Array.from({ length: uniqueNodes.length }, () => 0),
     );
 
     links.forEach((link) => {
-      const sourceIndex = nodeIndexes.get(link.source);
-      const targetIndex = nodeIndexes.get(link.target);
+      const sourceIndex =
+        nodeIndexesById.get(link.source) ?? nodeIndexesByName.get(link.source);
+      const targetIndex =
+        nodeIndexesById.get(link.target) ?? nodeIndexesByName.get(link.target);
 
       if (
         sourceIndex === undefined ||
@@ -91,9 +103,10 @@ function ChordDiagram({
     const hasAnyLink = nextMatrix.some((row) => row.some((value) => value > 0));
 
     return {
-      nodeNames: uniqueNodeNames,
+      nodeIds: uniqueNodes.map((node) => node.id),
+      nodeLabels: uniqueNodes.map((node) => node.name),
       matrix: nextMatrix,
-      hasData: uniqueNodeNames.length > 1 && hasAnyLink,
+      hasData: uniqueNodes.length > 1 && hasAnyLink,
     };
   }, [nodes, links]);
 
@@ -105,8 +118,27 @@ function ChordDiagram({
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove();
 
-    const outerRadius = Math.min(width, height) * 0.5 - 30;
-    const innerRadius = outerRadius - 26;
+    const maxLabelLength = nodeLabels.reduce(
+      (maxLength, label) => Math.max(maxLength, label.length),
+      0,
+    );
+    const reservedLabelSpace = Math.max(
+      LABEL_MIN_RESERVED_SPACE,
+      maxLabelLength * LABEL_CHAR_PIXEL_WIDTH,
+    );
+    const outerRadius = Math.max(
+      70,
+      Math.min(width, height) * 0.5 - reservedLabelSpace - 16,
+    );
+    const innerRadius = Math.max(40, outerRadius - 26);
+
+    function getDisplayLabel(label: string) {
+      if (label.length <= LABEL_MAX_VISIBLE_CHARS) {
+        return label;
+      }
+
+      return `${label.slice(0, LABEL_MAX_VISIBLE_CHARS - 1)}…`;
+    }
 
     const chord = d3
       .chordDirected()
@@ -118,9 +150,9 @@ function ChordDiagram({
 
     const color = d3
       .scaleOrdinal<string, string>()
-      .domain(nodeNames)
+      .domain(nodeIds)
       .range(
-        nodeNames.map((_, index) => CHORD_COLORS[index % CHORD_COLORS.length]),
+        nodeIds.map((_, index) => CHORD_COLORS[index % CHORD_COLORS.length]),
       );
 
     const arc = d3
@@ -148,7 +180,7 @@ function ChordDiagram({
 
     const groupPath = group
       .append('path')
-      .attr('fill', (d) => color(nodeNames[d.index]))
+      .attr('fill', (d) => color(nodeIds[d.index]))
       .attr('d', arc)
       .attr('opacity', 1);
 
@@ -162,7 +194,7 @@ function ChordDiagram({
         const groupAngle = (d.startAngle + d.endAngle) / 2;
         const angle = (groupAngle * 180) / Math.PI - 90;
         const rotate = `rotate(${angle})`;
-        const translate = `translate(${outerRadius + 14},0)`;
+        const translate = `translate(${outerRadius + LABEL_TRANSLATE_OFFSET},0)`;
         const flip = groupAngle > Math.PI ? 'rotate(180)' : '';
 
         return `${rotate} ${translate} ${flip}`;
@@ -171,7 +203,9 @@ function ChordDiagram({
         const groupAngle = (d.startAngle + d.endAngle) / 2;
         return groupAngle > Math.PI ? 'end' : 'start';
       })
-      .text((d) => nodeNames[d.index]);
+      .text((d) => getDisplayLabel(nodeLabels[d.index]))
+      .append('title')
+      .text((d) => nodeLabels[d.index]);
 
     const ribbons = svg
       .append('g')
@@ -180,20 +214,20 @@ function ChordDiagram({
       .data(chords)
       .join('path')
       .attr('d', ribbon)
-      .attr('fill', (d) => color(nodeNames[d.source.index]))
+      .attr('fill', (d) => color(nodeIds[d.source.index]))
       .attr('stroke', theme.colors.border.primary)
       .attr('stroke-width', 0.7)
       .attr('opacity', 0.78);
 
     groupPath
       .append('title')
-      .text((d) => `${nodeNames[d.index]}: ${Math.round(d.value)}`);
+      .text((d) => `${nodeLabels[d.index]}: ${Math.round(d.value)}`);
 
     ribbons
       .append('title')
       .text(
         (d) =>
-          `${nodeNames[d.source.index]} → ${nodeNames[d.target.index]}: ${Math.round(d.source.value)}`,
+          `${nodeLabels[d.source.index]} → ${nodeLabels[d.target.index]}: ${Math.round(d.source.value)}`,
       );
 
     function setHoverState(activeIndex: number | null) {
@@ -252,8 +286,8 @@ function ChordDiagram({
       }
 
       const bounds = containerRef.current.getBoundingClientRect();
-      const source = nodeNames[chordData.source.index];
-      const target = nodeNames[chordData.target.index];
+      const source = nodeLabels[chordData.source.index];
+      const target = nodeLabels[chordData.target.index];
 
       setRelationshipTooltip({
         visible: true,
@@ -303,7 +337,7 @@ function ChordDiagram({
         visible: false,
       }));
     });
-  }, [hasData, matrix, nodeNames, width, height]);
+  }, [hasData, matrix, nodeIds, nodeLabels, width, height]);
 
   if (!hasData) {
     return (

@@ -1,5 +1,6 @@
 export interface IChordDiagramNode {
   name: string;
+  id: string;
 }
 
 export interface IChordDiagramLink {
