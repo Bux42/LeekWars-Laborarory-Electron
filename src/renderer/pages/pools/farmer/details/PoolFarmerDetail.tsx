@@ -27,7 +27,9 @@ function PoolFarmerDetail() {
     error: poolError,
   } = useGetFarmerPoolsId(poolId);
 
-  const [farmerPool, setFarmerPool] = useState<FarmerPoolResponse | null>(pool);
+  const [farmerPool, setFarmerPool] = useState<FarmerPoolResponse | undefined>(
+    pool,
+  );
 
   const {
     data: runsInfo,
@@ -68,7 +70,7 @@ function PoolFarmerDetail() {
   };
 
   const onAddFarmerToPool = (farmerId: string) => {
-    if (selectedFarmersIds.includes(farmerId)) {
+    if (selectedFarmersIds.includes(farmerId) || !pool) {
       // Farmer is already selected, you can implement remove logic here if needed
       return;
     }
@@ -96,6 +98,8 @@ function PoolFarmerDetail() {
   };
 
   const onRemoveFarmer = (farmerId: string) => {
+    if (!pool) return;
+
     try {
       removeFarmerFromPool({
         id: pool.id,

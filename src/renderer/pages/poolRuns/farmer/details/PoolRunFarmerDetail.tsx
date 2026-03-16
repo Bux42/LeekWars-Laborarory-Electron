@@ -79,7 +79,7 @@ function PoolRunFarmerDetail() {
         <h2 style={styles.sectionTitle}>Run Details</h2>
       </div>
       <BasePoolRunWrapper
-        combinationsCount={poolFarmerData.farmers.length}
+        combinationsCount={poolFarmerData?.farmers.length || 0}
         processedFights={processedFights}
         run={poolFarmerData as IPoolRunBase}
         onStop={onStopFarmerPoolRun}

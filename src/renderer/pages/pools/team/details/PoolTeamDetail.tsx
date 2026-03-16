@@ -23,7 +23,7 @@ function PoolTeamDetail() {
     error: poolError,
   } = useGetTeamPoolsId(poolId);
 
-  const [teamPool, setTeamPool] = useState<TeamPoolResponse | null>(pool);
+  const [teamPool, setTeamPool] = useState<TeamPoolResponse | undefined>(pool);
   const [selectedTeamsIds, setSelectedTeamsIds] = useState<string[]>([]);
 
   const startTeamPoolRunMutation = usePostTeamPoolRunIdStart();
@@ -57,7 +57,7 @@ function PoolTeamDetail() {
     return <Spinner label="Loading pool details..." />;
   }
 
-  if (poolError || poolError || runsInfoError || !pool || !pool.basePool) {
+  if (poolError || runsInfoError || !pool || !pool.basePool) {
     return <Result status="error" title="Error loading pool details" />;
   }
 

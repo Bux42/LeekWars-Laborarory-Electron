@@ -1,20 +1,20 @@
 import { useMemo } from 'react';
 import { Result } from 'antd';
-import { usePoolRunDuelId } from '../../../../../../hooks/pool-runs/duel/usePoolRunDuelId';
-import { useGetFightDuelFightersRatioPoolRunId } from '../../../../../../services/duel-fights/duel-fights';
-import Spinner from '../../../../../components/shared/spinner/Spinner';
-import MatrixHeatmapChart from '../../../../../components/charts/matrix-heatmap/MatrixHeatmapChart';
-import { IMatrixHeatmapPair } from '../../../../../components/charts/matrix-heatmap/MatrixHeatmapChart.types';
-import { IDuelMatrixChartProps } from './DuelMatrixChart.types';
-import LeekDetail from '../../../../../components/leek/leek-detail/LeekDetail';
-import LeekComparison from './leek-comparison/LeekComparison';
-import { PoolLeekResponseToLeekResponse } from '../../../../../mappers/LeekMapper';
+import { IMatrixHeatmapPair } from '../../../../../../components/charts/matrix-heatmap/MatrixHeatmapChart.types';
+import { ITeamMatrixChartProps } from './TeamMatrixChart.types';
+import Spinner from '../../../../../../components/shared/spinner/Spinner';
+import MatrixHeatmapChart from '../../../../../../components/charts/matrix-heatmap/MatrixHeatmapChart';
+import TeamCard from '../../../../../../components/team/team-card/TeamCard';
+import TeamComparison from './team-comparison/TeamComparison';
+import { useGetFightTeamFightersRatioPoolRunId } from '../../../../../../../services/team-fights/team-fights';
+import { usePoolRunTeamId } from '../../../../../../../hooks/pool-runs/team/usePoolRunTeamId';
+import { PoolTeamResponseToTeamResponse } from '../../../../../../mappers/TeamMapper';
 
-function DuelMatrixChart({ leeks }: IDuelMatrixChartProps) {
-  const runId = usePoolRunDuelId();
+function TeamMatrixChart({ teams }: ITeamMatrixChartProps) {
+  const runId = usePoolRunTeamId();
 
   const { data, isLoading, error } =
-    useGetFightDuelFightersRatioPoolRunId(runId);
+    useGetFightTeamFightersRatioPoolRunId(runId);
 
   const chartData: IMatrixHeatmapPair[] = useMemo(() => {
     if (!data || !data.pairs) return [];
@@ -47,18 +47,25 @@ function DuelMatrixChart({ leeks }: IDuelMatrixChartProps) {
   }, [data]);
 
   const onHoverEntityElement = (entityId: string) => {
-    const entity = leeks.find((e) => e.id === entityId);
+    const entity = teams.find((e) => e.id === entityId);
     if (!entity) return <div>Entity not found</div>;
-    return <LeekDetail leek={PoolLeekResponseToLeekResponse(entity)} />;
+    return (
+      <div style={{ minWidth: 600 }}>
+        <TeamCard
+          showDeleteButton={false}
+          team={PoolTeamResponseToTeamResponse(entity)}
+        />
+      </div>
+    );
   };
 
   const onHoverPairElement = (fromId: string, toId: string, value: number) => {
-    const leek1 = leeks.find((e) => e.id === fromId);
-    const leek2 = leeks.find((e) => e.id === toId);
+    const team1 = teams.find((e) => e.id === fromId);
+    const team2 = teams.find((e) => e.id === toId);
 
-    if (!leek1 || !leek2) return <div>Leek not found</div>;
+    if (!team1 || !team2) return <div>Team not found</div>;
 
-    return <LeekComparison leek1={leek1} leek2={leek2} value={value} />;
+    return <TeamComparison team1={team1} team2={team2} value={value} />;
   };
 
   if (isLoading) {
@@ -81,4 +88,4 @@ function DuelMatrixChart({ leeks }: IDuelMatrixChartProps) {
   );
 }
 
-export default DuelMatrixChart;
+export default TeamMatrixChart;

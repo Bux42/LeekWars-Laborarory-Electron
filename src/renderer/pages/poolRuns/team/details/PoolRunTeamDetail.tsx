@@ -11,6 +11,7 @@ import PoolTeamFightList from '../../../../components/pool/team/fight/pool-team-
 import { usePoolTeamFightCountWs } from '../../../../../hooks/fights/team/usePoolTeamFightCountWs';
 import { poolRunTeamDetailStyles } from './PoolRunTeamDetail.styles';
 import Spinner from '../../../../components/shared/spinner/Spinner';
+import TeamMatrixChart from './charts/team-matrix/TeamMatrixChart';
 
 function PoolRunTeamDetail() {
   const poolRunId = usePoolRunTeamId();
@@ -67,7 +68,7 @@ function PoolRunTeamDetail() {
         <h2 style={styles.sectionTitle}>Run Details</h2>
       </div>
       <BasePoolRunWrapper
-        combinationsCount={teamPoolRun.teams.length}
+        combinationsCount={teamPoolRun?.teams?.length || 0}
         processedFights={processedFights}
         run={teamPoolRun as IPoolRunBase}
         onStop={onStopTeamPoolRun}
@@ -91,17 +92,11 @@ function PoolRunTeamDetail() {
                 </div>
               ),
             },
-            // {
-            //   key: 'charts',
-            //   label: 'Charts',
-            //   children: (
-            //     <>
-            //       {farmersSortedByElo.map((farmer) => (
-            //         <PoolDuelLeek key={farmer.id} leek={farmer} />
-            //       ))}
-            //     </>
-            //   ),
-            // },
+            {
+              key: 'charts',
+              label: 'Charts',
+              children: <TeamMatrixChart teams={teamPoolRun?.teams || []} />,
+            },
             {
               key: 'fights',
               label: 'Fights',

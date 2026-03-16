@@ -8,6 +8,7 @@ import Spinner from '../../../../../../components/shared/spinner/Spinner';
 import MatrixHeatmapChart from '../../../../../../components/charts/matrix-heatmap/MatrixHeatmapChart';
 import FarmerCard from '../../../../../../components/farmer/farmer-card/FarmerCard';
 import FarmerComparison from './farmer-comparison/FarmerComparison';
+import { PoolFarmerResponseToFarmerResponse } from '../../../../../../mappers/FarmerMapper';
 
 function FarmerMatrixChart({ farmers }: IFarmerMatrixChartProps) {
   const runId = usePoolRunFarmerId();
@@ -50,7 +51,10 @@ function FarmerMatrixChart({ farmers }: IFarmerMatrixChartProps) {
     if (!entity) return <div>Entity not found</div>;
     return (
       <div style={{ minWidth: 600 }}>
-        <FarmerCard farmer={entity} showAddLeekButton={false} />
+        <FarmerCard
+          farmer={PoolFarmerResponseToFarmerResponse(entity)}
+          showAddLeekButton={false}
+        />
       </div>
     );
   };

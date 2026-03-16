@@ -334,6 +334,10 @@ export interface FarmerPoolMatrixHeatmapResponse {
   pairs: MatrixHeatmapPair[];
 }
 
+export interface TeamPoolMatrixHeatmapResponse {
+  pairs: MatrixHeatmapPair[];
+}
+
 export interface AddLeekRequest {
   name?: string;
   build?: EntityBuild;
