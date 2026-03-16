@@ -16,7 +16,7 @@ function DuelMatrixChart({ leeks }: IDuelMatrixChartProps) {
     useGetFightDuelFightersRatioPoolRunId(runId);
 
   const chartData: IMatrixHeatmapPair[] = useMemo(() => {
-    if (!data) return [];
+    if (!data || !data.pairs) return [];
 
     const chartDataConverted: IMatrixHeatmapPair[] = data.pairs.map((pair) => ({
       from: {
