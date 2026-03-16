@@ -2,10 +2,10 @@ import { leekDetailStyles as styles } from './LeekDetail.styles';
 import { ILeekDetailProps } from './LeekDetail.types';
 import { getImage } from '../../../utils/ImageLoader';
 import { getTotalStats } from '../../../utils/EntityBuildHelpers';
-import { WEAPONS_IDS_TO_NAMES } from '../../../constants/leekwars/Weapons';
 import { COMPONENTS_IDS_TO_NAMES } from '../../../constants/leekwars/Components';
 import ChipList from '../../chip/chip-list/ChipList';
 import LeekImage from '../leek-image/LeekImage';
+import WeaponList from '../../weapon/weapon-list/WeaponList';
 
 function LeekDetail({ leek }: ILeekDetailProps) {
   const totalStats = getTotalStats(leek.build);
@@ -24,21 +24,11 @@ function LeekDetail({ leek }: ILeekDetailProps) {
         <div style={styles.section}>
           <div style={styles.sectionTitle}>Weapons</div>
           <div style={styles.equipmentGrid}>
-            {leek.build.selectedWeaponIds.map((weaponId) => (
-              <div key={weaponId} style={styles.equipmentItem}>
-                <img
-                  src={getImage(
-                    `leekwars/image/weapon/${WEAPONS_IDS_TO_NAMES[weaponId]}`,
-                  )}
-                  alt={`Weapon ${weaponId}`}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                  }}
-                />
-              </div>
-            ))}
+            <WeaponList
+              weaponIds={leek.build.selectedWeaponIds}
+              width={64}
+              height={64}
+            />
           </div>
         </div>
       )}

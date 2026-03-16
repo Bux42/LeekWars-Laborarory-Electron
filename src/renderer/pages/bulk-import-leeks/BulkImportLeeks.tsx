@@ -6,11 +6,10 @@ import { bulkImportLeeksStyles as styles } from './BulkImportLeeks.styles';
 import { IEntityBuild } from '../../../services/leekwars-laboratory/types/builds/EntityBuild.types';
 import { IEntityBuildImported } from './BulkImportLeeks.types';
 import LeekscriptAIPicker from '../../components/leekscript-ai/leekscript-ai-picker/LeekscriptAIPicker';
-import { WEAPONS_IDS_TO_NAMES } from '../../constants/leekwars/Weapons';
-import { getImage } from '../../utils/ImageLoader';
 import Button from '../../components/shared/button/Button';
 import { usePostLeeksAdd } from '../../../services/leeks/leeks';
 import LeekAvatarPicker from '../../components/leek/leek-avatar-picker/LeekAvatarPicker';
+import WeaponList from '../../components/weapon/weapon-list/WeaponList';
 
 function BulkImportLeeks() {
   const [error, setError] = useState<string | null>(null);
@@ -135,16 +134,7 @@ function BulkImportLeeks() {
               <div style={styles.buidContainer} key={`${build.fileName}`}>
                 <div style={styles.buildFileName}>{build.fileName}</div>
                 <div style={styles.weaponsContainer}>
-                  {build.entityBuild.selectedWeaponIds.map((id) => (
-                    <img
-                      key={id}
-                      src={getImage(
-                        `leekwars/image/weapon/${WEAPONS_IDS_TO_NAMES[id]}`,
-                      )}
-                      alt={`Weapon ${id}`}
-                      style={styles.weaponImage}
-                    />
-                  ))}
+                  <WeaponList weaponIds={build.entityBuild.selectedWeaponIds} />
                 </div>
               </div>
             ))}

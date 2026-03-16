@@ -2,10 +2,10 @@ import { entityBuildStyles as styles } from './EntityBuild.styles';
 import { IEntityBuildProps } from './EntityBuild.types';
 import { getTotalStats } from '../../../utils/EntityBuildHelpers';
 import { COMPONENTS_IDS_TO_NAMES } from '../../../constants/leekwars/Components';
-import { WEAPONS_IDS_TO_NAMES } from '../../../constants/leekwars/Weapons';
 import { getImage } from '../../../utils/ImageLoader';
 import EntityStats from '../entity-stats/EntityStats';
 import ChipList from '../../chip/chip-list/ChipList';
+import WeaponList from '../../weapon/weapon-list/WeaponList';
 
 function EntityBuild({
   entityBuild,
@@ -27,18 +27,7 @@ function EntityBuild({
       <div style={styles.itemsSection}>
         <h3 style={styles.sectionTitle}>Weapons</h3>
         {entityBuild.selectedWeaponIds.length > 0 ? (
-          <div style={styles.itemsGrid}>
-            {entityBuild.selectedWeaponIds.map((weaponId) => (
-              <img
-                key={weaponId}
-                src={getImage(
-                  `leekwars/image/weapon/${WEAPONS_IDS_TO_NAMES[weaponId]}`,
-                )}
-                alt={`Weapon ${weaponId}`}
-                style={styles.itemImage}
-              />
-            ))}
-          </div>
+          <WeaponList weaponIds={entityBuild.selectedWeaponIds} />
         ) : (
           <p style={styles.emptyState}>No weapons equipped</p>
         )}
