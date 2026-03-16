@@ -19,7 +19,6 @@ export const hoverTooltipStyles: IHoverTooltipStyles = {
     padding: theme.spacing.md,
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
     pointerEvents: 'none',
-    maxWidth: '450px',
     boxSizing: 'border-box',
     overflow: 'hidden',
   },

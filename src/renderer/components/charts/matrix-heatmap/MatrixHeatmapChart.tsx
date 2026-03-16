@@ -1,4 +1,4 @@
-import { Fragment, MouseEvent, useMemo, useRef, useState } from 'react';
+import { Fragment, useMemo, useRef, useState } from 'react';
 import { Slider } from 'antd';
 import {
   IMatrixHeatmapChartProps,
@@ -16,16 +16,6 @@ import {
 } from './MatrixHeatmap.constants';
 import { getHeatColor } from '../../../utils/ColorsHelpers';
 
-interface ITooltipState {
-  visible: boolean;
-  x: number;
-  y: number;
-  fromId: string;
-  toId: string;
-  value: number;
-  normalizedValue: number;
-}
-
 function MatrixHeatmapChart({
   pairs = MOCK_PAIRS,
   title = DEFAULT_TITLE,
@@ -35,15 +25,6 @@ function MatrixHeatmapChart({
 }: IMatrixHeatmapChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cellSize, setCellSize] = useState<number>(cellSizeProp);
-  const [tooltip, setTooltip] = useState<ITooltipState>({
-    visible: false,
-    x: 0,
-    y: 0,
-    fromId: '',
-    toId: '',
-    value: 0,
-    normalizedValue: 0,
-  });
 
   const {
     orderedEntities,
@@ -110,37 +91,6 @@ function MatrixHeatmapChart({
     }
 
     return (value - minValue) / (maxValue - minValue);
-  }
-
-  function showTooltip(
-    event: MouseEvent<HTMLDivElement>,
-    from: IMatrixHeatmapEntity,
-    to: IMatrixHeatmapEntity,
-    value: number,
-  ) {
-    if (!containerRef.current) {
-      return;
-    }
-
-    const containerBounds = containerRef.current.getBoundingClientRect();
-    const normalizedValue = getNormalizedValue(value);
-
-    setTooltip({
-      visible: true,
-      x: event.clientX - containerBounds.left + 14,
-      y: event.clientY - containerBounds.top + 14,
-      fromId: from.id,
-      toId: to.id,
-      value,
-      normalizedValue,
-    });
-  }
-
-  function hideTooltip() {
-    setTooltip((previousTooltip) => ({
-      ...previousTooltip,
-      visible: false,
-    }));
   }
 
   const gridTemplateColumns = `${AXIS_CELL_SIZE}px repeat(${matrixRowCount}, ${Math.max(cellSize, 20)}px)`;
@@ -259,26 +209,31 @@ function MatrixHeatmapChart({
                     : 'rgba(110, 110, 110, 0.08)';
 
                   return (
-                    <div
-                      key={`cell-${pairKey}`}
-                      style={{
-                        ...styles.dataCell,
-                        width: Math.max(cellSize, 20),
-                        height: Math.max(cellSize, 20),
-                        backgroundColor,
-                        cursor: hasCellValue ? 'pointer' : 'default',
-                        opacity: hasCellValue ? 1 : 0.45,
-                      }}
-                      onMouseMove={(event) => {
-                        if (!hasCellValue || cellValue === undefined) {
-                          hideTooltip();
-                          return;
-                        }
-
-                        showTooltip(event, rowEntity, columnEntity, cellValue);
-                      }}
-                      onMouseLeave={hideTooltip}
-                    />
+                    <HoverTooltip
+                      key={`cell-tooltip-${pairKey}`}
+                      delay={300}
+                      tooltip={
+                        hasCellValue
+                          ? onHoverPairElement(
+                              rowEntity.id,
+                              columnEntity.id,
+                              cellValue,
+                            )
+                          : null
+                      }
+                    >
+                      <div
+                        key={`cell-${pairKey}`}
+                        style={{
+                          ...styles.dataCell,
+                          width: Math.max(cellSize, 20),
+                          height: Math.max(cellSize, 20),
+                          backgroundColor,
+                          cursor: hasCellValue ? 'pointer' : 'default',
+                          opacity: hasCellValue ? 1 : 0.45,
+                        }}
+                      />
+                    </HoverTooltip>
                   );
                 })}
               </Fragment>
@@ -306,18 +261,6 @@ function MatrixHeatmapChart({
           ))}
         </div>
       </div>
-
-      {tooltip.visible ? (
-        <div
-          style={{
-            ...styles.tooltip,
-            left: tooltip.x,
-            top: tooltip.y,
-          }}
-        >
-          {onHoverPairElement(tooltip.fromId, tooltip.toId, tooltip.value)}
-        </div>
-      ) : null}
     </div>
   );
 }
