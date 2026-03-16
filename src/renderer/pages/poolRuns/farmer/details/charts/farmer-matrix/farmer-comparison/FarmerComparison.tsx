@@ -6,7 +6,7 @@ function FarmerComparison({ farmer1, farmer2, value }: IFarmerComparisonProps) {
   return (
     <div style={styles.container}>
       <div style={styles.farmerDetailContainer}>
-        <FarmerCard farmer={farmer1} />
+        <FarmerCard farmer={farmer1} showAddLeekButton={false} />
       </div>
       <div style={styles.vsAndValueContainer}>
         <div style={styles.vsText}>VS</div>
@@ -14,7 +14,7 @@ function FarmerComparison({ farmer1, farmer2, value }: IFarmerComparisonProps) {
       </div>
       {/* Spacer between the two details */}
       <div style={styles.farmerDetailContainer}>
-        <FarmerCard farmer={farmer2} />
+        <FarmerCard farmer={farmer2} showAddLeekButton={false} />
       </div>
     </div>
   );

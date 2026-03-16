@@ -50,7 +50,7 @@ function FarmerMatrixChart({ farmers }: IFarmerMatrixChartProps) {
     if (!entity) return <div>Entity not found</div>;
     return (
       <div style={{ minWidth: 600 }}>
-        <FarmerCard farmer={entity} />
+        <FarmerCard farmer={entity} showAddLeekButton={false} />
       </div>
     );
   };
