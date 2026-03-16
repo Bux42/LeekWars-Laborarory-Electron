@@ -20,50 +20,64 @@ function LeekDetail({ leek }: ILeekDetailProps) {
         </div>
       </div>
 
-      <div style={styles.section}>
-        <div style={styles.sectionTitle}>Weapons</div>
-        <div style={styles.equipmentGrid}>
-          {leek.build.selectedWeaponIds.map((weaponId) => (
-            <div key={weaponId} style={styles.equipmentItem}>
-              <img
-                src={getImage(
-                  `leekwars/image/weapon/${WEAPONS_IDS_TO_NAMES[weaponId]}`,
-                )}
-                alt={`Weapon ${weaponId}`}
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              />
-            </div>
-          ))}
+      {leek.build.selectedWeaponIds.length > 0 && (
+        <div style={styles.section}>
+          <div style={styles.sectionTitle}>Weapons</div>
+          <div style={styles.equipmentGrid}>
+            {leek.build.selectedWeaponIds.map((weaponId) => (
+              <div key={weaponId} style={styles.equipmentItem}>
+                <img
+                  src={getImage(
+                    `leekwars/image/weapon/${WEAPONS_IDS_TO_NAMES[weaponId]}`,
+                  )}
+                  alt={`Weapon ${weaponId}`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div style={styles.section}>
-        <div style={styles.sectionTitle}>Chips</div>
-        <div style={styles.equipmentGrid}>
-          <ChipList
-            chipIds={leek.build.selectedChipIds}
-            width={32}
-            height={32}
-          />
+      {leek.build.selectedChipIds.length > 0 && (
+        <div style={styles.section}>
+          <div style={styles.sectionTitle}>Chips</div>
+          <div style={styles.equipmentGrid}>
+            <ChipList
+              chipIds={leek.build.selectedChipIds}
+              width={32}
+              height={32}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
-      <div style={styles.section}>
-        <div style={styles.sectionTitle}>Components</div>
-        <div style={styles.equipmentGrid}>
-          {leek.build.equippedComponentIds.map((componentId) => (
-            <div key={componentId} style={styles.equipmentItem}>
-              <img
-                src={getImage(
-                  `leekwars/image/component/${COMPONENTS_IDS_TO_NAMES[componentId]}`,
-                )}
-                alt={`Component ${componentId}`}
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              />
-            </div>
-          ))}
+      {leek.build.equippedComponentIds.length > 0 && (
+        <div style={styles.section}>
+          <div style={styles.sectionTitle}>Components</div>
+          <div style={styles.equipmentGrid}>
+            {leek.build.equippedComponentIds.map((componentId) => (
+              <div key={componentId} style={styles.equipmentItem}>
+                <img
+                  src={getImage(
+                    `leekwars/image/component/${COMPONENTS_IDS_TO_NAMES[componentId]}`,
+                  )}
+                  alt={`Component ${componentId}`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <div style={styles.section}>
         <div style={styles.sectionTitle}>Stats</div>
