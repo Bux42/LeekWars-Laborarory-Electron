@@ -7,7 +7,7 @@ import MatrixHeatmapChart from '../../../../../components/charts/matrix-heatmap/
 import { IMatrixHeatmapPair } from '../../../../../components/charts/matrix-heatmap/MatrixHeatmapChart.types';
 import { IDuelMatrixChartProps } from './DuelMatrixChart.types';
 import LeekDetail from '../../../../../components/leek/leek-detail/LeekDetail';
-import { theme } from '../../../../../theme';
+import LeekComparison from './leek-comparison/LeekComparison';
 
 function DuelMatrixChart({ leeks }: IDuelMatrixChartProps) {
   const runId = usePoolRunDuelId();
@@ -57,62 +57,7 @@ function DuelMatrixChart({ leeks }: IDuelMatrixChartProps) {
 
     if (!leek1 || !leek2) return <div>Leek not found</div>;
 
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 16,
-        }}
-      >
-        <div
-          style={{
-            width: 300,
-          }}
-        >
-          <LeekDetail leek={leek1} />
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            alignSelf: 'start',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            <div
-              style={{
-                fontWeight: 'bold',
-                fontSize: 24,
-              }}
-            >
-              VS
-            </div>
-            <div
-              style={{
-                fontWeight: 'bold',
-                borderRadius: 100,
-                padding: '4px 12px',
-                backgroundColor: theme.colors.background.primary,
-                display: 'flex',
-              }}
-            >
-              {value.toFixed(2)}%
-            </div>
-          </div>
-        </div>
-        {/* Spacer between the two details */}
-        <div style={{ width: 300 }}>
-          <LeekDetail leek={leek2} />
-        </div>
-      </div>
-    );
+    return <LeekComparison leek1={leek1} leek2={leek2} value={value} />;
   };
 
   if (isLoading) {
