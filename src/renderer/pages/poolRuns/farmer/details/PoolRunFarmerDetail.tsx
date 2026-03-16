@@ -13,6 +13,7 @@ import PoolFarmerFarmer from '../../../../components/pool/farmer/pool-farmer-far
 import PoolFarmerFightList from '../../../../components/pool/farmer/fight/pool-farmer-fight-list/PoolFarmerFightList';
 import { usePoolFarmerFightCountWs } from '../../../../../hooks/fights/farmer/usePoolFarmerFightCountWs';
 import Spinner from '../../../../components/shared/spinner/Spinner';
+import FarmerMatrixChart from './charts/farmer-matrix/FarmerMatrixChart';
 
 function PoolRunFarmerDetail() {
   const poolRunId = usePoolRunFarmerId();
@@ -102,17 +103,13 @@ function PoolRunFarmerDetail() {
                 </>
               ),
             },
-            // {
-            //   key: 'charts',
-            //   label: 'Charts',
-            //   children: (
-            //     <>
-            //       {farmersSortedByElo.map((farmer) => (
-            //         <PoolDuelLeek key={farmer.id} leek={farmer} />
-            //       ))}
-            //     </>
-            //   ),
-            // },
+            {
+              key: 'charts',
+              label: 'Charts',
+              children: (
+                <FarmerMatrixChart farmers={poolFarmerData?.farmers || []} />
+              ),
+            },
             {
               key: 'fights',
               label: 'Fights',

@@ -330,6 +330,10 @@ export interface DuelPoolLeekMatrixHeatmapResponse {
   pairs: MatrixHeatmapPair[];
 }
 
+export interface FarmerPoolMatrixHeatmapResponse {
+  pairs: MatrixHeatmapPair[];
+}
+
 export interface AddLeekRequest {
   name?: string;
   build?: EntityBuild;

@@ -21,6 +21,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  FarmerPoolMatrixHeatmapResponse,
   GenerateFightRequest,
   GenerateFightResponse,
   GetCountByPoolRunIdResponse,
@@ -28,6 +29,174 @@ import type {
 } from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
+
+/**
+ * Retrieves the win/loss/draw ratios between farmers in a specific pool run.
+ * @summary Get farmers ratio by pool run ID
+ */
+export const getFightFarmerFightersRatioPoolRunId = (
+  poolRunId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<FarmerPoolMatrixHeatmapResponse>({
+    url: `/fight/farmer/fighters-ratio/${poolRunId}`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetFightFarmerFightersRatioPoolRunIdQueryKey = (
+  poolRunId: string,
+) => {
+  return [`/fight/farmer/fighters-ratio/${poolRunId}`] as const;
+};
+
+export const getGetFightFarmerFightersRatioPoolRunIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetFightFarmerFightersRatioPoolRunIdQueryKey(poolRunId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>
+  > = ({ signal }) => getFightFarmerFightersRatioPoolRunId(poolRunId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!poolRunId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetFightFarmerFightersRatioPoolRunIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>
+>;
+export type GetFightFarmerFightersRatioPoolRunIdQueryError = void;
+
+export function useGetFightFarmerFightersRatioPoolRunId<
+  TData = Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+          TError,
+          Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFightFarmerFightersRatioPoolRunId<
+  TData = Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+          TError,
+          Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFightFarmerFightersRatioPoolRunId<
+  TData = Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get farmers ratio by pool run ID
+ */
+
+export function useGetFightFarmerFightersRatioPoolRunId<
+  TData = Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+  TError = void,
+>(
+  poolRunId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFightFarmerFightersRatioPoolRunId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetFightFarmerFightersRatioPoolRunIdQueryOptions(
+    poolRunId,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
 
 /**
  * Generates a fight based on the provided fight ID. The fight ID should correspond to an existing fight in the system.
