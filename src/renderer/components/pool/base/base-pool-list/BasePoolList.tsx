@@ -1,14 +1,14 @@
-import Button from '../../../shared/button/Button';
 import { theme } from '../../../../theme';
 import { basePoolListStyles as styles } from './BasePoolList.styles';
 import { IBasePoolListItem, IBasePoolListProps } from './BasePoolList.types';
 import SeedIcon from '../../../../icons/Seed';
 import HoverTooltip from '../../../shared/hover-tooltip/HoverTooltip';
+import LastPoolRunsButttons from '../../../pool-runs/last-pool-runs-buttons/LastPoolRunsButttons';
 
 function BasePoolList<TPool extends IBasePoolListItem>({
   pools,
+  poolType,
   getLabel,
-  onViewPoolClick,
   emptyMessage,
 }: IBasePoolListProps<TPool>) {
   return (
@@ -45,16 +45,14 @@ function BasePoolList<TPool extends IBasePoolListItem>({
               {getLabel(pool)} • Pool ID: {pool.id.substring(0, 8)}...
             </span>
           </div>
+
           <div style={styles.actions}>
-            <Button onClick={() => onViewPoolClick(pool)} variant="primary">
-              Last Run
-            </Button>
-            <Button onClick={() => onViewPoolClick(pool)} variant="primary">
-              All Runs (54)
-            </Button>
-            <Button onClick={() => onViewPoolClick(pool)} variant="primary">
-              Pool Details
-            </Button>
+            <LastPoolRunsButttons
+              poolRunsInfo={pool.poolRunsInfo}
+              poolType={poolType}
+              poolId={pool.id}
+              showViewPoolButton
+            />
           </div>
         </div>
       ))}

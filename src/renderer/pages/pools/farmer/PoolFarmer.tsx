@@ -36,8 +36,8 @@ function PoolFarmer() {
       </div>
       <BasePoolList
         pools={data?.farmerPools || []}
+        poolType="farmer"
         getLabel={(pool) => `${pool.farmers.length} farmers`}
-        onViewPoolClick={(pool) => navigate(`/pools/farmer/${pool.id}`)}
         emptyMessage="No farmer pools found."
       />
     </div>

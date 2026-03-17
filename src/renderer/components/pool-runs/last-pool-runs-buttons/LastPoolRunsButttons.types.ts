@@ -5,4 +5,5 @@ export interface ILastPoolRunsButtonsProps {
   poolRunsInfo: PoolRunsInfoResponse;
   poolType: PoolType;
   poolId: string;
+  showViewPoolButton?: boolean;
 }

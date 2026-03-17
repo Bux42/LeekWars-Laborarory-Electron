@@ -137,10 +137,17 @@ export interface LeekResponse {
   creationDate: number;
 }
 
+export interface PoolRunsInfoResponse {
+  runCount: number;
+  lastRunId?: string;
+  lastRunIsRunning: boolean;
+}
+
 export interface DuelPoolResponse {
   id: string;
   basePool: BasePoolResponse;
   leeks: LeekResponse[];
+  poolRunsInfo: PoolRunsInfoResponse;
 }
 
 export interface GetDuelPoolsResponse {
@@ -220,6 +227,7 @@ export interface FarmerPoolResponse {
   id: string;
   basePool: BasePoolResponse;
   farmers: FarmerResponse[];
+  poolRunsInfo: PoolRunsInfoResponse;
 }
 
 export interface GetAllFarmerPoolsResponse {
@@ -372,12 +380,6 @@ export interface GetBasePoolsResponse {
   pools: BasePoolResponse[];
 }
 
-export interface PoolRunsInfoResponse {
-  runCount: number;
-  lastRunId?: string;
-  lastRunIsRunning: boolean;
-}
-
 export interface TurretResponse {
   id: string;
   name: string;
@@ -445,6 +447,7 @@ export interface TeamPoolResponse {
   id: string;
   basePool: BasePoolResponse;
   teams: TeamResponse[];
+  poolRunsInfo: PoolRunsInfoResponse;
 }
 
 export interface GetAllTeamPoolsResponse {

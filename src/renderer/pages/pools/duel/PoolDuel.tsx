@@ -36,8 +36,8 @@ function PoolDuel() {
       </div>
       <BasePoolList
         pools={data?.pools || []}
+        poolType="duel"
         getLabel={(pool) => `${pool.leeks.length} leeks`}
-        onViewPoolClick={(pool) => navigate(`/pools/duel/${pool.id}`)}
         emptyMessage="No duel pools found."
       />
     </div>

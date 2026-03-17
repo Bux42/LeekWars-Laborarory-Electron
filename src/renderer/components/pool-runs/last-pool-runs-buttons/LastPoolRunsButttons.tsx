@@ -7,6 +7,7 @@ function LastPoolRunsButttons({
   poolRunsInfo,
   poolType,
   poolId,
+  showViewPoolButton = false,
 }: ILastPoolRunsButtonsProps) {
   const navigate = useNavigate();
 
@@ -22,6 +23,10 @@ function LastPoolRunsButttons({
     }
   };
 
+  const onViewPool = () => {
+    navigate(`/pools/${poolType}/${poolId}`);
+  };
+
   return (
     <div style={styles.container}>
       <Button disabled={!poolRunsInfo?.lastRunId} onClick={onViewLastRun}>
@@ -33,6 +38,7 @@ function LastPoolRunsButttons({
       <Button disabled={!poolRunsInfo?.lastRunId} onClick={onViewAllRuns}>
         All Runs ({poolRunsInfo?.runCount ? poolRunsInfo.runCount : 0})
       </Button>
+      {showViewPoolButton && <Button onClick={onViewPool}>View Pool</Button>}
     </div>
   );
 }
