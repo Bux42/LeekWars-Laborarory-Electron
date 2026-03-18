@@ -53,6 +53,9 @@ export const basePoolWrapperStyles = {
     marginTop: theme.spacing.md,
     paddingTop: theme.spacing.md,
     borderTop: `1px solid ${theme.colors.border.secondary}`,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: theme.spacing.md,
   },
   estimationContainer: {
     marginTop: theme.spacing.sm,

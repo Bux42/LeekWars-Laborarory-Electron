@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { duelPoolCreationStyles as styles } from './DuelPoolCreation.styles';
-import LeekPicker from '../../../../components/leek/leek-picker/LeekPicker';
 import Button from '../../../../components/shared/button/Button';
 import Spinner from '../../../../components/shared/spinner/Spinner';
 import LeekList from '../../../../components/leek/leek-list/LeekList';
-import { IDropdownItem } from '../../../../components/shared/dropdown/Dropdown.types';
 import { usePostDuelPoolsCreate } from '../../../../../services/duel-pools/duel-pools';
 import { useGetLeeksAll } from '../../../../../services/leeks/leeks';
-import {
-  CreateBasePoolRequest,
-  LeekResponse,
-} from '../../../../../services/leekwarsToolsAPI.schemas';
+import { CreateBasePoolRequest } from '../../../../../services/leekwarsToolsAPI.schemas';
 import BasePoolForm from '../../../../components/pool/base/base-pool-form/BasePoolForm';
 import { DEFAULT_BASE_POOL } from '../../../../constants/pools/Pools.constants';
 
@@ -44,10 +39,6 @@ function DuelPoolCreation() {
     if (!selectedLeekIds.includes(leekId)) {
       setSelectedLeekIds([...selectedLeekIds, leekId]);
     }
-  };
-
-  const handleRemoveLeek = (leekId: string) => {
-    setSelectedLeekIds(selectedLeekIds.filter((id) => id !== leekId));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,15 +79,17 @@ function DuelPoolCreation() {
     }
   }, [selectedLeekIds]);
 
-  const getDropdownItems = (leek: LeekResponse): IDropdownItem[] => [
-    {
-      label: 'Delete',
-      onClick: () => handleRemoveLeek(leek.id),
-      variant: 'danger',
-    },
-  ];
+  const onRemoveLeek = (leekId: string) => {
+    setSelectedLeekIds(selectedLeekIds.filter((id) => id !== leekId));
+  };
 
   const isSubmitting = createPoolDuelMutation.isPending;
+
+  const availableLeeks = useMemo(() => {
+    if (!data) return [];
+    const poolLeekIds = new Set(selectedLeekIds);
+    return data.leeks.filter((leek) => !poolLeekIds.has(leek.id));
+  }, [data, selectedLeekIds]);
 
   if (leeksLoading) {
     return <Spinner size="small" label="Loading leeks..." />;
@@ -129,16 +122,12 @@ function DuelPoolCreation() {
                 leeks={(data?.leeks || []).filter((leek) =>
                   selectedLeekIds.includes(leek.id),
                 )}
-                getDropdownItems={getDropdownItems}
+                onRemoveLeek={onRemoveLeek}
               />
             )}
           </div>
-          <LeekPicker
-            label="Add Leek to Pool"
-            availableLeeks={data?.leeks || []}
-            selectedLeekIds={selectedLeekIds}
-            onLeekSelect={handleLeekSelect}
-          />
+          <h3>Available leeks ({availableLeeks.length})</h3>
+          <LeekList leeks={availableLeeks} onAddLeek={handleLeekSelect} />
         </div>
 
         {error && <p style={styles.error}>{error}</p>}

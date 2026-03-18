@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Result } from 'antd';
 import { useGetLeeksAll } from '../../../services/leeks/leeks';
-import LeekPicker from '../../components/leek/leek-picker/LeekPicker';
 import Button from '../../components/shared/button/Button';
 import { LeekResponse } from '../../../services/leekwarsToolsAPI.schemas';
 import { teamCreationStyles as styles } from './TeamCreation.styles';
@@ -83,6 +82,12 @@ function TeamCreation() {
     }
   };
 
+  const availableLeeks = useMemo(() => {
+    if (!allLeeks) return [];
+    const poolLeekIds = new Set(selectedLeeks.map((leek) => leek.id));
+    return allLeeks.leeks.filter((leek) => !poolLeekIds.has(leek.id));
+  }, [allLeeks, selectedLeeks]);
+
   if (isLoading || isLoadingTurrets) {
     return <Spinner size="small" label="Loading turrets..." />;
   }
@@ -109,14 +114,10 @@ function TeamCreation() {
           selectedTurretId={selectedTurretId}
           label="Select a turret"
         />
-        <h2>Selected leeks</h2>
+        <h3>Selected leeks ({selectedLeeks.length})</h3>
         <LeekList leeks={selectedLeeks} />
-        <LeekPicker
-          label="Select at least one leek"
-          availableLeeks={allLeeks?.leeks || []}
-          onLeekSelect={onLeekSelect}
-          selectedLeekIds={selectedLeeks.map((leek) => leek.id)}
-        />
+        <h3>Available leeks ({availableLeeks.length})</h3>
+        <LeekList leeks={availableLeeks} onAddLeek={onLeekSelect} />
         {error && <div style={styles.error}>{error}</div>}
         {success && <div style={styles.success}>{success}</div>}
         <Button variant="primary" onClick={handleSubmit} disabled={!validTeam}>

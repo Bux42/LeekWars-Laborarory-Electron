@@ -1,20 +1,18 @@
 import { useMemo, useState } from 'react';
-import { Button } from 'antd';
+import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { farmerCreationStyles as styles } from './FarmerCreation.styles';
 import { useGetLeeksAll } from '../../../services/leeks/leeks';
-import LeekPicker from '../../components/leek/leek-picker/LeekPicker';
 import Input from '../../components/shared/input/Input';
 import LeekList from '../../components/leek/leek-list/LeekList';
 import { LeekResponse } from '../../../services/leekwarsToolsAPI.schemas';
-import { IDropdownItem } from '../../components/shared/dropdown/Dropdown.types';
 import { usePostFarmersAdd } from '../../../services/farmers/farmers';
+import Spinner from '../../components/shared/spinner/Spinner';
 
 function FarmerCreation() {
   const [farmerName, setFarmerName] = useState('');
   const [selectedLeeks, setSelectedLeeks] = useState<LeekResponse[]>([]);
   const navigate = useNavigate();
-  const farmers = [];
 
   const postFarmersAddMutation = usePostFarmersAdd();
 
@@ -40,14 +38,11 @@ function FarmerCreation() {
     });
   };
 
-  const getDropdownItems = (leek: LeekResponse): IDropdownItem[] => [
-    {
-      label: 'Remove',
-      onClick: () =>
-        setSelectedLeeks((prev) => prev.filter((l) => l.id !== leek.id)),
-      variant: 'danger',
-    },
-  ];
+  const onRemoveLeek = (leekId: string) => {
+    setSelectedLeeks((prevSelectedLeeks) =>
+      prevSelectedLeeks.filter((l) => l.id !== leekId),
+    );
+  };
 
   const handleSubmit = async () => {
     try {
@@ -68,6 +63,20 @@ function FarmerCreation() {
     return farmerName.trim() !== '' && selectedLeeks.length > 0;
   }, [farmerName, selectedLeeks]);
 
+  const availableLeeks = useMemo(() => {
+    if (!allLeeks) return [];
+    const poolLeekIds = new Set(selectedLeeks.map((leek) => leek.id));
+    return allLeeks.leeks.filter((leek) => !poolLeekIds.has(leek.id));
+  }, [allLeeks, selectedLeeks]);
+
+  if (isLoading) {
+    return <Spinner size="small" label="Loading leeks..." />;
+  }
+
+  if (error) {
+    return <Result status="error" title="Error loading leeks" />;
+  }
+
   return (
     <>
       <div style={styles.header}>
@@ -79,19 +88,11 @@ function FarmerCreation() {
         onChange={(value) => setFarmerName(value)}
       />
       <div style={styles.section}>
-        <h2>Select leeks</h2>
-        <LeekPicker
-          label="Select at least one leek"
-          availableLeeks={allLeeks?.leeks || []}
-          onLeekSelect={onLeekSelect}
-          selectedLeekIds={selectedLeeks.map((leek) => leek.id)}
-        />
-        <LeekList leeks={selectedLeeks} getDropdownItems={getDropdownItems} />
-        <Button
-          variant="primary"
-          onClick={handleSubmit}
-          disabled={!validFarmer}
-        >
+        <h3>Selected leeks ({selectedLeeks.length})</h3>
+        <LeekList leeks={selectedLeeks} onRemoveLeek={onRemoveLeek} />
+        <h3>Available leeks ({availableLeeks.length})</h3>
+        <LeekList leeks={availableLeeks} onAddLeek={onLeekSelect} />
+        <Button onClick={handleSubmit} disabled={!validFarmer}>
           Create Farmer
         </Button>
       </div>

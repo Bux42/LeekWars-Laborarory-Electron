@@ -1,4 +1,4 @@
-import React from 'react';
+import { Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { aisStyles as styles } from './AIs.styles';
 import Button from '../../components/shared/button/Button';
@@ -16,32 +16,12 @@ function AIs() {
     navigate('/ais/create');
   };
 
-  let content: React.ReactNode;
-
   if (isLoading) {
-    content = (
-      <div style={styles.loadingText}>
-        <Spinner label="Loading AIs..." />
-      </div>
-    );
-  } else if (error) {
-    content = (
-      <p style={styles.errorText}>
-        Error: {error instanceof Error ? error.message : 'Failed to load AIs'}
-      </p>
-    );
-  } else if (ais.length === 0) {
-    content = <p style={styles.emptyText}>No AIs found.</p>;
-  } else {
-    content = (
-      <div style={styles.list}>
-        {ais.map((ai) => (
-          <div key={ai.id ?? ai.name} style={styles.aiCard}>
-            <LeekscriptAI leekscriptAI={ai} />
-          </div>
-        ))}
-      </div>
-    );
+    return <Spinner size="small" label="Loading AIs..." />;
+  }
+
+  if (error) {
+    return <Result status="error" title="Error loading AIs" />;
   }
 
   return (
@@ -52,8 +32,21 @@ function AIs() {
           Add AI
         </Button>
       </header>
-
-      {content}
+      {ais.length === 0 ? (
+        <Result
+          status="info"
+          title="No AIs found"
+          subTitle="Click the button above to create your first AI."
+        />
+      ) : (
+        <div style={styles.list}>
+          {ais.map((ai) => (
+            <div key={ai.id ?? ai.name} style={styles.aiCard}>
+              <LeekscriptAI leekscriptAI={ai} />
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

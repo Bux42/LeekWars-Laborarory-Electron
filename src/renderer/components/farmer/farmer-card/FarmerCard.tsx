@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Button } from 'antd';
+import { useEffect, useMemo, useState } from 'react';
+import { Button, Result } from 'antd';
 import { farmerCardStyles as styles } from './FarmerCard.styles';
 import LeekList from '../../leek/leek-list/LeekList';
 import { IDropdownItem } from '../../shared/dropdown/Dropdown.types';
@@ -11,9 +11,9 @@ import {
   FarmerResponse,
   LeekResponse,
 } from '../../../../services/leekwarsToolsAPI.schemas';
-import LeekPicker from '../../leek/leek-picker/LeekPicker';
 import { useGetLeeksAll } from '../../../../services/leeks/leeks';
 import { IFarmerCardProps } from './FarmerCard.types';
+import Spinner from '../../shared/spinner/Spinner';
 
 function FarmerCard({
   farmer,
@@ -99,6 +99,20 @@ function FarmerCard({
     },
   ];
 
+  const availableLeeks = useMemo(() => {
+    if (!leeksData) return [];
+    const poolLeekIds = new Set(selectedLeekIds);
+    return leeksData.leeks.filter((leek) => !poolLeekIds.has(leek.id));
+  }, [leeksData, selectedLeekIds]);
+
+  if (leeksLoading) {
+    return <Spinner size="small" label="Loading leeks..." />;
+  }
+
+  if (leeksError) {
+    return <Result status="error" title="Could not load leeks" />;
+  }
+
   return (
     <div style={styles.container}>
       <h2>{farmerResponse.name}</h2>
@@ -112,13 +126,8 @@ function FarmerCard({
           {isAddingLeek ? 'Cancel' : 'Add Leek'}
         </Button>
       )}
-      {isAddingLeek && leeksData?.leeks && (
-        <LeekPicker
-          availableLeeks={leeksData?.leeks}
-          label="Add leek"
-          onLeekSelect={onLeekSelect}
-          selectedLeekIds={selectedLeekIds}
-        />
+      {isAddingLeek && availableLeeks.length > 0 && (
+        <LeekList leeks={availableLeeks} onAddLeek={onLeekSelect} />
       )}
       <LeekList
         leeks={farmerResponse.leeks}

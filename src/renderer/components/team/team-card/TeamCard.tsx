@@ -13,7 +13,6 @@ function TeamCard({ team, showDeleteButton, onDelete }: ITeamCardProps) {
           Delete
         </Button>
       )}
-      {/* <TurretImage turret={team.turret} /> */}
       <TurretCard turret={team.turret} />
       <LeekList leeks={team.leeks} />
     </div>

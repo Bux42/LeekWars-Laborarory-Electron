@@ -4,6 +4,8 @@ import { IDropdownItem } from '../../shared/dropdown/Dropdown.types';
 export interface ILeekListProps {
   leeks: LeekResponse[];
   getDropdownItems?: (leek: LeekResponse) => IDropdownItem[];
+  onRemoveLeek?: (leekId: string) => void;
+  onAddLeek?: (leekId: string) => void;
 }
 
 export type SortField = 'name' | 'level' | 'ai';

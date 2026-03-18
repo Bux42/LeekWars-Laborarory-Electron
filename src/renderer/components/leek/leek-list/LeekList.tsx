@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { Col, List, Row, Typography } from 'antd';
+import { Button, Col, List, Row, Typography } from 'antd';
 import { leekListStyles as styles } from './LeekList.styles';
 import { ILeekListProps, SortField, SortDirection } from './LeekList.types';
 import { LeekResponse } from '../../../../services/leekwarsToolsAPI.schemas';
@@ -8,7 +9,12 @@ import { theme } from '../../../theme';
 import Dropdown from '../../shared/dropdown/Dropdown';
 import LeekImage from '../leek-image/LeekImage';
 
-function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
+function LeekList({
+  leeks,
+  getDropdownItems,
+  onRemoveLeek,
+  onAddLeek,
+}: ILeekListProps) {
   const navigate = useNavigate();
 
   const [sortField, setSortField] = useState<SortField>('name');
@@ -115,7 +121,7 @@ function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
                 </span>
               </button>
             </Col>
-            {getDropdownItems && (
+            {(getDropdownItems || onRemoveLeek || onAddLeek) && (
               <Col flex="80px">
                 <Typography.Text style={styles.headerCell}>
                   Actions
@@ -176,6 +182,22 @@ function LeekList({ leeks, getDropdownItems }: ILeekListProps) {
                     onToggle={() => toggleDropdown(leek.id ?? '')}
                   />
                 </Col>
+              )}
+              {onRemoveLeek && (
+                <Button
+                  onClick={() => onRemoveLeek(leek.id ?? '')}
+                  shape="circle"
+                  danger
+                  icon={<DeleteOutlined />}
+                />
+              )}
+              {onAddLeek && (
+                <Button
+                  onClick={() => onAddLeek(leek.id ?? '')}
+                  shape="circle"
+                  type="primary"
+                  icon={<PlusOutlined />}
+                />
               )}
             </Row>
           </List.Item>
