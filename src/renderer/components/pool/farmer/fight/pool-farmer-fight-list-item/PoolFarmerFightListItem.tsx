@@ -1,18 +1,17 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { EyeOutlined } from '@ant-design/icons';
-import { Row, Col, Typography, Spin, message } from 'antd';
+import { Row, Col, Typography, Spin } from 'antd';
 import { getTimeAgo } from '../../../../../utils/DateUtils';
 import { IPoolFarmerFightListItemProps } from './PoolFarmerFightListItem.types';
 import { poolFarmerFightListItemStyles as styles } from './PoolFarmerListItem.styles';
 import { usePostFightFarmerGenerate } from '../../../../../../services/farmer-fights/farmer-fights';
+import useGenerateFight from '../../../../../../hooks/fights/useGenerateFight';
 
 function PoolFarmerFightListItem({
   fight,
   farmer1,
   farmer2,
 }: IPoolFarmerFightListItemProps) {
-  const [generatingFight, setGeneratingFight] = useState<boolean>(false);
-
   const draw = useMemo(() => {
     if (!fight.winnerFarmerId) {
       return true;
@@ -20,40 +19,15 @@ function PoolFarmerFightListItem({
     return false;
   }, [fight.winnerFarmerId]);
 
-  const { mutate: generateFight } = usePostFightFarmerGenerate();
+  const { generatingFight, handleGenerateFight } = useGenerateFight(
+    usePostFightFarmerGenerate,
+  );
 
   const getFightColor = (farmerId: string): 'win' | 'lose' | 'draw' => {
     if (draw) {
       return 'draw';
     }
     return fight.winnerFarmerId === farmerId ? 'win' : 'lose';
-  };
-
-  const handleGenerateFight = () => {
-    setGeneratingFight(true);
-    generateFight(
-      {
-        data: {
-          fightId: fight.id,
-        },
-      },
-      {
-        onSuccess: () => {
-          const fightUrl = new URL(
-            `fight/${fight.id}`,
-            process.env.VUE_FRONT_END_URL || 'http://localhost:4173/',
-          ).toString();
-
-          window.open(fightUrl, '_blank');
-        },
-        onError: () => {
-          message.error('Failed to generate fight.');
-        },
-        onSettled: () => {
-          setGeneratingFight(false);
-        },
-      },
-    );
   };
 
   return (
@@ -101,7 +75,10 @@ function PoolFarmerFightListItem({
           </div>
         ) : (
           <div style={styles.actionContainer}>
-            <EyeOutlined style={styles.eyeIcon} onClick={handleGenerateFight} />
+            <EyeOutlined
+              style={styles.eyeIcon}
+              onClick={() => handleGenerateFight(fight.id)}
+            />
           </div>
         )}
       </Col>

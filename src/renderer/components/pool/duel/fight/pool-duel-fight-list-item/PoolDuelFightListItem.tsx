@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { Col, Row, Spin, Typography, message } from 'antd';
+import { useMemo } from 'react';
+import { Col, Row, Spin, Typography } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
 import { IPoolDuelFightListItemProps } from './PoolDuelFightListItem.types';
 import { poolDuelFightListItemStyles as styles } from './PoolDuelFightListItem.styles';
@@ -7,14 +7,13 @@ import { getTimeAgo } from '../../../../../utils/DateUtils';
 import LeekImage from '../../../../leek/leek-image/LeekImage';
 import { LeekResponse } from '../../../../../../services/leekwarsToolsAPI.schemas';
 import { usePostFightDuelGenerate } from '../../../../../../services/duel-fights/duel-fights';
+import useGenerateFight from '../../../../../../hooks/fights/useGenerateFight';
 
 function PoolDuelFightListItem({
   fight,
   leek1,
   leek2,
 }: IPoolDuelFightListItemProps) {
-  const [generatingFight, setGeneratingFight] = useState<boolean>(false);
-
   const draw = useMemo(() => {
     if (!fight.winnerLeekId) {
       return true;
@@ -22,40 +21,15 @@ function PoolDuelFightListItem({
     return false;
   }, [fight.winnerLeekId]);
 
-  const { mutate: generateFight } = usePostFightDuelGenerate();
+  const { generatingFight, handleGenerateFight } = useGenerateFight(
+    usePostFightDuelGenerate,
+  );
 
   const getFightColor = (leekId: string): 'win' | 'lose' | 'draw' => {
     if (draw) {
       return 'draw';
     }
     return fight.winnerLeekId === leekId ? 'win' : 'lose';
-  };
-
-  const handleGenerateFight = () => {
-    setGeneratingFight(true);
-    generateFight(
-      {
-        data: {
-          fightId: fight.id,
-        },
-      },
-      {
-        onSuccess: () => {
-          const fightUrl = new URL(
-            `fight/${fight.id}`,
-            process.env.VUE_FRONT_END_URL || 'http://localhost:4173/',
-          ).toString();
-
-          window.open(fightUrl, '_blank');
-        },
-        onError: () => {
-          message.error('Failed to generate fight.');
-        },
-        onSettled: () => {
-          setGeneratingFight(false);
-        },
-      },
-    );
   };
 
   return (
@@ -112,7 +86,10 @@ function PoolDuelFightListItem({
           </div>
         ) : (
           <div style={styles.actionContainer}>
-            <EyeOutlined style={styles.eyeIcon} onClick={handleGenerateFight} />
+            <EyeOutlined
+              style={styles.eyeIcon}
+              onClick={() => handleGenerateFight(fight.id)}
+            />
           </div>
         )}
       </Col>

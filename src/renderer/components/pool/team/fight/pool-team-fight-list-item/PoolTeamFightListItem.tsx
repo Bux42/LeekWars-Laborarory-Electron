@@ -1,18 +1,17 @@
-import { useMemo, useState } from 'react';
-import { Col, Row, Spin, Typography, message } from 'antd';
+import { useMemo } from 'react';
+import { Col, Row, Spin, Typography } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
 import { IPoolTeamFightListItemProps } from './PoolTeamFightListItem.types';
 import { getTimeAgo } from '../../../../../utils/DateUtils';
 import { poolTeamFightListItemStyles as styles } from './PoolTeamFightListItem.styles';
 import { usePostFightTeamGenerate } from '../../../../../../services/team-fights/team-fights';
+import useGenerateFight from '../../../../../../hooks/fights/useGenerateFight';
 
 function PoolTeamFightListItem({
   fight,
   team1,
   team2,
 }: IPoolTeamFightListItemProps) {
-  const [generatingFight, setGeneratingFight] = useState<boolean>(false);
-
   const draw = useMemo(() => {
     if (!fight.winnerTeamId) {
       return true;
@@ -20,40 +19,15 @@ function PoolTeamFightListItem({
     return false;
   }, [fight.winnerTeamId]);
 
-  const { mutate: generateFight } = usePostFightTeamGenerate();
+  const { generatingFight, handleGenerateFight } = useGenerateFight(
+    usePostFightTeamGenerate,
+  );
 
   const getFightColor = (teamId: string): 'win' | 'lose' | 'draw' => {
     if (draw) {
       return 'draw';
     }
     return fight.winnerTeamId === teamId ? 'win' : 'lose';
-  };
-
-  const handleGenerateFight = () => {
-    setGeneratingFight(true);
-    generateFight(
-      {
-        data: {
-          fightId: fight.id,
-        },
-      },
-      {
-        onSuccess: () => {
-          const fightUrl = new URL(
-            `fight/${fight.id}`,
-            process.env.VUE_FRONT_END_URL || 'http://localhost:4173/',
-          ).toString();
-
-          window.open(fightUrl, '_blank');
-        },
-        onError: () => {
-          message.error('Failed to generate fight.');
-        },
-        onSettled: () => {
-          setGeneratingFight(false);
-        },
-      },
-    );
   };
 
   return (
@@ -97,7 +71,10 @@ function PoolTeamFightListItem({
           </div>
         ) : (
           <div style={styles.actionContainer}>
-            <EyeOutlined style={styles.eyeIcon} onClick={handleGenerateFight} />
+            <EyeOutlined
+              style={styles.eyeIcon}
+              onClick={() => handleGenerateFight(fight.id)}
+            />
           </div>
         )}
       </Col>
