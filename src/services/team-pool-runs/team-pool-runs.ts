@@ -426,3 +426,82 @@ export const usePostTeamPoolRunIdStart = <TError = void, TContext = unknown>(
     queryClient,
   );
 };
+/**
+ * Stops a running team pool run.
+ * @summary Stop a team pool run
+ */
+export const postTeamPoolRunIdStop = (id: string, signal?: AbortSignal) => {
+  return apiClient<void>({
+    url: `/team-pool-run/${id}/stop`,
+    method: 'POST',
+    signal,
+  });
+};
+
+export const getPostTeamPoolRunIdStopMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postTeamPoolRunIdStop>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postTeamPoolRunIdStop>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const mutationKey = ['postTeamPoolRunIdStop'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postTeamPoolRunIdStop>>,
+    { id: string }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return postTeamPoolRunIdStop(id);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostTeamPoolRunIdStopMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postTeamPoolRunIdStop>>
+>;
+
+export type PostTeamPoolRunIdStopMutationError = void;
+
+/**
+ * @summary Stop a team pool run
+ */
+export const usePostTeamPoolRunIdStop = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postTeamPoolRunIdStop>>,
+      TError,
+      { id: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postTeamPoolRunIdStop>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  return useMutation(
+    getPostTeamPoolRunIdStopMutationOptions(options),
+    queryClient,
+  );
+};

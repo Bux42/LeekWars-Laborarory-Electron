@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Result, Tabs } from 'antd';
 import { usePoolRunTeamId } from '../../../../../hooks/pool-runs/team/usePoolRunTeamId';
-import { useGetTeamPoolRunId } from '../../../../../services/team-pool-runs/team-pool-runs';
+import {
+  useGetTeamPoolRunId,
+  usePostTeamPoolRunIdStop,
+} from '../../../../../services/team-pool-runs/team-pool-runs';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
 import { poolsStyles as styles } from '../../../pools/Pools.styles';
@@ -15,8 +18,9 @@ import TeamMatrixChart from './charts/team-matrix/TeamMatrixChart';
 
 function PoolRunTeamDetail() {
   const poolRunId = usePoolRunTeamId();
-
   const [processedFights, setProcessedFights] = useState(0);
+
+  const stopMutation = usePostTeamPoolRunIdStop();
 
   // useGetTeamPoolRunGetByPoolIdId
   const {
@@ -47,7 +51,16 @@ function PoolRunTeamDetail() {
   }, [teamPoolRun]);
 
   const onStopTeamPoolRun = async () => {
-    // Implement stop functionality if needed
+    if (teamPoolRun?.id) {
+      try {
+        const result = await stopMutation.mutateAsync({
+          id: teamPoolRun.id,
+        });
+        console.log('Stop result:', result);
+      } catch (err) {
+        console.error('Failed to stop team pool run:', err);
+      }
+    }
   };
 
   if (!poolRunId) {
