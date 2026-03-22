@@ -18,6 +18,7 @@ export const usePoolRunEta = (
     return '';
   }
 
+  const fightsPerSecond = processedFights / (elapsedTime / 1000);
   const now = Date.now();
-  return `ETA: ${getDuration(now, now + estimatedRemainingTime)}`;
+  return `ETA: ${getDuration(now, now + estimatedRemainingTime)} (${fightsPerSecond.toFixed(2)} fights/s)`;
 };
