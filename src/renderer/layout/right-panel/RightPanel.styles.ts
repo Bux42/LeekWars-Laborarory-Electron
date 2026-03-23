@@ -12,6 +12,7 @@ export const rightPanelStyles: IRightPanelStyles = {
     backgroundColor: theme.colors.background.secondary,
     color: theme.colors.text.primary,
     padding: 20,
+    gap: 20,
     overflowY: 'auto',
     borderLeft: `1px solid ${theme.colors.border.primary}`,
   },

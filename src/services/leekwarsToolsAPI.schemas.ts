@@ -45,6 +45,20 @@ export interface ListAIResponse {
   ais: EntityAIResponse[];
 }
 
+export interface RunningPoolResponse {
+  poolRunId: string;
+  poolId: string;
+  name: string;
+  type: string;
+  startTime: number;
+  totalFights: number;
+  completedFights: number;
+}
+
+export interface GetAllRunningPoolsResponse {
+  runningPools: RunningPoolResponse[];
+}
+
 export interface BasePoolStopResponse {
   success: boolean;
 }

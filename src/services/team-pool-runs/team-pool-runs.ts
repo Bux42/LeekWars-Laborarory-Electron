@@ -21,11 +21,159 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetAllRunningPoolsResponse,
   ListTeamPoolRunResponse,
   TeamPoolRunResponse,
 } from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
+
+/**
+ * Retrieves all running team pool runs.
+ * @summary Get all running team pool runs
+ */
+export const getTeamPoolRunAllRunning = (signal?: AbortSignal) => {
+  return apiClient<GetAllRunningPoolsResponse>({
+    url: `/team-pool-run/all-running`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetTeamPoolRunAllRunningQueryKey = () => {
+  return [`/team-pool-run/all-running`] as const;
+};
+
+export const getGetTeamPoolRunAllRunningQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+      TError,
+      TData
+    >
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetTeamPoolRunAllRunningQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>
+  > = ({ signal }) => getTeamPoolRunAllRunning(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetTeamPoolRunAllRunningQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>
+>;
+export type GetTeamPoolRunAllRunningQueryError = void;
+
+export function useGetTeamPoolRunAllRunning<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+  TError = void,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamPoolRunAllRunning<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamPoolRunAllRunning<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get all running team pool runs
+ */
+
+export function useGetTeamPoolRunAllRunning<
+  TData = Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getTeamPoolRunAllRunning>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetTeamPoolRunAllRunningQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
 
 /**
  * Gets the team pool runs associated with a given team pool ID.

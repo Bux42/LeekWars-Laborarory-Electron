@@ -23,10 +23,158 @@ import type {
 import type {
   BasePoolStopResponse,
   FarmerPoolRunResponse,
+  GetAllRunningPoolsResponse,
   ListFarmerPoolRunResponse,
 } from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
+
+/**
+ * Retrieves all running farmer pool runs.
+ * @summary Get all running farmer pool runs
+ */
+export const getFarmerPoolRunAllRunning = (signal?: AbortSignal) => {
+  return apiClient<GetAllRunningPoolsResponse>({
+    url: `/farmer-pool-run/all-running`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetFarmerPoolRunAllRunningQueryKey = () => {
+  return [`/farmer-pool-run/all-running`] as const;
+};
+
+export const getGetFarmerPoolRunAllRunningQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+      TError,
+      TData
+    >
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetFarmerPoolRunAllRunningQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>
+  > = ({ signal }) => getFarmerPoolRunAllRunning(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetFarmerPoolRunAllRunningQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>
+>;
+export type GetFarmerPoolRunAllRunningQueryError = void;
+
+export function useGetFarmerPoolRunAllRunning<
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+  TError = void,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+          TError,
+          Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFarmerPoolRunAllRunning<
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+          TError,
+          Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFarmerPoolRunAllRunning<
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get all running farmer pool runs
+ */
+
+export function useGetFarmerPoolRunAllRunning<
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolRunAllRunning>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetFarmerPoolRunAllRunningQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
 
 /**
  * Gets the farmer pool runs associated with a given farmer pool ID.
