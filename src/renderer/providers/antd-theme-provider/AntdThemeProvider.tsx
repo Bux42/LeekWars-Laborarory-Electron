@@ -17,6 +17,18 @@ function AntdThemeProvider({ children }: IAntdThemeProviderProps) {
           fontFamily: theme.fonts.primary,
         },
         components: {
+          Menu: {
+            itemBg: 'transparent',
+            subMenuItemBg: 'transparent',
+            itemColor: theme.colors.text.primary,
+            itemHoverColor: theme.colors.text.primary,
+            itemHoverBg: theme.colors.background.tertiary,
+            itemSelectedColor: theme.colors.text.primary,
+            itemSelectedBg: theme.colors.background.elevated,
+            itemActiveBg: theme.colors.background.tertiary,
+            groupTitleColor: theme.colors.text.secondary,
+            popupBg: theme.colors.background.secondary,
+          },
           Tabs: {
             itemColor: theme.colors.text.secondary,
             itemHoverColor: theme.colors.text.primary,
