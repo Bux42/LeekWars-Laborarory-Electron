@@ -1,17 +1,19 @@
 import { useState } from 'react';
-import { EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { ILeekscriptAIProps } from './LeekscriptAI.types';
 import styles from './LeekscriptAI.styles';
 import GitInfos from './git-infos/GitInfos';
 import RenameModal from '../modals/rename-modal/RenameModal';
 import { usePutAiIdRename } from '../../../services/ai/ai';
+import DeleteAIModal from './delete-modal/DeleteAIModal';
 
 function LeekscriptAI({ leekscriptAI }: ILeekscriptAIProps) {
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [renameError, setRenameError] = useState<string | undefined>(undefined);
   const [isRenaming, setIsRenaming] = useState(false);
   const [leekscriptAIName, setLeekscriptAIName] = useState(leekscriptAI.name);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const renameAIMutation = usePutAiIdRename();
 
@@ -40,11 +42,19 @@ function LeekscriptAI({ leekscriptAI }: ILeekscriptAIProps) {
       <div>
         <div style={styles.header}>
           <h3 style={styles.mainTitle}>{leekscriptAIName ?? 'Unnamed AI'}</h3>
-          <Button
-            onClick={() => setShowRenameModal(true)}
-            shape="circle"
-            icon={<EditOutlined />}
-          />
+          <div style={styles.headerActions}>
+            <Button
+              onClick={() => setShowRenameModal(true)}
+              shape="circle"
+              icon={<EditOutlined />}
+            />
+            <Button
+              disabled
+              onClick={() => setShowDeleteModal(true)}
+              shape="circle"
+              icon={<DeleteOutlined />}
+            />
+          </div>
         </div>
         <div style={styles.metadataContainer}>
           <div style={{ ...styles.metadataItem, gridColumn: '1 / -1' }}>
@@ -69,6 +79,13 @@ function LeekscriptAI({ leekscriptAI }: ILeekscriptAIProps) {
           onRename={onRenameAI}
           errorMessage={renameError}
           confirmLoading={isRenaming}
+        />
+      )}
+      {showDeleteModal && (
+        <DeleteAIModal
+          title={`Delete ${leekscriptAIName}`}
+          isOpen={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
         />
       )}
     </div>

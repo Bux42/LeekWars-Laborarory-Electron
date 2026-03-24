@@ -27,6 +27,10 @@ const leekscriptAIStyles = {
     alignItems: 'center',
     marginBottom: theme.spacing.md,
   },
+  headerActions: {
+    display: 'flex',
+    gap: theme.spacing.sm,
+  },
   metadataContainer: {
     backgroundColor: theme.colors.background.tertiary,
     padding: theme.spacing.md,
