@@ -1,0 +1,48 @@
+{
+  "level": 300,
+  "investedStats": {
+    "life": 10003,
+    "strength": 500,
+    "wisdom": 200,
+    "agility": 200,
+    "resistance": 0,
+    "science": 0,
+    "magic": 500,
+    "frequency": 0,
+    "cores": 19,
+    "ram": 14,
+    "tp": 12,
+    "mp": 3
+  },
+  "investedCapital": 9175,
+  "bonusStats": {
+    "life": 0,
+    "strength": 0,
+    "wisdom": 0,
+    "agility": 0,
+    "resistance": 0,
+    "science": 0,
+    "magic": 0,
+    "frequency": 0,
+    "cores": 0,
+    "ram": 0,
+    "tp": 0,
+    "mp": 0
+  },
+  "equippedComponentIds": [],
+  "selectedWeaponIds": [],
+  "selectedChipIds": [
+    6,
+    16,
+    25,
+    33,
+    34,
+    110,
+    120,
+    143,
+    415,
+    425,
+    144
+  ],
+  "totalCapital": 1680
+}
