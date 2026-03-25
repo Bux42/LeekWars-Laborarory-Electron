@@ -437,6 +437,20 @@ export interface PoolTeamResponse {
   elo: number;
 }
 
+export interface CreatePumpkinPoolRequest {
+  leekIds: string[];
+  mobIds: string[];
+  basePoolRequest: CreateBasePoolRequest;
+}
+
+export interface PumpkinPoolResponse {
+  id: string;
+  basePool: BasePoolResponse;
+  mobs: MobResponse[];
+  leeks: LeekResponse[];
+  poolRunsInfo: PoolRunsInfoResponse;
+}
+
 export interface AddTeamRequest {
   name: string;
   leekIds: string[];

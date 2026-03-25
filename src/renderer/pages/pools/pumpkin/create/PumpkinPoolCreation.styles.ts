@@ -7,6 +7,7 @@ export interface PumpkinPoolCreationStyles {
   content: CSSProperties;
   title: CSSProperties;
   form: CSSProperties;
+  validationMessage: CSSProperties;
 }
 
 export const pumpkinPoolCreationStyles: PumpkinPoolCreationStyles = {
@@ -25,6 +26,9 @@ export const pumpkinPoolCreationStyles: PumpkinPoolCreationStyles = {
   },
   content: {
     overflowY: 'auto' as const,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing.xl,
   },
   title: {
     fontSize: '24px',
@@ -37,5 +41,9 @@ export const pumpkinPoolCreationStyles: PumpkinPoolCreationStyles = {
     flexDirection: 'column' as const,
     gap: theme.spacing.xl,
     width: '100%',
+  },
+  validationMessage: {
+    color: theme.colors.accent.error,
+    fontWeight: 500,
   },
 };
