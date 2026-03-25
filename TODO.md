@@ -12,3 +12,8 @@ Implement notifications for when a pool run has finished? (it can take a long ti
 On github, I should be able to generate new releases, with a generated installer for the users to use directly
 
 ## Fix leek hover popup hidden when overflow
+
+## Intuitive ux
+
+When creating a pool, and the user has 0 leeks, show a button "create leek"
+Same for farmers, teams, etc

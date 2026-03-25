@@ -1,3 +1,5 @@
+import { loadAssetsFromContext } from './AssetLoader';
+
 // Webpack-specific require.context type declaration
 declare const require: {
   context(
@@ -16,14 +18,12 @@ const imageContext = require.context(
   /\.(png|jpe?g|gif)$/,
 );
 
-export const images: Record<string, string> = {};
-const imageKeys: string[] = [];
+const { assets: images, keys: imageKeys } = loadAssetsFromContext<string>(
+  imageContext,
+  /\.(png|jpe?g|gif)$/,
+);
 
-imageContext.keys().forEach((key: string) => {
-  const imageName = key.replace('./', '').replace(/\.(png|jpe?g|gif)$/, '');
-  images[imageName] = imageContext(key);
-  imageKeys.push(imageName);
-});
+export { images };
 
 console.log(images);
 

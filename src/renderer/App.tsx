@@ -31,6 +31,10 @@ import PoolRunFarmerDetail from './pages/poolRuns/farmer/details/PoolRunFarmerDe
 import PoolRunsFarmer from './pages/poolRuns/farmer/runs/PoolRunsFarmer';
 import PoolRunsTeam from './pages/poolRuns/team/runs/PoolRunsTeam';
 import PoolRunsDuel from './pages/poolRuns/duel/runs/PoolRunsDuel';
+import PoolPumpkin from './pages/pools/pumpkin/PoolPumpkin';
+import PumpkinPoolCreation from './pages/pools/pumpkin/create/PumpkinPoolCreation';
+import Pumpkins from './pages/mobs/pumpkins/Pumpkins';
+import PumpkinCreation from './pages/mobs/pumpkin-creation/PumpkinCreation';
 
 export default function App() {
   return (
@@ -39,7 +43,7 @@ export default function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<PageOutlet />}>
-              <Route index element={<Home />} />
+              <Route index element={<PumpkinCreation />} />
 
               <Route path="pools">
                 <Route index element={<Pools />} />
@@ -76,6 +80,12 @@ export default function App() {
                     </Route>
                   </Route>
                 </Route>
+                <Route path="boss">
+                  <Route path="pumpkin">
+                    <Route index element={<PoolPumpkin />} />
+                    <Route path="create" element={<PumpkinPoolCreation />} />
+                  </Route>
+                </Route>
               </Route>
 
               <Route path="leeks" element={<Leeks />} />
@@ -90,6 +100,15 @@ export default function App() {
 
               <Route path="teams" element={<Teams />} />
               <Route path="new-team" element={<TeamCreation />} />
+
+              <Route path="mobs">
+                <Route path="nasu" element={<Pumpkins />} />
+                <Route path="fennel" element={<Pumpkins />} />
+                <Route path="pumpkin">
+                  <Route index element={<Pumpkins />} />
+                  <Route path="new-pumpkin" element={<PumpkinCreation />} />
+                </Route>
+              </Route>
 
               <Route path="ais">
                 <Route index element={<AIs />} />

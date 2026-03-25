@@ -31,6 +31,15 @@ const NAV_ITEMS: NavItem[] = [
   { path: '/farmers', label: 'Farmers' },
   { path: '/turrets', label: 'Turrets' },
   { path: '/teams', label: 'Teams' },
+  {
+    path: '/mobs',
+    label: 'Mobs',
+    children: [
+      { path: '/mobs/nasu', label: 'Nasu' },
+      { path: '/mobs/fennel', label: 'Fennel' },
+      { path: '/mobs/pumpkin', label: 'Pumpkin' },
+    ],
+  },
   { path: '/ais', label: 'AIs' },
 ];
 

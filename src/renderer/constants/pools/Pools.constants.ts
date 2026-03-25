@@ -10,6 +10,6 @@ export const DEFAULT_BASE_POOL: CreateBasePoolRequest = {
   startSeed: 1,
 };
 
-export type PoolType = 'duel' | 'farmer' | 'team';
+export type PoolType = 'duel' | 'farmer' | 'team' | 'boss';
 
 export type RatioType = 'wins' | 'losses' | 'draws';

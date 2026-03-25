@@ -361,10 +361,10 @@ export interface TeamPoolMatrixHeatmapResponse {
 }
 
 export interface AddLeekRequest {
-  name?: string;
-  build?: EntityBuild;
-  imageName?: string;
-  aiId?: string;
+  name: string;
+  build: EntityBuild;
+  imageName: string;
+  aiId: string;
 }
 
 export interface AddLeekResponse {
@@ -373,6 +373,28 @@ export interface AddLeekResponse {
 
 export interface GetAllLeeksResponse {
   leeks: LeekResponse[];
+}
+
+export interface AddMobRequest {
+  name: string;
+  internalName: string;
+  type: string;
+  build: EntityBuild;
+  aiId: string;
+}
+
+export interface MobResponse {
+  id: string;
+  name: string;
+  internalName: string;
+  type: string;
+  build: EntityBuild;
+  ai: EntityAIResponse;
+  creationDate: number;
+}
+
+export interface AddMobResponse {
+  mob: MobResponse;
 }
 
 export interface SetBooleanRequest {
