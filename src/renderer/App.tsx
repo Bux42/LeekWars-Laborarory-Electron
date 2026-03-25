@@ -43,7 +43,7 @@ export default function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<PageOutlet />}>
-              <Route index element={<PumpkinCreation />} />
+              <Route index element={<Home />} />
 
               <Route path="pools">
                 <Route index element={<Pools />} />

@@ -35,8 +35,8 @@ const NAV_ITEMS: NavItem[] = [
     path: '/mobs',
     label: 'Mobs',
     children: [
-      { path: '/mobs/nasu', label: 'Nasu' },
-      { path: '/mobs/fennel', label: 'Fennel' },
+      // { path: '/mobs/nasu', label: 'Nasu' },
+      // { path: '/mobs/fennel', label: 'Fennel' },
       { path: '/mobs/pumpkin', label: 'Pumpkin' },
     ],
   },

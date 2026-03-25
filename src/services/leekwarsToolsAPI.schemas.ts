@@ -397,6 +397,10 @@ export interface AddMobResponse {
   mob: MobResponse;
 }
 
+export interface GetAllMobsResponse {
+  mobs: MobResponse[];
+}
+
 export interface SetBooleanRequest {
   value: boolean;
 }

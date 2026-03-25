@@ -2,18 +2,19 @@ import { getImage } from '../../../utils/ImageLoader';
 import HoverTooltip from '../../shared/hover-tooltip/HoverTooltip';
 import { IBossImageProps } from './BossImage.types';
 import { bossImageStyles as styles } from './BossImage.styles';
+import EntityBuild from '../../entity/entity-build/EntityBuild';
 
 function BossImage({ boss, showTooltip, height, width }: IBossImageProps) {
   if (showTooltip) {
     return (
       <HoverTooltip
-        tooltip={<div>TODO: implement BossDetails component{boss.name}</div>}
+        tooltip={<EntityBuild entityBuild={boss.build} />}
         height={height}
         width={width}
       >
         <div
           style={styles.image(
-            getImage(`leekwars/image/mob/${boss.name ?? 'leek/1'}`),
+            getImage(`leekwars/image/mob/${boss.internalName ?? 'leek/1'}`),
           )}
         />
       </HoverTooltip>
@@ -23,7 +24,7 @@ function BossImage({ boss, showTooltip, height, width }: IBossImageProps) {
     <div style={{ height, width }}>
       <div
         style={styles.image(
-          getImage(`leekwars/image/mob/${boss.name ?? 'leek/1'}`),
+          getImage(`leekwars/image/mob/${boss.internalName ?? 'leek/1'}`),
         )}
       />
     </div>

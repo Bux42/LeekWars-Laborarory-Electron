@@ -1,5 +1,7 @@
+import { MobResponse } from '../../../../services/leekwarsToolsAPI.schemas';
+
 export interface IBossImageProps {
-  boss: any; // TODO: define boss type
+  boss: MobResponse;
   showTooltip?: boolean;
   height: number;
   width: number;

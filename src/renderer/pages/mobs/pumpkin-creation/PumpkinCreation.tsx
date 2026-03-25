@@ -18,6 +18,7 @@ function PumpkinCreation() {
   const [bossName, setBossName] = useState<string>('');
   const [jsonBuildError, setJsonBuildError] = useState<string | null>(null);
   const [selectedAiId, setSelectedAiId] = useState<string>('');
+  const [creationSuccess, setCreationSuccess] = useState<string | null>(null);
 
   const addMobMutation = usePostMobsAdd();
 
@@ -110,7 +111,7 @@ function PumpkinCreation() {
         },
       });
       setJsonBuildError(null);
-      // Optionally, redirect to the mobs list or show a success message here
+      setCreationSuccess(`Mob "${bossName}" created successfully!`);
     } catch (err) {
       setJsonBuildError(
         err instanceof Error ? err.message : 'Failed to create mob',
@@ -131,7 +132,7 @@ function PumpkinCreation() {
       >
         {bossNames.map((name) => (
           <Radio.Button key={name} value={name} style={styles.radioButton}>
-            <BossImage boss={{ name }} height={56} width={56} />
+            <BossImage boss={{ internalName: name }} height={56} width={56} />
           </Radio.Button>
         ))}
       </Radio.Group>
@@ -167,6 +168,9 @@ function PumpkinCreation() {
             <p style={styles.errorText}>
               Please select an AI to use for this pumpkin.
             </p>
+          )}
+          {creationSuccess && (
+            <Result status="success" title={creationSuccess} />
           )}
           <Button disabled={!selectedAiId} onClick={createMob}>
             Create pumpkin

@@ -4,17 +4,26 @@
  * Leekwars Tools API
  * OpenAPI spec version: 4.2.0
  */
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult,
 } from '@tanstack/react-query';
 
 import type {
   AddMobRequest,
   AddMobResponse,
+  GetAllMobsResponse,
 } from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
@@ -99,4 +108,242 @@ export const usePostMobsAdd = <TError = void, TContext = unknown>(
   TContext
 > => {
   return useMutation(getPostMobsAddMutationOptions(options), queryClient);
+};
+/**
+ * Returns a list of all mobs.
+ * @summary Get all mobs
+ */
+export const getMobsAllMobType = (mobType: string, signal?: AbortSignal) => {
+  return apiClient<GetAllMobsResponse>({
+    url: `/mobs/all/${mobType}`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetMobsAllMobTypeQueryKey = (mobType: string) => {
+  return [`/mobs/all/${mobType}`] as const;
+};
+
+export const getGetMobsAllMobTypeQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMobsAllMobType>>,
+  TError = void,
+>(
+  mobType: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getMobsAllMobType>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetMobsAllMobTypeQueryKey(mobType);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getMobsAllMobType>>
+  > = ({ signal }) => getMobsAllMobType(mobType, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!mobType,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getMobsAllMobType>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetMobsAllMobTypeQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMobsAllMobType>>
+>;
+export type GetMobsAllMobTypeQueryError = void;
+
+export function useGetMobsAllMobType<
+  TData = Awaited<ReturnType<typeof getMobsAllMobType>>,
+  TError = void,
+>(
+  mobType: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getMobsAllMobType>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMobsAllMobType>>,
+          TError,
+          Awaited<ReturnType<typeof getMobsAllMobType>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetMobsAllMobType<
+  TData = Awaited<ReturnType<typeof getMobsAllMobType>>,
+  TError = void,
+>(
+  mobType: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getMobsAllMobType>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMobsAllMobType>>,
+          TError,
+          Awaited<ReturnType<typeof getMobsAllMobType>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetMobsAllMobType<
+  TData = Awaited<ReturnType<typeof getMobsAllMobType>>,
+  TError = void,
+>(
+  mobType: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getMobsAllMobType>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get all mobs
+ */
+
+export function useGetMobsAllMobType<
+  TData = Awaited<ReturnType<typeof getMobsAllMobType>>,
+  TError = void,
+>(
+  mobType: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getMobsAllMobType>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetMobsAllMobTypeQueryOptions(mobType, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Removes a mob from the system.
+ * @summary Remove a mob
+ */
+export const deleteMobsDeleteMobId = (mobId: string, signal?: AbortSignal) => {
+  return apiClient<void>({
+    url: `/mobs/delete/${mobId}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeleteMobsDeleteMobIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteMobsDeleteMobId>>,
+    TError,
+    { mobId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteMobsDeleteMobId>>,
+  TError,
+  { mobId: string },
+  TContext
+> => {
+  const mutationKey = ['deleteMobsDeleteMobId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteMobsDeleteMobId>>,
+    { mobId: string }
+  > = (props) => {
+    const { mobId } = props ?? {};
+
+    return deleteMobsDeleteMobId(mobId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteMobsDeleteMobIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteMobsDeleteMobId>>
+>;
+
+export type DeleteMobsDeleteMobIdMutationError = void;
+
+/**
+ * @summary Remove a mob
+ */
+export const useDeleteMobsDeleteMobId = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteMobsDeleteMobId>>,
+      TError,
+      { mobId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteMobsDeleteMobId>>,
+  TError,
+  { mobId: string },
+  TContext
+> => {
+  return useMutation(
+    getDeleteMobsDeleteMobIdMutationOptions(options),
+    queryClient,
+  );
 };
