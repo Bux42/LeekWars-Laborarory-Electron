@@ -35,6 +35,9 @@ import PoolPumpkin from './pages/pools/pumpkin/PoolPumpkin';
 import PumpkinPoolCreation from './pages/pools/pumpkin/create/PumpkinPoolCreation';
 import Pumpkins from './pages/mobs/pumpkins/Pumpkins';
 import PumpkinCreation from './pages/mobs/pumpkin-creation/PumpkinCreation';
+import PoolPumpkinDetail from './pages/pools/pumpkin/details/PoolPumpkinDetail';
+import LeekGroups from './pages/leek-groups/LeekGroups';
+import LeekGroupCreation from './pages/leek-group-creation/LeekGroupCreation';
 
 export default function App() {
   return (
@@ -84,6 +87,9 @@ export default function App() {
                   <Route path="pumpkin">
                     <Route index element={<PoolPumpkin />} />
                     <Route path="create" element={<PumpkinPoolCreation />} />
+                    <Route path=":poolId">
+                      <Route index element={<PoolPumpkinDetail />} />
+                    </Route>
                   </Route>
                 </Route>
               </Route>
@@ -109,6 +115,9 @@ export default function App() {
                   <Route path="new-pumpkin" element={<PumpkinCreation />} />
                 </Route>
               </Route>
+
+              <Route path="leek-groups" element={<LeekGroups />} />
+              <Route path="new-leek-group" element={<LeekGroupCreation />} />
 
               <Route path="ais">
                 <Route index element={<AIs />} />

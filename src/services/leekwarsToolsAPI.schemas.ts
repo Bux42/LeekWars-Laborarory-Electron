@@ -375,6 +375,25 @@ export interface GetAllLeeksResponse {
   leeks: LeekResponse[];
 }
 
+export interface AddLeekGroupRequest {
+  name: string;
+  leekIds: string[];
+}
+
+export interface LeekGroupResponse {
+  id: string;
+  name: string;
+  leeks: LeekResponse[];
+}
+
+export interface AddLeekGroupResponse {
+  leekGroup?: LeekGroupResponse;
+}
+
+export interface GetAllLeekGroupsResponse {
+  leekGroups: LeekGroupResponse[];
+}
+
 export interface AddMobRequest {
   name: string;
   internalName: string;
@@ -438,7 +457,7 @@ export interface PoolTeamResponse {
 }
 
 export interface CreatePumpkinPoolRequest {
-  leekIds: string[];
+  leekGroupIds: string[];
   mobIds: string[];
   basePoolRequest: CreateBasePoolRequest;
 }
@@ -447,8 +466,12 @@ export interface PumpkinPoolResponse {
   id: string;
   basePool: BasePoolResponse;
   mobs: MobResponse[];
-  leeks: LeekResponse[];
+  leekGroups: LeekGroupResponse[];
   poolRunsInfo: PoolRunsInfoResponse;
+}
+
+export interface GetAllPumpkinPoolsResponse {
+  pumpkinPools: PumpkinPoolResponse[];
 }
 
 export interface AddTeamRequest {

@@ -54,7 +54,7 @@ function PoolFarmerDetail() {
 
   const { mutate: addFarmerToPool } = usePostFarmerPoolsIdAddFarmer();
   const { mutate: removeFarmerFromPool } =
-    useDeleteFarmerPoolsIdRemoveFarmerFarmerId(); // You would need to implement the actual remove mutation
+    useDeleteFarmerPoolsIdRemoveFarmerFarmerId();
 
   const startMutation = usePostFarmerPoolRunIdStart();
 

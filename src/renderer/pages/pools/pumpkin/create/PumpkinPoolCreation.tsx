@@ -2,8 +2,6 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Result } from 'antd';
 import { pumpkinPoolCreationStyles as styles } from './PumpkinPoolCreation.styles';
-import { useGetLeeksAll } from '../../../../../services/leeks/leeks';
-import LeekList from '../../../../components/leek/leek-list/LeekList';
 import BasePoolForm from '../../../../components/pool/base/base-pool-form/BasePoolForm';
 import { CreateBasePoolRequest } from '../../../../../services/leekwarsToolsAPI.schemas';
 import { DEFAULT_BASE_POOL } from '../../../../constants/pools/Pools.constants';
@@ -11,6 +9,9 @@ import { useGetMobsAllMobType } from '../../../../../services/mobs/mobs';
 import Spinner from '../../../../components/shared/spinner/Spinner';
 import MobList from '../../../../components/mob/mob-list/MobList';
 import { usePostPumpkinPoolsCreate } from '../../../../../services/pumpkin-pools/pumpkin-pools';
+import { useGetLeekGroupsAll } from '../../../../../services/leek-groups/leek-groups';
+import LeekGroupList from '../../../../components/leek-group/leek-group-list/LeekGroupList';
+import LeekGroupPicker from '../../../../components/leek-group/leek-group-picker/LeekGroupPicker';
 
 function PumpkinPoolCreation() {
   const navigate = useNavigate();
@@ -18,17 +19,19 @@ function PumpkinPoolCreation() {
   const [basePoolRequest, setBasePoolRequest] = useState<CreateBasePoolRequest>(
     { ...DEFAULT_BASE_POOL },
   );
-  const [selectedLeekIds, setSelectedLeekIds] = useState<string[]>([]);
+  const [selectedLeekGroupIds, setSelectedLeekGroupIds] = useState<string[]>(
+    [],
+  );
   const [selectedMobIds, setSelectedMobIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const {
-    data: leeksData,
-    isLoading: leeksLoading,
-    error: leeksError,
-  } = useGetLeeksAll({
+    data: leekGroupsData,
+    isLoading: leekGroupsLoading,
+    error: leekGroupsError,
+  } = useGetLeekGroupsAll({
     query: {
-      queryKey: ['leeks'],
+      queryKey: ['leek-groups'],
     },
   });
 
@@ -40,11 +43,13 @@ function PumpkinPoolCreation() {
 
   const createPoolPumpkinMutation = usePostPumpkinPoolsCreate();
 
-  const availableLeeks = useMemo(() => {
-    if (!leeksData) return [];
-    const poolLeekIds = new Set(selectedLeekIds);
-    return leeksData.leeks.filter((leek) => !poolLeekIds.has(leek.id));
-  }, [leeksData, selectedLeekIds]);
+  const availableLeekGroups = useMemo(() => {
+    if (!leekGroupsData) return [];
+    const poolLeekGroupIds = new Set(selectedLeekGroupIds);
+    return leekGroupsData.leekGroups.filter(
+      (leekGroup) => !poolLeekGroupIds.has(leekGroup.id),
+    );
+  }, [leekGroupsData, selectedLeekGroupIds]);
 
   const availableMobs = useMemo(() => {
     if (!pumpkins) return [];
@@ -62,14 +67,16 @@ function PumpkinPoolCreation() {
     setSelectedMobIds(selectedMobIds.filter((id) => id !== mobId));
   };
 
-  const handleLeekSelect = (leekId: string) => {
-    if (!selectedLeekIds.includes(leekId)) {
-      setSelectedLeekIds([...selectedLeekIds, leekId]);
+  const handleLeekGroupSelect = (leekGroupId: string) => {
+    if (!selectedLeekGroupIds.includes(leekGroupId)) {
+      setSelectedLeekGroupIds([...selectedLeekGroupIds, leekGroupId]);
     }
   };
 
-  const handleRemoveLeek = (leekId: string) => {
-    setSelectedLeekIds(selectedLeekIds.filter((id) => id !== leekId));
+  const handleRemoveLeekGroup = (leekGroupId: string) => {
+    setSelectedLeekGroupIds(
+      selectedLeekGroupIds.filter((id) => id !== leekGroupId),
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -79,8 +86,8 @@ function PumpkinPoolCreation() {
       setError('Pool name is required');
       return;
     }
-    if (selectedLeekIds.length < 2) {
-      setError('At least 2 leeks are required for a duel pool');
+    if (selectedLeekGroupIds.length < 1) {
+      setError('At least 1 leek group is required for a duel pool');
       return;
     }
 
@@ -89,7 +96,7 @@ function PumpkinPoolCreation() {
       const result = await createPoolPumpkinMutation.mutateAsync({
         data: {
           basePoolRequest,
-          leekIds: selectedLeekIds,
+          leekGroupIds: selectedLeekGroupIds,
           mobIds: selectedMobIds,
         },
       });
@@ -104,14 +111,17 @@ function PumpkinPoolCreation() {
     }
   };
 
-  const isFormValid = selectedLeekIds.length > 0 && selectedMobIds.length > 0;
+  const isFormValid =
+    selectedLeekGroupIds.length > 0 && selectedMobIds.length > 0;
 
-  if (isLoadingPumpkins || leeksLoading) {
-    return <Spinner size="small" label="Loading pumpkins and leeks..." />;
+  if (isLoadingPumpkins || leekGroupsLoading) {
+    return <Spinner size="small" label="Loading pumpkins and leek groups..." />;
   }
 
-  if (pumpkinsError || leeksError) {
-    return <Result status="error" title="Error loading pumpkins and leeks" />;
+  if (pumpkinsError || leekGroupsError) {
+    return (
+      <Result status="error" title="Error loading pumpkins and leek groups" />
+    );
   }
 
   return (
@@ -119,7 +129,7 @@ function PumpkinPoolCreation() {
       <h1 style={styles.title}>Create New Pumpkin Pool</h1>
       <form onSubmit={handleSubmit} style={styles.form}>
         <BasePoolForm
-          selectedLeeksCount={selectedLeekIds.length}
+          selectedLeeksCount={selectedLeekGroupIds.length}
           initialBasePoolRequest={basePoolRequest}
           onBasePoolRequestChange={setBasePoolRequest}
         />
@@ -138,17 +148,22 @@ function PumpkinPoolCreation() {
         <MobList mobs={availableMobs} onAddMob={handleAddMob} />
 
         <h3 style={styles.title}>Step 2: Select participating leeks</h3>
-        <h3>Selected leeks:</h3>
-        <LeekList
-          leeks={
-            leeksData?.leeks.filter((leek) =>
-              selectedLeekIds.includes(leek.id ?? ''),
+        <h3>Selected leek groups:</h3>
+        <LeekGroupList
+          leekGroups={
+            leekGroupsData?.leekGroups.filter((leekGroup) =>
+              selectedLeekGroupIds.includes(leekGroup.id ?? ''),
             ) || []
           }
-          onRemoveLeek={handleRemoveLeek}
+          onRemoveLeekGroup={handleRemoveLeekGroup}
         />
-        <h3>Available leeks ({availableLeeks.length})</h3>
-        <LeekList leeks={availableLeeks} onAddLeek={handleLeekSelect} />
+        <h3>Available leek groups ({availableLeekGroups.length})</h3>
+        <LeekGroupPicker
+          label="Select leek groups to participate in the pool"
+          availableLeekGroups={availableLeekGroups}
+          selectedLeekGroupIds={selectedLeekGroupIds}
+          onAddLeekGroup={handleLeekGroupSelect}
+        />
       </div>
       {error && <Result status="error" title={error} />}
       {isFormValid ? (
@@ -157,7 +172,7 @@ function PumpkinPoolCreation() {
         </Button>
       ) : (
         <p style={styles.validationMessage}>
-          Please select at least one mob and one leek to create the pool.
+          Please select at least one mob and one leek group to create the pool.
         </p>
       )}
       {/* Submit button and logic can be added here */}

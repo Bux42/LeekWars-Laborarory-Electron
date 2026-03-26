@@ -4,20 +4,176 @@
  * Leekwars Tools API
  * OpenAPI spec version: 4.2.0
  */
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult,
 } from '@tanstack/react-query';
 
 import type {
   CreatePumpkinPoolRequest,
+  GetAllPumpkinPoolsResponse,
+  PoolRunsInfoResponse,
   PumpkinPoolResponse,
 } from '../leekwarsToolsAPI.schemas';
 
 import { apiClient } from '.././lib/api-client';
+
+/**
+ * Returns a list of all pumpkin pools.
+ * @summary Get all pumpkin pools
+ */
+export const getPumpkinPoolsAll = (signal?: AbortSignal) => {
+  return apiClient<GetAllPumpkinPoolsResponse>({
+    url: `/pumpkin-pools/all`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetPumpkinPoolsAllQueryKey = () => {
+  return [`/pumpkin-pools/all`] as const;
+};
+
+export const getGetPumpkinPoolsAllQueryOptions = <
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+      TError,
+      TData
+    >
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetPumpkinPoolsAllQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getPumpkinPoolsAll>>
+  > = ({ signal }) => getPumpkinPoolsAll(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetPumpkinPoolsAllQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getPumpkinPoolsAll>>
+>;
+export type GetPumpkinPoolsAllQueryError = void;
+
+export function useGetPumpkinPoolsAll<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+  TError = void,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+          TError,
+          Awaited<ReturnType<typeof getPumpkinPoolsAll>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPumpkinPoolsAll<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+          TError,
+          Awaited<ReturnType<typeof getPumpkinPoolsAll>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPumpkinPoolsAll<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get all pumpkin pools
+ */
+
+export function useGetPumpkinPoolsAll<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsAll>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetPumpkinPoolsAllQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
 
 /**
  * Creates a new pumpkin pool.
@@ -103,3 +259,669 @@ export const usePostPumpkinPoolsCreate = <TError = void, TContext = unknown>(
     queryClient,
   );
 };
+/**
+ * Returns a pumpkin pool by its ID.
+ * @summary Get a pumpkin pool by ID
+ */
+export const getPumpkinPoolsId = (id: string, signal?: AbortSignal) => {
+  return apiClient<PumpkinPoolResponse>({
+    url: `/pumpkin-pools/${id}`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetPumpkinPoolsIdQueryKey = (id: string) => {
+  return [`/pumpkin-pools/${id}`] as const;
+};
+
+export const getGetPumpkinPoolsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetPumpkinPoolsIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getPumpkinPoolsId>>
+  > = ({ signal }) => getPumpkinPoolsId(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetPumpkinPoolsIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getPumpkinPoolsId>>
+>;
+export type GetPumpkinPoolsIdQueryError = void;
+
+export function useGetPumpkinPoolsId<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+          TError,
+          Awaited<ReturnType<typeof getPumpkinPoolsId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPumpkinPoolsId<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+          TError,
+          Awaited<ReturnType<typeof getPumpkinPoolsId>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPumpkinPoolsId<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get a pumpkin pool by ID
+ */
+
+export function useGetPumpkinPoolsId<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsId>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetPumpkinPoolsIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Adds a leek group to a pumpkin pool.
+ * @summary Add a leek group to a pumpkin pool
+ */
+export const postPumpkinPoolsIdAddLeekGroupLeekGroupId = (
+  id: string,
+  leekGroupId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<PumpkinPoolResponse>({
+    url: `/pumpkin-pools/${id}/add-leek-group/${leekGroupId}`,
+    method: 'POST',
+    signal,
+  });
+};
+
+export const getPostPumpkinPoolsIdAddLeekGroupLeekGroupIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postPumpkinPoolsIdAddLeekGroupLeekGroupId>>,
+    TError,
+    { id: string; leekGroupId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postPumpkinPoolsIdAddLeekGroupLeekGroupId>>,
+  TError,
+  { id: string; leekGroupId: string },
+  TContext
+> => {
+  const mutationKey = ['postPumpkinPoolsIdAddLeekGroupLeekGroupId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postPumpkinPoolsIdAddLeekGroupLeekGroupId>>,
+    { id: string; leekGroupId: string }
+  > = (props) => {
+    const { id, leekGroupId } = props ?? {};
+
+    return postPumpkinPoolsIdAddLeekGroupLeekGroupId(id, leekGroupId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostPumpkinPoolsIdAddLeekGroupLeekGroupIdMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof postPumpkinPoolsIdAddLeekGroupLeekGroupId>>
+  >;
+
+export type PostPumpkinPoolsIdAddLeekGroupLeekGroupIdMutationError = void;
+
+/**
+ * @summary Add a leek group to a pumpkin pool
+ */
+export const usePostPumpkinPoolsIdAddLeekGroupLeekGroupId = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postPumpkinPoolsIdAddLeekGroupLeekGroupId>>,
+      TError,
+      { id: string; leekGroupId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postPumpkinPoolsIdAddLeekGroupLeekGroupId>>,
+  TError,
+  { id: string; leekGroupId: string },
+  TContext
+> => {
+  return useMutation(
+    getPostPumpkinPoolsIdAddLeekGroupLeekGroupIdMutationOptions(options),
+    queryClient,
+  );
+};
+/**
+ * Adds a mob to a pumpkin pool.
+ * @summary Add a mob to a pumpkin pool
+ */
+export const postPumpkinPoolsIdAddMobMobId = (
+  id: string,
+  mobId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<PumpkinPoolResponse>({
+    url: `/pumpkin-pools/${id}/add-mob/${mobId}`,
+    method: 'POST',
+    signal,
+  });
+};
+
+export const getPostPumpkinPoolsIdAddMobMobIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postPumpkinPoolsIdAddMobMobId>>,
+    TError,
+    { id: string; mobId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postPumpkinPoolsIdAddMobMobId>>,
+  TError,
+  { id: string; mobId: string },
+  TContext
+> => {
+  const mutationKey = ['postPumpkinPoolsIdAddMobMobId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postPumpkinPoolsIdAddMobMobId>>,
+    { id: string; mobId: string }
+  > = (props) => {
+    const { id, mobId } = props ?? {};
+
+    return postPumpkinPoolsIdAddMobMobId(id, mobId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostPumpkinPoolsIdAddMobMobIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postPumpkinPoolsIdAddMobMobId>>
+>;
+
+export type PostPumpkinPoolsIdAddMobMobIdMutationError = void;
+
+/**
+ * @summary Add a mob to a pumpkin pool
+ */
+export const usePostPumpkinPoolsIdAddMobMobId = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postPumpkinPoolsIdAddMobMobId>>,
+      TError,
+      { id: string; mobId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postPumpkinPoolsIdAddMobMobId>>,
+  TError,
+  { id: string; mobId: string },
+  TContext
+> => {
+  return useMutation(
+    getPostPumpkinPoolsIdAddMobMobIdMutationOptions(options),
+    queryClient,
+  );
+};
+/**
+ * Removes a leek group from a pumpkin pool.
+ * @summary Remove a leek group from a pumpkin pool
+ */
+export const deletePumpkinPoolsIdRemoveLeekGroupLeekGroupId = (
+  id: string,
+  leekGroupId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<PumpkinPoolResponse>({
+    url: `/pumpkin-pools/${id}/remove-leek-group/${leekGroupId}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeletePumpkinPoolsIdRemoveLeekGroupLeekGroupIdMutationOptions =
+  <TError = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+      Awaited<
+        ReturnType<typeof deletePumpkinPoolsIdRemoveLeekGroupLeekGroupId>
+      >,
+      TError,
+      { id: string; leekGroupId: string },
+      TContext
+    >;
+  }): UseMutationOptions<
+    Awaited<ReturnType<typeof deletePumpkinPoolsIdRemoveLeekGroupLeekGroupId>>,
+    TError,
+    { id: string; leekGroupId: string },
+    TContext
+  > => {
+    const mutationKey = ['deletePumpkinPoolsIdRemoveLeekGroupLeekGroupId'];
+    const { mutation: mutationOptions } = options
+      ? options.mutation &&
+        'mutationKey' in options.mutation &&
+        options.mutation.mutationKey
+        ? options
+        : { ...options, mutation: { ...options.mutation, mutationKey } }
+      : { mutation: { mutationKey } };
+
+    const mutationFn: MutationFunction<
+      Awaited<
+        ReturnType<typeof deletePumpkinPoolsIdRemoveLeekGroupLeekGroupId>
+      >,
+      { id: string; leekGroupId: string }
+    > = (props) => {
+      const { id, leekGroupId } = props ?? {};
+
+      return deletePumpkinPoolsIdRemoveLeekGroupLeekGroupId(id, leekGroupId);
+    };
+
+    return { mutationFn, ...mutationOptions };
+  };
+
+export type DeletePumpkinPoolsIdRemoveLeekGroupLeekGroupIdMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof deletePumpkinPoolsIdRemoveLeekGroupLeekGroupId>>
+  >;
+
+export type DeletePumpkinPoolsIdRemoveLeekGroupLeekGroupIdMutationError = void;
+
+/**
+ * @summary Remove a leek group from a pumpkin pool
+ */
+export const useDeletePumpkinPoolsIdRemoveLeekGroupLeekGroupId = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<
+        ReturnType<typeof deletePumpkinPoolsIdRemoveLeekGroupLeekGroupId>
+      >,
+      TError,
+      { id: string; leekGroupId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deletePumpkinPoolsIdRemoveLeekGroupLeekGroupId>>,
+  TError,
+  { id: string; leekGroupId: string },
+  TContext
+> => {
+  return useMutation(
+    getDeletePumpkinPoolsIdRemoveLeekGroupLeekGroupIdMutationOptions(options),
+    queryClient,
+  );
+};
+/**
+ * Removes a mob from a pumpkin pool.
+ * @summary Remove a mob from a pumpkin pool
+ */
+export const deletePumpkinPoolsIdRemoveMobMobId = (
+  id: string,
+  mobId: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<PumpkinPoolResponse>({
+    url: `/pumpkin-pools/${id}/remove-mob/${mobId}`,
+    method: 'DELETE',
+    signal,
+  });
+};
+
+export const getDeletePumpkinPoolsIdRemoveMobMobIdMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deletePumpkinPoolsIdRemoveMobMobId>>,
+    TError,
+    { id: string; mobId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deletePumpkinPoolsIdRemoveMobMobId>>,
+  TError,
+  { id: string; mobId: string },
+  TContext
+> => {
+  const mutationKey = ['deletePumpkinPoolsIdRemoveMobMobId'];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deletePumpkinPoolsIdRemoveMobMobId>>,
+    { id: string; mobId: string }
+  > = (props) => {
+    const { id, mobId } = props ?? {};
+
+    return deletePumpkinPoolsIdRemoveMobMobId(id, mobId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeletePumpkinPoolsIdRemoveMobMobIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deletePumpkinPoolsIdRemoveMobMobId>>
+>;
+
+export type DeletePumpkinPoolsIdRemoveMobMobIdMutationError = void;
+
+/**
+ * @summary Remove a mob from a pumpkin pool
+ */
+export const useDeletePumpkinPoolsIdRemoveMobMobId = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deletePumpkinPoolsIdRemoveMobMobId>>,
+      TError,
+      { id: string; mobId: string },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deletePumpkinPoolsIdRemoveMobMobId>>,
+  TError,
+  { id: string; mobId: string },
+  TContext
+> => {
+  return useMutation(
+    getDeletePumpkinPoolsIdRemoveMobMobIdMutationOptions(options),
+    queryClient,
+  );
+};
+/**
+ * Gets runs info from an existing pumpkin pool.
+ * @summary Get runs info from a pumpkin pool
+ */
+export const getPumpkinPoolsIdRunsInfo = (id: string, signal?: AbortSignal) => {
+  return apiClient<PoolRunsInfoResponse>({
+    url: `/pumpkin-pools/${id}/runs-info`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetPumpkinPoolsIdRunsInfoQueryKey = (id: string) => {
+  return [`/pumpkin-pools/${id}/runs-info`] as const;
+};
+
+export const getGetPumpkinPoolsIdRunsInfoQueryOptions = <
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetPumpkinPoolsIdRunsInfoQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>
+  > = ({ signal }) => getPumpkinPoolsIdRunsInfo(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetPumpkinPoolsIdRunsInfoQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>
+>;
+export type GetPumpkinPoolsIdRunsInfoQueryError = void;
+
+export function useGetPumpkinPoolsIdRunsInfo<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+          TError,
+          Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPumpkinPoolsIdRunsInfo<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+          TError,
+          Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPumpkinPoolsIdRunsInfo<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get runs info from a pumpkin pool
+ */
+
+export function useGetPumpkinPoolsIdRunsInfo<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolsIdRunsInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetPumpkinPoolsIdRunsInfoQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}

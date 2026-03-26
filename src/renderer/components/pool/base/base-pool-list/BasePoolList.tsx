@@ -8,6 +8,7 @@ import LastPoolRunsButttons from '../../../pool-runs/last-pool-runs-buttons/Last
 function BasePoolList<TPool extends IBasePoolListItem>({
   pools,
   poolType,
+  bossType,
   getLabel,
   emptyMessage,
 }: IBasePoolListProps<TPool>) {
@@ -50,6 +51,7 @@ function BasePoolList<TPool extends IBasePoolListItem>({
             <LastPoolRunsButttons
               poolRunsInfo={pool.poolRunsInfo}
               poolType={poolType}
+              bossType={bossType}
               poolId={pool.id}
               showViewPoolButton
             />

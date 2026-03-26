@@ -6,6 +6,7 @@ import { lastPoolRunsButttonsStyles as styles } from './LastPoolRunsButttons.sty
 function LastPoolRunsButttons({
   poolRunsInfo,
   poolType,
+  bossType,
   poolId,
   showViewPoolButton = false,
 }: ILastPoolRunsButtonsProps) {
@@ -13,18 +14,22 @@ function LastPoolRunsButttons({
 
   const onViewLastRun = () => {
     if (poolRunsInfo?.lastRunId) {
-      navigate(`/pools/${poolType}/${poolId}/runs/${poolRunsInfo.lastRunId}`);
+      navigate(
+        `/pools/${poolType}/${bossType ? `${bossType}/` : ''}${poolId}/runs/${poolRunsInfo.lastRunId}`,
+      );
     }
   };
 
   const onViewAllRuns = () => {
     if (poolRunsInfo?.lastRunId) {
-      navigate(`/pools/${poolType}/${poolId}/runs`);
+      navigate(
+        `/pools/${poolType}/${bossType ? `${bossType}/` : ''}${poolId}/runs`,
+      );
     }
   };
 
   const onViewPool = () => {
-    navigate(`/pools/${poolType}/${poolId}`);
+    navigate(`/pools/${poolType}/${bossType ? `${bossType}/` : ''}${poolId}`);
   };
 
   return (

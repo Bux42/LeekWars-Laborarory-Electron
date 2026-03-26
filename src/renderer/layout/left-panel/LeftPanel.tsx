@@ -33,13 +33,14 @@ const NAV_ITEMS: NavItem[] = [
   { path: '/teams', label: 'Teams' },
   {
     path: '/mobs',
-    label: 'Mobs',
+    label: 'Boss',
     children: [
       // { path: '/mobs/nasu', label: 'Nasu' },
       // { path: '/mobs/fennel', label: 'Fennel' },
       { path: '/mobs/pumpkin', label: 'Pumpkin' },
     ],
   },
+  { path: '/leek-groups', label: 'Leek groups' },
   { path: '/ais', label: 'AIs' },
 ];
 
