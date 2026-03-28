@@ -5,6 +5,7 @@ import {
   useDeletePumpkinPoolsIdRemoveLeekGroupLeekGroupId,
   useDeletePumpkinPoolsIdRemoveMobMobId,
   useGetPumpkinPoolsId,
+  useGetPumpkinPoolsIdRunsInfo,
   usePostPumpkinPoolsIdAddLeekGroupLeekGroupId,
   usePostPumpkinPoolsIdAddMobMobId,
 } from '../../../../../services/pumpkin-pools/pumpkin-pools';
@@ -16,6 +17,7 @@ import { useGetMobsAllMobType } from '../../../../../services/mobs/mobs';
 import LeekGroupList from '../../../../components/leek-group/leek-group-list/LeekGroupList';
 import LastPoolRunsButttons from '../../../../components/pool-runs/last-pool-runs-buttons/LastPoolRunsButttons';
 import { PumpkinPoolResponse } from '../../../../../services/leekwarsToolsAPI.schemas';
+import { usePostPumpkinPoolRunIdStart } from '../../../../../services/pumpkin-pool-runs/pumpkin-pool-runs';
 
 function PoolPumpkinDetail() {
   const poolId = usePoolPumpkinId();
@@ -47,6 +49,14 @@ function PoolPumpkinDetail() {
       setPumpkinPool(poolPumpkinData);
     }
   }, [poolPumpkinData]);
+
+  const {
+    data: runsInfo,
+    isLoading: runsInfoLoading,
+    error: runsInfoError,
+  } = useGetPumpkinPoolsIdRunsInfo(poolId || '');
+
+  const startMutation = usePostPumpkinPoolRunIdStart();
 
   // add & remove mob from pumpkin pool mutations
   const onRemoveMobMutation = useDeletePumpkinPoolsIdRemoveMobMobId();
@@ -125,8 +135,24 @@ function PoolPumpkinDetail() {
     }
   };
 
-  const handleStartPool = () => {
-    // Implement start pool logic, e.g., call mutation to start a new run and navigate to run details
+  const handleStartPool = async () => {
+    try {
+      const result = await startMutation.mutateAsync({ id: poolId! });
+      if (result.id) {
+        setPumpkinPool((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            poolRunsInfo: {
+              ...prev.poolRunsInfo,
+              currentRun: result,
+            },
+          };
+        });
+      }
+    } catch (err) {
+      console.error('Failed to start pool:', err);
+    }
   };
 
   const availableMobs = useMemo(() => {
@@ -143,7 +169,12 @@ function PoolPumpkinDetail() {
     );
   }, [allLeekGroupsData, pumpkinPool]);
 
-  if (isLoadingPoolPumpkin || isLoadingAllLeekGroups || isLoadingAllMobs) {
+  if (
+    isLoadingPoolPumpkin ||
+    isLoadingAllLeekGroups ||
+    isLoadingAllMobs ||
+    runsInfoLoading
+  ) {
     return <Spinner label="Loading pool details..." />;
   }
 
@@ -151,6 +182,7 @@ function PoolPumpkinDetail() {
     poolPumpkinError ||
     allLeekGroupsError ||
     allMobsError ||
+    runsInfoError ||
     !poolPumpkinData ||
     !poolPumpkinData.basePool
   ) {
@@ -163,11 +195,12 @@ function PoolPumpkinDetail() {
       onStart={handleStartPool}
       totalCombinations={poolPumpkinData.leekGroups.length}
     >
-      {poolPumpkinData.poolRunsInfo && (
+      {runsInfo && (
         <LastPoolRunsButttons
-          poolRunsInfo={poolPumpkinData.poolRunsInfo}
-          poolType="farmer"
-          poolId={poolPumpkinData.basePool.id}
+          poolRunsInfo={runsInfo}
+          poolType="boss"
+          bossType="pumpkin"
+          poolId={poolPumpkinData.id}
         />
       )}
 

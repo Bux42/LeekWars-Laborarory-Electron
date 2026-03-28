@@ -38,6 +38,8 @@ import PumpkinCreation from './pages/mobs/pumpkin-creation/PumpkinCreation';
 import PoolPumpkinDetail from './pages/pools/pumpkin/details/PoolPumpkinDetail';
 import LeekGroups from './pages/leek-groups/LeekGroups';
 import LeekGroupCreation from './pages/leek-group-creation/LeekGroupCreation';
+import PoolRunsPumpkin from './pages/poolRuns/pumpkin/PoolRunsPumpkin';
+import PoolRunPumpkinDetail from './pages/pools/pumpkin/details/PoolRunPumpkinDetail';
 
 export default function App() {
   return (
@@ -89,6 +91,13 @@ export default function App() {
                     <Route path="create" element={<PumpkinPoolCreation />} />
                     <Route path=":poolId">
                       <Route index element={<PoolPumpkinDetail />} />
+                      <Route path="runs">
+                        <Route index element={<PoolRunsPumpkin />} />
+                        <Route
+                          path=":runId"
+                          element={<PoolRunPumpkinDetail />}
+                        />
+                      </Route>
                     </Route>
                   </Route>
                 </Route>

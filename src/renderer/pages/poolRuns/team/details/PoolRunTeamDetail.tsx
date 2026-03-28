@@ -63,10 +63,6 @@ function PoolRunTeamDetail() {
     }
   };
 
-  if (!poolRunId) {
-    return <Result status="error" title="Invalid run ID" />;
-  }
-
   if (isLoading || fightCountLoading) {
     return <Spinner label="Loading run details..." />;
   }

@@ -439,6 +439,24 @@ export interface GetBasePoolsResponse {
   pools: BasePoolResponse[];
 }
 
+export interface PoolLeekGroupResponse {
+  id: string;
+  originalLeekGroupId: string;
+  leeks: PoolLeekResponse[];
+  name: string;
+  elo: number;
+}
+
+export interface PoolMobResponse {
+  id: string;
+  originalMobId: string;
+  name: string;
+  internalName: string;
+  type: string;
+  build: EntityBuild;
+  ai: EntityAIResponse;
+}
+
 export interface TurretResponse {
   id: string;
   name: string;
@@ -454,6 +472,19 @@ export interface PoolTeamResponse {
   leeks: PoolLeekResponse[];
   turret: TurretResponse;
   elo: number;
+}
+
+export interface PoolFightPumpkinResponse {
+  id: string;
+  poolRunId: string;
+  seed: number;
+  date: number;
+  leekGroupId: string;
+  result: string;
+}
+
+export interface GetPumpkinFightsByPoolRunIdResponse {
+  fights: PoolFightPumpkinResponse[];
 }
 
 export interface CreatePumpkinPoolRequest {
@@ -472,6 +503,22 @@ export interface PumpkinPoolResponse {
 
 export interface GetAllPumpkinPoolsResponse {
   pumpkinPools: PumpkinPoolResponse[];
+}
+
+export interface PumpkinPoolRunResponse {
+  id: string;
+  interrupted: boolean;
+  running: boolean;
+  basePool: BasePoolResponse;
+  startDate: number;
+  endDate: number;
+  leekGroups: PoolLeekGroupResponse[];
+  mobs: PoolMobResponse[];
+  pumpkinPoolId: string;
+}
+
+export interface ListPumpkinPoolRunResponse {
+  runs: PumpkinPoolRunResponse[];
 }
 
 export interface AddTeamRequest {
