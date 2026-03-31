@@ -17,7 +17,7 @@ function MobList({
 }: IMobListProps) {
   const navigate = useNavigate();
 
-  const [sortField, setSortField] = useState<SortField>('name');
+  const [sortField, setSortField] = useState<SortField | undefined>(undefined);
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 

@@ -6,9 +6,10 @@ import { useGetFightPumpkinGetCountByPoolRunIdId } from '../../../../../services
 import { usePoolPumpkinFightCountWs } from '../../../../../hooks/fights/pumpkin/usePoolTeamFightCountWs';
 import Spinner from '../../../../components/shared/spinner/Spinner';
 import BasePoolRunWrapper from '../../../../components/pool-runs/base-pool-run-wrapper/BasePoolRunWrapper';
-import { poolsStyles as styles } from '../../../pools/Pools.styles';
+import { poolsStyles as styles } from '../../Pools.styles';
 import { IPoolRunBase } from '../../../../../services/leekwars-laboratory/types/pool/run/PoolRunBase.types';
 import PoolPumpkinFightList from '../../../../components/pool/pumpkin/fight/pool-pumpkin-fight-list/PoolPumpkinFightList';
+import PoolLeekGroupCard from '../../../../components/pool/leek-group/pool-leek-group-card/PoolLeekGroupCard';
 
 function PoolRunPumpkinDetail() {
   const poolRunId = usePoolRunPumpkinId();
@@ -38,9 +39,11 @@ function PoolRunPumpkinDetail() {
     setProcessedFights(count);
   });
 
-  const leekGroupsSortedByElo = useMemo(() => {
+  const leekGroupsSortedByWins = useMemo(() => {
     if (!pumpkinPoolRun || !pumpkinPoolRun.leekGroups) return [];
-    return [...pumpkinPoolRun.leekGroups].sort((a, b) => b.elo - a.elo);
+    return [...pumpkinPoolRun.leekGroups].sort(
+      (a, b) => b.fightRatio.wins - a.fightRatio.wins,
+    );
   }, [pumpkinPoolRun]);
 
   const onStopTeamPoolRun = async () => {
@@ -83,17 +86,21 @@ function PoolRunPumpkinDetail() {
               label: 'Global',
               children: <>Global</>,
             },
-            // {
-            //   key: 'teams',
-            //   label: 'Teams',
-            //   children: (
-            //     <div style={poolRunTeamDetailStyles.teamListContainer}>
-            //       {teamsSortedByElo.map((team) => (
-            //         <PoolTeamTeam key={team.id} team={team} />
-            //       ))}
-            //     </div>
-            //   ),
-            // },
+            {
+              key: 'groups',
+              label: 'Groups',
+              children: (
+                <div>
+                  {leekGroupsSortedByWins.map((group) => (
+                    <PoolLeekGroupCard
+                      key={group.id}
+                      group={group}
+                      processedFights={processedFights}
+                    />
+                  ))}
+                </div>
+              ),
+            },
             // {
             //   key: 'charts',
             //   label: 'Charts',

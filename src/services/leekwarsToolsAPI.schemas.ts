@@ -444,7 +444,7 @@ export interface PoolLeekGroupResponse {
   originalLeekGroupId: string;
   leeks: PoolLeekResponse[];
   name: string;
-  elo: number;
+  fightRatio: PoolFightRatioResponse;
 }
 
 export interface PoolMobResponse {

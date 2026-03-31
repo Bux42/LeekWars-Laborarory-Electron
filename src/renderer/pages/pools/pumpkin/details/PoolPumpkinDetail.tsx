@@ -1,5 +1,6 @@
 import { Result } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { usePoolPumpkinId } from '../../../../../hooks/pools/pumpkin/usePoolPumpkinId';
 import {
   useDeletePumpkinPoolsIdRemoveLeekGroupLeekGroupId,
@@ -20,6 +21,7 @@ import { PumpkinPoolResponse } from '../../../../../services/leekwarsToolsAPI.sc
 import { usePostPumpkinPoolRunIdStart } from '../../../../../services/pumpkin-pool-runs/pumpkin-pool-runs';
 
 function PoolPumpkinDetail() {
+  const navigate = useNavigate();
   const poolId = usePoolPumpkinId();
 
   const {
@@ -139,16 +141,7 @@ function PoolPumpkinDetail() {
     try {
       const result = await startMutation.mutateAsync({ id: poolId! });
       if (result.id) {
-        setPumpkinPool((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            poolRunsInfo: {
-              ...prev.poolRunsInfo,
-              currentRun: result,
-            },
-          };
-        });
+        navigate(`/pools/boss/pumpkin/${poolId}/runs/${result.id}`);
       }
     } catch (err) {
       console.error('Failed to start pool:', err);

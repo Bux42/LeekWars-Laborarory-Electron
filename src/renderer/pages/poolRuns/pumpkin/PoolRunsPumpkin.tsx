@@ -16,7 +16,7 @@ function PoolRunsPumpkin() {
   );
 
   const handleViewRun = (run: IPoolRunBase) => {
-    navigate(`/pools/pumpkin/${poolId}/runs/${run.id}`);
+    navigate(`/pools/boss/pumpkin/${poolId}/runs/${run.id}`);
   };
 
   if (isLoading) {

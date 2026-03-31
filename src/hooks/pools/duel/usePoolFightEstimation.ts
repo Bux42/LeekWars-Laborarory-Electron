@@ -10,6 +10,12 @@ export const usePoolFightEstimation = (
   fightLimit: number = 1,
 ): IFightEstimation => {
   return useMemo(() => {
+    if (leekCount == 1) {
+      return {
+        totalScenarios: 1,
+        totalFights: fightLimit,
+      };
+    }
     const totalScenarios = leekCount * (leekCount - 1);
     const totalFights = totalScenarios * fightLimit;
 
