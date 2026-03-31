@@ -1,6 +1,6 @@
 import { LeekResponse } from '../../../../services/leekwarsToolsAPI.schemas';
 
-export interface ILeekImageProps {
+export interface ILeekImageHoverProps {
   leek: LeekResponse;
   height?: number;
   width?: number;

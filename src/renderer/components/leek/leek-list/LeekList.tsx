@@ -7,7 +7,7 @@ import { ILeekListProps, SortField, SortDirection } from './LeekList.types';
 import { LeekResponse } from '../../../../services/leekwarsToolsAPI.schemas';
 import { theme } from '../../../theme';
 import Dropdown from '../../shared/dropdown/Dropdown';
-import LeekImage from '../leek-image/LeekImage';
+import LeekImageHover from '../leek-image-hover/LeekImageHover';
 
 function LeekList({
   leeks,
@@ -146,7 +146,7 @@ function LeekList({
             <Row style={styles.itemRow} gutter={12} align="middle">
               <Col flex="56px">
                 <div style={styles.leekImageCell}>
-                  <LeekImage leek={leek} showTooltip height={40} width={40} />
+                  <LeekImageHover leek={leek} height={40} width={40} />
                 </div>
               </Col>
               <Col flex="2">

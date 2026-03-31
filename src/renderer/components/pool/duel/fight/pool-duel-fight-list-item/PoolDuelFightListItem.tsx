@@ -4,10 +4,10 @@ import { EyeOutlined } from '@ant-design/icons';
 import { IPoolDuelFightListItemProps } from './PoolDuelFightListItem.types';
 import { poolDuelFightListItemStyles as styles } from './PoolDuelFightListItem.styles';
 import { getTimeAgo } from '../../../../../utils/DateUtils';
-import LeekImage from '../../../../leek/leek-image/LeekImage';
 import { LeekResponse } from '../../../../../../services/leekwarsToolsAPI.schemas';
 import { usePostFightDuelGenerate } from '../../../../../../services/duel-fights/duel-fights';
 import useGenerateFight from '../../../../../../hooks/fights/useGenerateFight';
+import LeekImageHover from '../../../../leek/leek-image-hover/LeekImageHover';
 
 function PoolDuelFightListItem({
   fight,
@@ -37,9 +37,8 @@ function PoolDuelFightListItem({
       <Col span={8} style={styles.column}>
         <div style={styles.leekContainer(getFightColor(leek1.id))}>
           <div style={styles.leekContent}>
-            <LeekImage
+            <LeekImageHover
               leek={leek1 as unknown as LeekResponse}
-              showTooltip
               height={30}
               width={30}
             />
@@ -59,9 +58,8 @@ function PoolDuelFightListItem({
       <Col span={8} style={styles.column}>
         <div style={styles.leekContainer(getFightColor(leek2.id))}>
           <div style={styles.leekContent}>
-            <LeekImage
+            <LeekImageHover
               leek={leek2 as unknown as LeekResponse}
-              showTooltip
               height={30}
               width={30}
             />

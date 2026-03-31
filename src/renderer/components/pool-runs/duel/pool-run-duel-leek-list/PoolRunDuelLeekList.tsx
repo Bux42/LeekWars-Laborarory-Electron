@@ -5,10 +5,10 @@ import {
   LeekResponse,
   PoolLeekResponse,
 } from '../../../../../services/leekwarsToolsAPI.schemas';
-import LeekImage from '../../../leek/leek-image/LeekImage';
 import { poolRunDuelLeekListStyles as styles } from './PoolRunDuelLeekList.styles';
 import { IPoolRunDuelLeekListProps } from './PoolRunDuelLeekList.types';
 import { getImage } from '../../../../utils/ImageLoader';
+import LeekImageHover from '../../../leek/leek-image-hover/LeekImageHover';
 
 function toLeekResponse(poolLeek: PoolLeekResponse): LeekResponse {
   return {
@@ -27,12 +27,7 @@ function PoolRunDuelLeekList({ poolLeeks }: IPoolRunDuelLeekListProps) {
       width: 84,
       render: (_, leek) => (
         <div style={styles.avatarCell}>
-          <LeekImage
-            leek={toLeekResponse(leek)}
-            showTooltip
-            height={40}
-            width={40}
-          />
+          <LeekImageHover leek={toLeekResponse(leek)} height={40} width={40} />
         </div>
       ),
     },

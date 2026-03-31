@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { IPoolLeekGroupCardProps } from './PoolLeekGroupCard.types';
 import { poolLeekGroupCardStyles as styles } from './PoolLeekGroupCard.styles';
-import LeekImage from '../../../leek/leek-image/LeekImage';
+import LeekImageHover from '../../../leek/leek-image-hover/LeekImageHover';
 
 function PoolLeekGroupCard({
   group,
@@ -24,7 +24,7 @@ function PoolLeekGroupCard({
       </div>
       <div style={styles.leeksContainer}>
         {group.leeks.map((leek) => (
-          <LeekImage
+          <LeekImageHover
             key={leek.id}
             leek={leek}
             height={46}

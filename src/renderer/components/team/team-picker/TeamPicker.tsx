@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { ITeamPickerProps } from './TeamPicker.types';
-import LeekImage from '../../leek/leek-image/LeekImage';
 import { teamPickerStyles as styles } from './TeamPicker.styles';
 import TurretImage from '../../turret/turret-image/TurretImage';
+import LeekImageHover from '../../leek/leek-image-hover/LeekImageHover';
 
 function TeamPicker({
   label,
@@ -38,12 +38,11 @@ function TeamPicker({
                   showTooltip
                 />
                 {team.leeks.map((leek) => (
-                  <LeekImage
+                  <LeekImageHover
                     key={leek.id}
                     leek={leek}
                     height={40}
                     width={40}
-                    showTooltip
                   />
                 ))}
               </div>
