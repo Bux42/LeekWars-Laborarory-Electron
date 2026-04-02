@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Result, Tabs } from 'antd';
 import { usePoolRunPumpkinId } from '../../../../../hooks/pool-runs/pumpkin/usePoolRunPumpkinId';
-import { useGetPumpkinPoolRunId } from '../../../../../services/pumpkin-pool-runs/pumpkin-pool-runs';
+import {
+  useGetPumpkinPoolRunId,
+  usePostPumpkinPoolRunIdStop,
+} from '../../../../../services/pumpkin-pool-runs/pumpkin-pool-runs';
 import { useGetFightPumpkinGetCountByPoolRunIdId } from '../../../../../services/pumpkin-fights/pumpkin-fights';
 import { usePoolPumpkinFightCountWs } from '../../../../../hooks/fights/pumpkin/usePoolTeamFightCountWs';
 import Spinner from '../../../../components/shared/spinner/Spinner';
@@ -15,7 +18,7 @@ function PoolRunPumpkinDetail() {
   const poolRunId = usePoolRunPumpkinId();
   const [processedFights, setProcessedFights] = useState(0);
 
-  // const stopMutation = usePostPumpkinPoolRunIdStop();
+  const stopMutation = usePostPumpkinPoolRunIdStop();
 
   const {
     data: pumpkinPoolRun,
@@ -46,17 +49,17 @@ function PoolRunPumpkinDetail() {
     );
   }, [pumpkinPoolRun]);
 
-  const onStopTeamPoolRun = async () => {
-    // if (pumpkinPoolRun?.id) {
-    //   try {
-    //     const result = await stopMutation.mutateAsync({
-    //       id: pumpkinPoolRun.id,
-    //     });
-    //     console.log('Stop result:', result);
-    //   } catch (err) {
-    //     console.error('Failed to stop pool run:', err);
-    //   }
-    // }
+  const onStopPumpkinPoolRun = async () => {
+    if (pumpkinPoolRun?.id) {
+      try {
+        const result = await stopMutation.mutateAsync({
+          id: pumpkinPoolRun.id,
+        });
+        console.log('Stop result:', result);
+      } catch (err) {
+        console.error('Failed to stop pool run:', err);
+      }
+    }
   };
 
   if (isLoading || fightCountLoading) {
@@ -76,7 +79,7 @@ function PoolRunPumpkinDetail() {
         combinationsCount={pumpkinPoolRun?.leekGroups?.length || 0}
         processedFights={processedFights}
         run={pumpkinPoolRun as IPoolRunBase}
-        onStop={onStopTeamPoolRun}
+        onStop={onStopPumpkinPoolRun}
       >
         <Tabs
           defaultActiveKey="1"
