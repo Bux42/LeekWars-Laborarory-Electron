@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, Notification } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -34,6 +34,28 @@ ipcMain.on('ipc-example', async (event, arg) => {
 ipcMain.on('shell:open-external', (_event, url: string) => {
   shell.openExternal(url);
 });
+
+ipcMain.on(
+  'app:show-notification',
+  (
+    _event,
+    payload: {
+      title?: string;
+      body?: string;
+    },
+  ) => {
+    if (!Notification.isSupported()) {
+      return;
+    }
+
+    const notification = new Notification({
+      title: payload?.title ?? 'LeekWars Laboratory',
+      body: payload?.body ?? 'Test notification',
+    });
+
+    notification.show();
+  },
+);
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
