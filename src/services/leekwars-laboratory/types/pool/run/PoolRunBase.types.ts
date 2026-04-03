@@ -9,3 +9,11 @@ export interface IPoolRunBase {
   basePool: BasePoolResponse;
   id: string;
 }
+
+export const poolRunBaseToBasePoolRunResponse = (
+  poolRunBase: IPoolRunBase,
+): BasePoolResponse => {
+  return {
+    ...poolRunBase.basePool,
+  };
+};

@@ -21,6 +21,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  BasePoolRunResponse,
   ListPumpkinPoolRunResponse,
   PumpkinPoolRunResponse,
 } from '../leekwarsToolsAPI.schemas';
@@ -341,6 +342,171 @@ export function useGetPumpkinPoolRunId<
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetPumpkinPoolRunIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Retrieves a base pumpkin pool run by its ID, including the leeks in the pool and their current Elo ratings.
+ * @summary Get base pumpkin pool run by ID
+ */
+export const getPumpkinPoolRunIdBasePoolRun = (
+  id: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<BasePoolRunResponse>({
+    url: `/pumpkin-pool-run/${id}/base-pool-run`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetPumpkinPoolRunIdBasePoolRunQueryKey = (id: string) => {
+  return [`/pumpkin-pool-run/${id}/base-pool-run`] as const;
+};
+
+export const getGetPumpkinPoolRunIdBasePoolRunQueryOptions = <
+  TData = Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetPumpkinPoolRunIdBasePoolRunQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>
+  > = ({ signal }) => getPumpkinPoolRunIdBasePoolRun(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetPumpkinPoolRunIdBasePoolRunQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>
+>;
+export type GetPumpkinPoolRunIdBasePoolRunQueryError = void;
+
+export function useGetPumpkinPoolRunIdBasePoolRun<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+          TError,
+          Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPumpkinPoolRunIdBasePoolRun<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+          TError,
+          Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPumpkinPoolRunIdBasePoolRun<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get base pumpkin pool run by ID
+ */
+
+export function useGetPumpkinPoolRunIdBasePoolRun<
+  TData = Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPumpkinPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetPumpkinPoolRunIdBasePoolRunQueryOptions(
+    id,
+    options,
+  );
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,

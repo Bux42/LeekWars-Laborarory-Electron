@@ -21,6 +21,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  BasePoolRunResponse,
   BasePoolStopResponse,
   FarmerPoolRunResponse,
   GetAllRunningPoolsResponse,
@@ -490,6 +491,171 @@ export function useGetFarmerPoolRunId<
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetFarmerPoolRunIdQueryOptions(id, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Retrieves a base farmer pool run by its ID, including the farmers in the pool and their current Elo ratings.
+ * @summary Get base farmer pool run by ID
+ */
+export const getFarmerPoolRunIdBasePoolRun = (
+  id: string,
+  signal?: AbortSignal,
+) => {
+  return apiClient<BasePoolRunResponse>({
+    url: `/farmer-pool-run/${id}/base-pool-run`,
+    method: 'GET',
+    signal,
+  });
+};
+
+export const getGetFarmerPoolRunIdBasePoolRunQueryKey = (id: string) => {
+  return [`/farmer-pool-run/${id}/base-pool-run`] as const;
+};
+
+export const getGetFarmerPoolRunIdBasePoolRunQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    >;
+  },
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetFarmerPoolRunIdBasePoolRunQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>
+  > = ({ signal }) => getFarmerPoolRunIdBasePoolRun(id, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetFarmerPoolRunIdBasePoolRunQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>
+>;
+export type GetFarmerPoolRunIdBasePoolRunQueryError = void;
+
+export function useGetFarmerPoolRunIdBasePoolRun<
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+          TError,
+          Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFarmerPoolRunIdBasePoolRun<
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+          TError,
+          Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>
+        >,
+        'initialData'
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetFarmerPoolRunIdBasePoolRun<
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get base farmer pool run by ID
+ */
+
+export function useGetFarmerPoolRunIdBasePoolRun<
+  TData = Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+  TError = void,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getFarmerPoolRunIdBasePoolRun>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetFarmerPoolRunIdBasePoolRunQueryOptions(
+    id,
+    options,
+  );
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,

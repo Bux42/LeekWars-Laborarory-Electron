@@ -50,6 +50,7 @@ export interface RunningPoolResponse {
   poolId: string;
   name: string;
   type: string;
+  bossType?: string;
   startTime: number;
   totalFights: number;
   completedFights: number;
@@ -57,6 +58,31 @@ export interface RunningPoolResponse {
 
 export interface GetAllRunningPoolsResponse {
   runningPools: RunningPoolResponse[];
+}
+
+/**
+ * Represents a base pool returned by the API
+ */
+export interface BasePoolResponse {
+  id: string;
+  name: string;
+  enabled: boolean;
+  resetElo: boolean;
+  deterministic: boolean;
+  startSeed: number;
+  fightLimitEnabled: boolean;
+  fightLimit: number;
+  creationDate: number;
+  lastUpdateDate: number;
+}
+
+export interface BasePoolRunResponse {
+  id: string;
+  interrupted: boolean;
+  running: boolean;
+  basePool: BasePoolResponse;
+  startDate: number;
+  endDate: number;
 }
 
 export interface BasePoolStopResponse {
@@ -98,22 +124,6 @@ export interface CreateDuelPoolRequest {
 
 export interface RemoveLeekFromDuelPoolRequest {
   leekId?: string;
-}
-
-/**
- * Represents a base pool returned by the API
- */
-export interface BasePoolResponse {
-  id: string;
-  name: string;
-  enabled: boolean;
-  resetElo: boolean;
-  deterministic: boolean;
-  startSeed: number;
-  fightLimitEnabled: boolean;
-  fightLimit: number;
-  creationDate: number;
-  lastUpdateDate: number;
 }
 
 export interface EntityStats {

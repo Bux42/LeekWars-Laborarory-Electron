@@ -6,22 +6,22 @@ export interface IFightEstimation {
 }
 
 export const usePoolFightEstimation = (
-  leekCount: number,
+  teamCount: number,
   fightLimit: number = 1,
 ): IFightEstimation => {
   return useMemo(() => {
-    if (leekCount == 1) {
+    if (teamCount == 1) {
       return {
         totalScenarios: 1,
         totalFights: fightLimit,
       };
     }
-    const totalScenarios = leekCount * (leekCount - 1);
+    const totalScenarios = teamCount * (teamCount - 1);
     const totalFights = totalScenarios * fightLimit;
 
     return {
       totalScenarios,
       totalFights,
     };
-  }, [leekCount, fightLimit]);
+  }, [teamCount, fightLimit]);
 };
