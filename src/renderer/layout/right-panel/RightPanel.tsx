@@ -46,7 +46,7 @@ function RightPanel() {
       bossType: run.bossType,
     };
 
-    setRunningPools((prev) => [...prev, addedRunningPool]);
+    setRunningPools((prev) => [addedRunningPool, ...prev]);
   });
 
   usePoolRunFinishedWs((run) => {
@@ -75,7 +75,9 @@ function RightPanel() {
     };
   });
 
-  console.log('RightPanel render');
+  const onHide = (poolRunId: string) => {
+    setRunningPools((prev) => prev.filter((rp) => rp.poolRunId !== poolRunId));
+  };
 
   if (isLoadingRunningPools) {
     return <Spinner label="Loading active runs..." />;
@@ -88,7 +90,11 @@ function RightPanel() {
     <aside style={styles.container}>
       <h3>Running pools</h3>
       {runningPools.map((runningPool) => (
-        <RunningPool key={runningPool.poolRunId} runningPool={runningPool} />
+        <RunningPool
+          key={runningPool.poolRunId}
+          runningPool={runningPool}
+          onHide={onHide}
+        />
       ))}
     </aside>
   );

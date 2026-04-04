@@ -1,30 +1,25 @@
 import React, { useMemo } from 'react';
-import { CheckCircleOutlined } from '@ant-design/icons';
+import {
+  CheckCircleOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { Progress } from 'antd';
+import { Button, Progress } from 'antd';
 import { runningPoolStyles as styles } from './RunningPool.styles';
 import { theme } from '../../theme';
 import { IRunningPoolProps } from './RunningPool.types';
 import { usePoolFightCountWs } from '../../../hooks/fights/usePoolFightCountWs';
+import { getTimeAgo } from '../../utils/DateUtils';
 
-function RunningPool({ runningPool }: IRunningPoolProps) {
+function RunningPool({ runningPool, onHide }: IRunningPoolProps) {
   const navigate = useNavigate();
   const [totalFights, setTotalFights] = React.useState(runningPool.totalFights);
   const [fightCount, setFightCount] = React.useState(
     runningPool.completedFights,
   );
 
-  const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
-    (event.target as HTMLDivElement).style.border =
-      `1px solid ${theme.colors.border.focus}`;
-  };
-
-  const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
-    (event.target as HTMLDivElement).style.border =
-      `1px solid ${theme.colors.border.primary}`;
-  };
-
-  const handleClick = () => {
+  const handleViewRunClick = () => {
     navigate(
       `/pools/${runningPool.type}/${typeof runningPool.bossType === 'string' ? `${runningPool.bossType}/` : ''}${runningPool.poolId}/runs/${runningPool.poolRunId}`,
     );
@@ -35,7 +30,7 @@ function RunningPool({ runningPool }: IRunningPoolProps) {
     runningPool.bossType,
     runningPool.poolRunId,
     (count, total) => {
-      // update the fight count for this running pool
+      // update to ws fight count event for this specific pool run
       setFightCount(count);
       setTotalFights(total);
     },
@@ -46,22 +41,49 @@ function RunningPool({ runningPool }: IRunningPoolProps) {
     [fightCount, totalFights],
   );
 
-  return (
-    /* eslint-disable jsx-a11y/no-static-element-interactions */
-    /* eslint-disable jsx-a11y/click-events-have-key-events */
-    <div
-      style={styles.container}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    >
-      <h5>{runningPool.name}</h5>
+  const onMouseOver = (event: React.MouseEvent<HTMLDivElement>) => {
+    (event.target as HTMLDivElement).style.color = theme.colors.border.focus;
+  };
 
-      {percent < 100 ? (
-        <Progress percent={percent} status="active" size="small" />
-      ) : (
-        <CheckCircleOutlined style={{ color: theme.colors.accent.success }} />
-      )}
+  const onMouseOut = (event: React.MouseEvent<HTMLDivElement>) => {
+    (event.target as HTMLDivElement).style.color = theme.colors.text.primary;
+  };
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.spaceBetweenContainer}>
+        <Button
+          style={styles.poolName}
+          onMouseOver={onMouseOver}
+          onMouseOut={onMouseOut}
+          onClick={handleViewRunClick}
+        >
+          <EyeOutlined />
+        </Button>
+        <Button
+          style={styles.poolName}
+          onMouseOver={onMouseOver}
+          onMouseOut={onMouseOut}
+          disabled={percent < 100}
+          onClick={() => onHide(runningPool.poolRunId)}
+        >
+          <EyeInvisibleOutlined />
+        </Button>
+      </div>
+      <div style={styles.runDetails}>
+        <h4>{runningPool.name}</h4>
+        {percent < 100 ? (
+          <Progress percent={percent} status="active" size="small" />
+        ) : (
+          <div style={styles.spaceBetweenContainer}>
+            <CheckCircleOutlined
+              style={{ color: theme.colors.accent.success }}
+            />
+            <p>Started {getTimeAgo(runningPool.startTime)}</p>
+          </div>
+        )}
+        <p>{fightCount} Fights</p>
+      </div>
     </div>
   );
 }
