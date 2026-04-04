@@ -3,11 +3,11 @@ import { theme } from '../../../../theme';
 
 export interface PoolLeekGroupCardStyles {
   container: CSSProperties;
+  headerContainer: CSSProperties;
   ratiosContainer: CSSProperties;
   ratioItem: CSSProperties;
   winrate: CSSProperties;
   leeksContainer: CSSProperties;
-  ratioAndWinrateContainer: CSSProperties;
 }
 
 export const poolLeekGroupCardStyles: PoolLeekGroupCardStyles = {
@@ -19,6 +19,11 @@ export const poolLeekGroupCardStyles: PoolLeekGroupCardStyles = {
     borderRadius: 4,
     border: `1px solid ${theme.colors.border.primary}`,
     gap: 8,
+  },
+  headerContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   ratiosContainer: {
     display: 'flex',
@@ -41,10 +46,5 @@ export const poolLeekGroupCardStyles: PoolLeekGroupCardStyles = {
   },
   leeksContainer: {
     display: 'flex',
-  },
-  ratioAndWinrateContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
 };

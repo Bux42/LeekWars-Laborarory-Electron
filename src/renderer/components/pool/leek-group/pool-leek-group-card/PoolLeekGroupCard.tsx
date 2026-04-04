@@ -14,13 +14,15 @@ function PoolLeekGroupCard({
 
   return (
     <div style={styles.container}>
-      <div style={styles.ratioAndWinrateContainer}>
-        <div style={styles.ratiosContainer}>
-          <div style={styles.ratioItem}>{group.fightRatio.wins} Wins</div>
-          <div style={styles.ratioItem}>{group.fightRatio.losses} Losses</div>
-          <div style={styles.ratioItem}>{group.fightRatio.draws} Draws</div>
-        </div>
+      <div style={styles.headerContainer}>
+        <h4>{group.name}</h4>
         <div style={styles.winrate}>{ratio.toFixed(2)}% Winrate</div>
+      </div>
+
+      <div style={styles.ratiosContainer}>
+        <div style={styles.ratioItem}>{group.fightRatio.wins} Wins</div>
+        <div style={styles.ratioItem}>{group.fightRatio.losses} Losses</div>
+        <div style={styles.ratioItem}>{group.fightRatio.draws} Draws</div>
       </div>
       <div style={styles.leeksContainer}>
         {group.leeks.map((leek) => (
