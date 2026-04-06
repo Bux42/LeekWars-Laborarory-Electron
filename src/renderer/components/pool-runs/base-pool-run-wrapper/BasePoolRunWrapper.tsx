@@ -49,7 +49,6 @@ function BasePoolRunWrapper({
     if (onStop) {
       setStopping(true);
       await onStop();
-      setStopping(false);
     }
   };
 
